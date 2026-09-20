@@ -150,6 +150,12 @@ Praktiskt: samma logik gäller nyhetssajter som YouTube — det är inte bara *a
 
 **Kollaborativ signal (ny, 2026-09-20).** Uttryckligt önskemål: inte bara fortsätta bekräfta det jag redan läser/tittar på (ren innehållsbaserad matchning), utan också vad "såna som jag" gillar - en kompletterande signal utöver den egna historiken. Trendsignalen ovan mäter *redaktionell täckning* (hur många medier skriver om det), inte *läsarpopularitet*. Konkreta källor att undersöka i Fas 5: "mest lästa"-listor hos enskilda sajter, Reddit-uppröstningar, Hacker News-poäng (särskilt relevant för AI/teknik). Obekräftat om alla dessa är gratis/skrapbara - kontrolleras i Fas 5.
 
+**Kandidatkälla: trusted-source-insamling, inte bara historik-matchning (beslut 2026-09-20).** Grundat i forskning om nyhetsrekommendation (se källor nedan): kombinera aldrig bara innehållsbaserad personalisering ensam - alltid tillsammans med popularitet och/eller redaktionell signal. Konkretisering av egen idé: Fas 5 ska hämta **alla** artiklar via RSS från de källor som redan är bekräftade i `news_domains.yaml` (di.se, feber.se, marcusoscarsson.se, vibilagare.se osv.) - inte bara artiklar som redan matchar sökord från historiken. Poängmodellen (Metod A) rankar sedan bland hela det flödet. Det fångar automatiskt "vad är stort på en sajt jag litar på just nu", inte bara det jag redan sökt efter, utan att behöva bygga ett separat system för det. Även känt som "trusted-source curation" - begränsa kandidatuniversum till källor med bekräftat god redaktionell kvalitet, applicera sedan personlig relevans ovanpå, istället för att söka brett över hela webben.
+
+**Explore/exploit formaliserat (beslut 2026-09-20).** Metod C:s "utforskningsplats" görs om till en epsilon-greedy-liknande regel istället för en fast "ett objekt": en bestämd andel av platserna per kategori (förslag: ~15-20%, testas och justeras) är alltid utforskande (slumpad från trusted-source-flödet eller från popularitetssignalen), resten rankas av poängmodellen. Grundat i den klassiska kontextuella bandit-metoden för nyhetsrekommendation (Yahoo/LinUCB).
+
+Källor: [A Contextual-Bandit Approach to Personalized News Article Recommendation](https://arxiv.org/pdf/1003.0146), [Personalized News Recommendation: Methods and Challenges](https://arxiv.org/pdf/2106.08934), [Surprise me! A longitudinal user study on serendipitous recommendation](https://ceur-ws.org/Vol-4027/paper6.pdf).
+
 **Fördjupning som kombinerar källor** (per nyhet, på begäran):
 
 | Källtyp | Exempel | Gratis? |
