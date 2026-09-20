@@ -43,6 +43,12 @@ noje_teknik:
   - cnet.com
   - theverge.com
 
+noje_bilar:
+  # Bilregister/bilmarknadsplats - kompletterar YouTube-bilkanalerna,
+  # tillagd 2026-09-20 för att inte underrepresentera bilar i balansen.
+  - biluppgifter.se
+  - kvd.se
+
 # Bekräftade intressesignaler 2026-09-20, men oklart vilken av de fyra
 # kategorierna de hör till - körs som en egen grupp, kategorisera efter
 # vilka ämnesord som faktiskt dyker upp.

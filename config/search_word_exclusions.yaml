@@ -21,6 +21,7 @@ shopping:
   - okina  # Maui Jim-modell
   - jacobson  # "Oscar Jacobson" klädmärke, bekräftat via bigram
   - tenn  # "Svenskt Tenn" inredning
+  - v6  # FALSKT POSITIV som "bil": det är "New Balance 990v6" (bigram: "990 v6", "balance 990v6")
 
 barn_aktiviteter:
   # Sökningar om barnaktiviteter/spel - inte shopping, men inte heller en
@@ -29,3 +30,4 @@ barn_aktiviteter:
   - pokemon
   - diamond
   - emerald
+  - radiostyrd  # "radiostyrd bil" - troligen leksak åt barnen, inte bilintresse
