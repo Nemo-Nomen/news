@@ -1,11 +1,6 @@
 # Kända nyhets-/samhällsdomäner bland besökta domäner (från data/profile/domain_counts_filtered.json).
-# Kategorierna matchar nu projektets fem kategorier (PROJECT_PLAN.md avsnitt 1,
+# Kategorierna matchar nu projektets sex kategorier (PROJECT_PLAN.md avsnitt 1,
 # definitioner uppdaterade 2026-09-20). Bara domännamn - ingen personlig data.
-#
-# Osäkra/ej kategoriserade (se konversation 2026-09-20):
-# - aftonbladet.se, expressen.se: innehållet som synts hittills liknar kändis-/
-#   kriminaljournalistik (skvaller), inte tydligt makroekonomi/policy. Kvar i
-#   allmanna_nyheter tills vidare - fråga öppen.
 
 investeringar_privatekonomi:
   - di.se
@@ -30,11 +25,19 @@ politik_makro:
   - nytimes.com
   - marcusoscarsson.se  # bekräftad nyhetssajt 2026-09-20 (Sverige/världen/USA/ekonomi)
 
-allmanna_nyheter_okategoriserat:
+skvaller:
+  # Löst 2026-09-20: tidigare okategoriserat, bekräftat som egen kategori.
+  # Kändis-/kriminaljournalistik - matchar orden som synts i titlarna
+  # (bianca, mårder, parnevik, orosanmäld, socialtjänsten).
   - aftonbladet.se
   - expressen.se
-  - news.google.com
   - nyheter24.se
+
+politik_makro_aggregator:
+  # news.google.com är en aggregator, inte en egen redaktion - lämnad i
+  # politik_makro-gruppen tills vidare eftersom den mest visat makro/
+  # samhällsinnehåll hittills, men kan i praktiken innehålla vad som helst.
+  - news.google.com
 
 noje_teknik:
   - feber.se
