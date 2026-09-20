@@ -1,0 +1,18 @@
+# Domäner som INTE ska räknas som signal till nyhetsprofilen.
+# Påverkar bara profilbygget (Fas 2+) — rådatan i data/profile/domain_counts.json
+# är orörd, i linje med beslutet att inget exkluderas ur rådata (PROJECT_PLAN.md, avsnitt 3).
+
+work:
+  - hennesandmauritz.sharepoint.com
+  - hm.hrmcloud.se
+  - performancemanager5.successfactors.eu
+  - login.microsoftonline.com
+
+shopping:
+  - blocket.se
+  - amazon.se
+  - prisjakt.nu
+  - arket.com
+  - vinted.se
+  - tradera.com
+  - www2.hm.com

@@ -10,14 +10,26 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
+import yaml
+
 SOURCE = Path("data/raw/takeout/2026-09-20/extracted/Takeout/Chrome/Historik.json")
-OUTPUT = Path("data/profile/domain_counts.json")
+EXCLUSIONS_FILE = Path("config/domain_exclusions.yaml")
+OUTPUT_RAW = Path("data/profile/domain_counts.json")
+OUTPUT_FILTERED = Path("data/profile/domain_counts_filtered.json")
 TOP_N_PRINTED = 25
 
 
 def domain_of(url: str) -> str:
     netloc = urlparse(url).netloc.lower()
     return netloc[4:] if netloc.startswith("www.") else netloc
+
+
+def load_exclusions() -> set[str]:
+    if not EXCLUSIONS_FILE.exists():
+        return set()
+    with EXCLUSIONS_FILE.open(encoding="utf-8") as f:
+        groups = yaml.safe_load(f) or {}
+    return {domain for domains in groups.values() for domain in domains}
 
 
 def main() -> None:
@@ -36,20 +48,32 @@ def main() -> None:
             skipped += 1
 
     ranked = counts.most_common()
+    excluded = load_exclusions()
+    filtered = [(domain, count) for domain, count in ranked if domain not in excluded]
+    excluded_visits = sum(count for domain, count in ranked if domain in excluded)
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUTPUT.open("w", encoding="utf-8") as f:
+    OUTPUT_RAW.parent.mkdir(parents=True, exist_ok=True)
+    with OUTPUT_RAW.open("w", encoding="utf-8") as f:
         json.dump(
             {"total_visits": len(entries), "skipped": skipped, "domains": ranked},
             f,
             ensure_ascii=False,
             indent=2,
         )
+    with OUTPUT_FILTERED.open("w", encoding="utf-8") as f:
+        json.dump(
+            {"excluded_domains": sorted(excluded), "excluded_visits": excluded_visits, "domains": filtered},
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
 
     print(f"Totalt {len(entries)} besök, {len(ranked)} unika domäner, {skipped} utan giltig domän.")
-    print(f"Fullständig lista: {OUTPUT}")
-    print(f"\nTopp {TOP_N_PRINTED} domäner:")
-    for domain, count in ranked[:TOP_N_PRINTED]:
+    print(f"{len(excluded)} domäner exkluderade från profilen ({excluded_visits} besök): {sorted(excluded)}")
+    print(f"Rådata (oexkluderad): {OUTPUT_RAW}")
+    print(f"Profil-redo (exkluderad): {OUTPUT_FILTERED}")
+    print(f"\nTopp {TOP_N_PRINTED} domäner (efter exkludering):")
+    for domain, count in filtered[:TOP_N_PRINTED]:
         print(f"  {count:6d}  {domain}")
 
 

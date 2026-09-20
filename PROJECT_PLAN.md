@@ -48,7 +48,10 @@ CLAUDE PRO: schemalagd uppgift (körs i molnet)
 
 | Område | Läge |
 |---|---|
-| **Exkludering (enheter och domäner)** | Beslut 2026-09-20: inget exkluderas. Varken jobbenheter (jobbdator/jobbtelefon i Chrome-synken) eller en domänlista (bank, hälsa, familj, jobb) filtreras bort. All data i Takeout och lokal historik behandlas lika. Fas 1 innehåller därför ingen filtrering, bara schemautforskning |
+| **Exkludering i rådata (Fas 1)** | Beslut 2026-09-20: inget exkluderas ur rådatan. Varken jobbenheter (jobbdator/jobbtelefon i Chrome-synken) eller en domänlista (bank, hälsa, familj, jobb) filtreras bort där. All data i Takeout och lokal historik behandlas lika och sparas orört i `data/`. Fas 1 innehåller därför ingen filtrering, bara schemautforskning |
+| **Domäner som signal i profilen (Fas 2, annat lager än ovan)** | Beslut 2026-09-20: jobbdomäner (`hennesandmauritz.sharepoint.com`, `hm.hrmcloud.se`, `performancemanager5.successfactors.eu`, `login.microsoftonline.com`) och shoppingdomäner (`blocket.se`, `amazon.se`, `prisjakt.nu`, `arket.com`, `vinted.se`, `tradera.com`, `www2.hm.com`) räknas inte som signal när `profile.json` byggs. Rådatan i `data/profile/domain_counts.json` påverkas inte — listan i `config/domain_exclusions.yaml` filtrerar bara vid profilbygget |
+| **Domän vs. innehåll som signal** | Insikt 2026-09-20: domänbesök räcker inte som signal för domäner med blandat innehåll (t.ex. YouTube — kan vara bilar, teknik, nyheter, musik om vartannat). För sådana domäner behöver profilen bygga på sidtitlar/innehåll, inte bara besöksantal. Se avsnitt 6 |
+| **Nyhetsmail som signal** | Insikt 2026-09-20: nyhetsbrev/prenumerationer som kommer via mejl är också en intressesignal. Hanteras senare via `E-post`-mboxen eller Gmail-etiketter — inte implementerat än |
 | **Tillägg och program** | Inget installeras på jobbdatorn utöver det som är standard där. Skript och eventuella spårare körs bara på privat utrustning |
 | **Tid på sida** | En svag signal bland flera (se avsnitt 6), aldrig ensam grund. ActivityWatch läggs till på privat dator först om ett test visar behov |
 | **Arbetskategorin** | Definieras för hand i `interests.yaml`, inte från surfhistorik |
@@ -100,10 +103,11 @@ Varje fas ska köras och förstås innan nästa. Storlek: S = en kväll, M = nå
 | Sökfrågor | Takeout, Min aktivitet | Stark |
 | Följda personer och företag | LinkedIn-arkivet, efter gallring | Stark |
 | Betyg på brevets objekt | Feedback (Fas 7) | Stark |
-| Återkommande besök på samma ämne eller domän | `History`, Takeout | Stark |
+| Återkommande besök på samma ämne eller domän | `History`, Takeout | Stark för renodlade domäner. Jobb- och shoppingdomäner exkluderade från profilen, se `config/domain_exclusions.yaml` och avsnitt 3 |
+| Sidtitlar för domäner med blandat innehåll (t.ex. YouTube) | `History`, `Chrome/Historik.json` | Stark — domänen ensam räcker inte som signal där, se avsnitt 3 ("Domän vs. innehåll") |
+| Nyhetsbrev/prenumerationer via mejl | Takeout `E-post` (mbox) eller Gmail-etiketter | Stark, uttryckligt — inte implementerat än |
 | Direkt inskriven adress kontra klick på länk | `transition`-fältet i `History` | Medel |
 | Hur nyligt (avtagande vikt) | `History`, Takeout | Medel |
-| YouTube-titlar | `History`, YouTube-historik | Medel |
 | Tid på sida (`visit_duration`) | `History` | Svag, valideras mot verkligheten |
 
 **Poängmodell per artikel (Fas 5–6):** `poäng = intressematch × trend/viktighet × färskhet`. Sådant du redan läst filtreras bort innan poängsättningen.
