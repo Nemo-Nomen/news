@@ -20,29 +20,31 @@ Version 1, 20 september 2026. Läroprojekt för nybörjare.
 ```
 KÄLLOR (lokalt på Macen, Python)
   Takeout-baslinje (engångs, ev. ny senare)
-  Lokala Chrome-historiken (varje vecka)
+  Lokala Chrome-historiken (varje vecka, launchd)
   interests.yaml (personer, ämnen, uteslutningar, skrivs för hand)
         |
         |  1. Bygg intresseprofil (teman + vikt, nyare väger tyngre)
-        |  2. Hämta nya artiklar via RSS, ta bort sådant jag redan läst,
-        |     ranka mot profilen, behåll topp N per kategori
+        |  2. Hämta nya artiklar brett (Google Nyheter RSS + finance-news-MCP),
+        |     ranka mot profilen, källdiversifiering, dynamiskt antal per kategori
         v
-  profile.json + candidates.json   (inga personliga URL:er, bara teman och publika artikellänkar)
+  profile.json + candidates/{kategori}.json   (lokalt i projektmappen)
         |
-        |  synk via Google Drive for Desktop
+        |  LÄSER DIREKT UR PROJEKTMAPPEN - se rättelse nedan
         v
-CLAUDE PRO: schemalagd uppgift (körs i molnet)
-  läser Drive-mappen, skriver highlights per kategori,
-  skapar Gmail-utkast (eller skickar) till mig
+CLAUDE (schemalagd uppgift/routine, körs som Claude Code-session lokalt)
+  läser candidates/ + profile.json, dublettdetektering, källvinkel-
+  bedömning, motargument, nyhetsbrev via Gmail, skriver brev per
+  kategori, skapar Gmail-utkast (eller skickar) till mig
         |
         v
   Steg 2: djupdykning (se avsnitt 6)
 ```
 
-**Varför uppdelningen:**
+**Rättelse 2026-09-20 — arkitekturen var mer komplicerad än nödvändigt:** ursprunglig plan antog att schemalagda uppgifter körs isolerat i molnet utan filåtkomst, så Google Drive skulle användas som mellanhand. **Bekräftat felaktigt**, verktygsbeskrivningen för schemalagda uppgifter (`scheduled-tasks`-MCP:n) säger uttryckligen att en körning startar *"as a NEW Claude Code session in the task's working folder"* - alltså en vanlig session med full filåtkomst till projektmappen, ingen Drive-synk behövs. Enda begränsningen: Claude-appen måste vara öppen - annars körs uppgiften vid nästa app-start istället för exakt på schemat (samma "missad vecka tas igen"-princip som launchd/Fas 3, fast på app-nivå istället för dator-nivå).
+
+**Varför uppdelningen ändå kvarstår (lokalt vs. schemalagt):**
 - "Redan läst"-filtret kräver historiken, så det görs lokalt och historiken lämnar aldrig Macen.
-- Ingen kod anropar Claude direkt. API-anrop ingår inte i Pro, så det enda som kräver en modell är den schemalagda uppgiften.
-- Schemalagda uppgifter körs enligt hjälpcentret i molnet och kan inte kopplas till en mapp på datorn. Därför går data via Google Drive.
+- Fas 5 (RSS-insamling, poängsättning) är billig och körs utan Claude/kvot - bara den sista kurateringen (dublett/källvinkel/motargument/brevskrivning) kostar kvot, så den delen hålls avgränsad till den schemalagda uppgiften.
 
 ## 3. Beslut, förbehåll och obekräftat
 
@@ -55,8 +57,8 @@ CLAUDE PRO: schemalagd uppgift (körs i molnet)
 | **Tillägg och program** | Inget installeras på jobbdatorn utöver det som är standard där. Skript och eventuella spårare körs bara på privat utrustning |
 | **Tid på sida** | En svag signal bland flera (se avsnitt 6), aldrig ensam grund. ActivityWatch läggs till på privat dator först om ett test visar behov |
 | **Arbetskategorin** | Definieras för hand i `interests.yaml`, inte från surfhistorik |
-| **Schemalagda uppgifter på Pro** | Hjälpcentret säger att Cowork på Pro rullas ut. Kontrollera att "Scheduled" finns i din sidomeny |
-| **Mailutskick från uppgift** | Obekräftat om det går utan godkännande. Börja med Gmail-utkast |
+| **Schemalagda uppgifter på Pro** | **Bekräftat 2026-09-20**: `mcp__scheduled-tasks__*`-verktygen finns och fungerar. Uppgiften körs som en vanlig lokal Claude Code-session i projektmappen (inte molnisolerad), med samma verktygsåtkomst (inkl. MCP) som en vanlig session - se rättelsen i avsnitt 2 |
+| **Mailutskick från uppgift** | Fortfarande obekräftat om det går utan godkännande. Börjar med Gmail-utkast enligt plan |
 | **Tid på sida för synkade besök** | Obekräftat. Räkna mobil och andra enheter på antal besök |
 | **Läsförbud i Claude Code** | Finns troligen som inställning, men kontrollera i dokumentationen |
 | **Steg 2** | Uppskjutet |
