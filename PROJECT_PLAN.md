@@ -94,6 +94,20 @@ Varje fas ska köras och förstås innan nästa. Storlek: S = en kväll, M = nå
 
 ## 6. Kurering, trend och fördjupning
 
+**Dimensionsmodell (2026-09-20, grundat i forskning om nyhetsrekommendation).** En besökt sida/video beskrivs inte med en enda siffra, utan längs flera dimensioner samtidigt — vikten byggs per *kombination*, inte per dimension var för sig (t.ex. "kanalen Mat Armstrong + ämnet bilar" väger tyngre än att bara räkna youtube.com-besök):
+
+| Dimension | Vad den fångar | Exempel hos oss |
+|---|---|---|
+| **Ämne/tema** | Vad innehållet handlar om | bilar, ekonomi, politik |
+| **Entitet/avsändare** | Vem som publicerat/skapat det | YouTube-kanal (t.ex. Mat Armstrong), tidning, journalist |
+| **Källa/domän** | Vilken plattform | youtube.com, di.se |
+| **Tid (färskhet)** | Hur nyligen, avtagande vikt | `time_usec` i `History` |
+| **Engagemang** | Hur du interagerade | klick, upprepade besök, betyg, lästid |
+
+Källor: [Personalized News Recommendation: Methods and Challenges](https://arxiv.org/pdf/2106.08934), [Multi-view knowledge representation learning](https://pmc.ncbi.nlm.nih.gov/articles/PMC11707356/), [A global user profile framework](https://link.springer.com/article/10.1007/s11042-023-17436-w). Det här är "feature-baserad" användarmodellering (handskrivna regler/dimensioner) snarare än deep learning — matchar läroprojektets nivå.
+
+Praktiskt: samma logik gäller nyhetssajter som YouTube — det är inte bara *att* du klickade på di.se, utan *vilken artikel* och *vilken skribent/rubrik-ämne* som är den starka signalen.
+
 **Intressesignaler till profilen.** Ingen enskild signal är sanning. Profilen vägs samman av flera. Vikterna nedan är förslag som justeras efter test:
 
 | Signal | Källa | Föreslagen vikt |
@@ -105,6 +119,7 @@ Varje fas ska köras och förstås innan nästa. Storlek: S = en kväll, M = nå
 | Betyg på brevets objekt | Feedback (Fas 7) | Stark |
 | Återkommande besök på samma ämne eller domän | `History`, Takeout | Stark för renodlade domäner. Jobb- och shoppingdomäner exkluderade från profilen, se `config/domain_exclusions.yaml` och avsnitt 3 |
 | Sidtitlar för domäner med blandat innehåll (t.ex. YouTube) | `History`, `Chrome/Historik.json` | Stark — domänen ensam räcker inte som signal där, se avsnitt 3 ("Domän vs. innehåll") |
+| Avsändare/kanal (YouTube-kanal, tidning, skribent) — egen dimension, skild från ämne | `YouTube och YouTube Music/historik/visningshistorik.html` (kanalnamn per video), artikel-URL:er på nyhetssajter | Stark — se dimensionsmodellen ovan |
 | Nyhetsbrev/prenumerationer via mejl | Takeout `E-post` (mbox) eller Gmail-etiketter | Stark, uttryckligt — inte implementerat än |
 | Direkt inskriven adress kontra klick på länk | `transition`-fältet i `History` | Medel |
 | Hur nyligt (avtagande vikt) | `History`, Takeout | Medel |
