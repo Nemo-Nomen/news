@@ -10,9 +10,9 @@ Version 1, 20 september 2026. Läroprojekt för nybörjare.
 | **Steg 2** | Interaktiv app eller hemsida för att djupdyka i nyheterna. Form avgörs senare |
 | **Kategorier** | Sex kategorier, definitioner uppdaterade 2026-09-20 (namn **Jobb** och **Ekonomi** satta 2026-09-20, tidigare "Arbete"/"Investeringar och privatekonomi"): **Jobb** (handskriven, ej från surfhistorik) — jobbar med teknik och affärsutveckling; stora nyheter/rapporter om H&M och konkurrenter: vad de satsar på, hur det går (resultat), hur marknaden reagerar. Konkurrenter har två trösklar (bekräftat 2026-09-20): primära konkurrenter (lägre tröskel, vanliga rapporter räknas) och sekundära (hög tröskel, bara riktigt stora nyheter) — se `config/interests.yaml`. **Ekonomi** — privata investeringar + relevant ekonomi. **Politik** = makroekonomi och policy, globalt/EU/Sverige/Stockholm — inte allmän partipolitik. **Nöje** = teknik, bilar, hantverk. **AI** — hur företag applicerar/transformerar verksamhet med AI, stora kapabilitetsnyheter, praktiska tricks att lära sig själv, allmän utveckling. **Skvaller** — kändis-/kriminaljournalistik i stil med Aftonbladet/Expressen/Nyheter24. Se `config/interests.yaml` för detaljer (gitignorerad) |
 | **Aldrig** | Sammanfatta sådant jag redan läst. Intresseprofilen styr *vilka teman*, inte vad som återberättas |
-| **Kurering** | Få, utvalda nyheter per kategori med en rad om varför jag får dem. Inte en flod av träffar |
+| **Kurering** | Dynamiskt antal, uppdaterat 2026-09-20: upp till 15 nyheter per kategori, men färre om inget nytt hänt sen sist — inte en fast kvot som tvingar fram fyllnadsnyheter. Varje nyhet med en rad om varför jag får den. Bra att ha med alla källor (bredd, se avsnitt 6 "Kandidatkälla") |
 | **Trend** | Nyheter som är viktiga eller på väg upp just nu, vägda mot mina intressen |
-| **Fördjupning** | Djupdykning i en nyhet som kombinerar flera källor: olika medier, marknadsdata, primärkällor och uttalanden från personer jag bevakar |
+| **Fördjupning** | Djupdykning i en nyhet som kombinerar flera källor: olika medier, marknadsdata, primärkällor och uttalanden från personer jag bevakar. Format-inspiration (2026-09-20): Omni - korta nyheter/rubriker först, med möjlighet att fördjupa (inklusive källor) per objekt |
 | **Ramar** | Inga licenser utöver Claude Pro. Bara gratis och öppna nyhetskällor. Läroprojekt: förstå varje steg innan nästa |
 
 ## 2. Arkitektur
@@ -140,7 +140,7 @@ Praktiskt: samma logik gäller nyhetssajter som YouTube — det är inte bara *a
 | **Intressematch** | Likhet mellan artikelns ämne och profilens teman och `interests.yaml` (personer, ämnen) | Lokalt |
 | **Trendsignal** | Antal oberoende medier som rapporterar samma händelse de senaste 24–72 timmarna. Marknadsnyheter kan även vägas mot kursrörelser | Lokalt (gruppering av rubriker) eller i den schemalagda uppgiften |
 | **Färskhet** | Publiceringstid, med avtagande vikt | Lokalt |
-| **Kurering** | Max 3–5 objekt per kategori, vart och ett med en rad om varför du får det | Schemalagd uppgift |
+| **Kurering** | Uppdaterat 2026-09-20: dynamiskt, upp till 15 objekt per kategori - färre om inget nytt hänt sen sist (inte en fast kvot). Vart och ett med en rad om varför du får det. Format-inspiration: Omni - korta rubriker/nyheter först, fördjupning (inkl. källor) per objekt på begäran | Schemalagd uppgift |
 | **Utforskning** | Ett objekt per kategori utanför profilen, så att tjänsten upptäcker nya intressen i stället för att bara bekräfta gamla | Schemalagd uppgift |
 
 **Vald kureringsmetod (beslut 2026-09-20).** Diskuterade fyra metodfamiljer (viktad poängformel, regelbaserad tröskel, utforskningsplats, LLM-slutgranskning) och landade i en kombination, olika per kategori:
