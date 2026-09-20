@@ -215,3 +215,5 @@ Rekommendation: A, eftersom fördjupningen som kombinerar källor kräver Claude
 | Macen är avstängd | Veckoskriptet tar igen missade veckor |
 | Historiken rensas av Chrome | Spara veckoaggregat, förlita dig inte på att läsa bakåt |
 | Takeout-formatet ändras | Läsaren ska ge tydliga fel och ha tester |
+| **Datahygien** (tillagd 2026-09-20) | Rådatan (inkl. 3 GB mejl-mbox) ligger okrypterad utöver diskkryptering i `data/raw/takeout/`. FileVault bekräftat påslaget (kollat 2026-09-20: `fdesetup status` → On), vilket skyddar vid stöld/borttappad dator. Kvarstår: ingen fjärrkopia av repot (git har ingen remote) - en förlustrisk, inte en exponeringsrisk, om datorn dör. Best practice #11 ("Radera eller kryptera råfiler efter bearbetning") inte genomförd än |
+| **Kvot/tokenrisk för Fas 6** (tillagd 2026-09-20) | Fas 6:s omfattning växte under sessionen (dublettdetektering + källvinkel-bedömning + motargumentslogik + internationellt komplement + Gmail-sökning, alla LLM-baserade) jämfört med den enkla uppskattningen som gjordes tidigare ("några procent av veckokvoten"). Åtgärd: mät verkligt utfall från första skarpa körningen, inte bara uppskatta i förväg |
