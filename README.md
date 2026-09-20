@@ -16,5 +16,5 @@ Regler för Claude, särskilt läsförbudet på rådata, i [CLAUDE.md](CLAUDE.md
 
 - [x] Fas 0: mappstruktur, git-repo, `.gitignore`, läsförbud i `CLAUDE.md`
 - [x] Takeout-baslinje (2026-09-20) uppackad i `data/raw/takeout/2026-09-20/`
-- [ ] Fas 1: integritetsgrind (domänlista bort innan något annat bearbetas — enheter filtreras inte)
+- [ ] Fas 1: schemautforskning (ingen filtrering — inget exkluderas, varken enheter eller domäner)
 - [ ] Fas 2: baslinjeprofil (`profile.json`)

@@ -23,9 +23,8 @@ KÄLLOR (lokalt på Macen, Python)
   Lokala Chrome-historiken (varje vecka)
   interests.yaml (personer, ämnen, uteslutningar, skrivs för hand)
         |
-        |  1. Filtrera bort uteslutna domäner (ej enhetsbaserat)  <-- integritetsgrind
-        |  2. Bygg intresseprofil (teman + vikt, nyare väger tyngre)
-        |  3. Hämta nya artiklar via RSS, ta bort sådant jag redan läst,
+        |  1. Bygg intresseprofil (teman + vikt, nyare väger tyngre)
+        |  2. Hämta nya artiklar via RSS, ta bort sådant jag redan läst,
         |     ranka mot profilen, behåll topp N per kategori
         v
   profile.json + candidates.json   (inga personliga URL:er, bara teman och publika artikellänkar)
@@ -49,13 +48,12 @@ CLAUDE PRO: schemalagd uppgift (körs i molnet)
 
 | Område | Läge |
 |---|---|
-| **Jobbenheter i Chrome-synken** | Beslut 2026-09-20: enheter filtreras **inte** bort. Chrome-inloggningen är privat i webbläsare och på mobil, men jobbdator och jobbtelefon ingår i synken under den privata inloggningen. Fas 1 filtrerar bara på domänlistan (bank, hälsa, familj, jobb), inte på enhet |
+| **Exkludering (enheter och domäner)** | Beslut 2026-09-20: inget exkluderas. Varken jobbenheter (jobbdator/jobbtelefon i Chrome-synken) eller en domänlista (bank, hälsa, familj, jobb) filtreras bort. All data i Takeout och lokal historik behandlas lika. Fas 1 innehåller därför ingen filtrering, bara schemautforskning |
 | **Tillägg och program** | Inget installeras på jobbdatorn utöver det som är standard där. Skript och eventuella spårare körs bara på privat utrustning |
 | **Tid på sida** | En svag signal bland flera (se avsnitt 6), aldrig ensam grund. ActivityWatch läggs till på privat dator först om ett test visar behov |
 | **Arbetskategorin** | Definieras för hand i `interests.yaml`, inte från surfhistorik |
 | **Schemalagda uppgifter på Pro** | Hjälpcentret säger att Cowork på Pro rullas ut. Kontrollera att "Scheduled" finns i din sidomeny |
 | **Mailutskick från uppgift** | Obekräftat om det går utan godkännande. Börja med Gmail-utkast |
-| **Enhets-ID i Takeout-JSON** | Ej relevant längre — enheter filtreras inte bort (se ovan) |
 | **Tid på sida för synkade besök** | Obekräftat. Räkna mobil och andra enheter på antal besök |
 | **Läsförbud i Claude Code** | Finns troligen som inställning, men kontrollera i dokumentationen |
 | **Steg 2** | Uppskjutet |
@@ -67,7 +65,7 @@ Varje fas ska köras och förstås innan nästa. Storlek: S = en kväll, M = nå
 | Fas | Innehåll | Du lär dig | Klart när |
 |---|---|---|---|
 | **0. Förberedelse (S)** | Python, Git, Terminal, mappstruktur, Claude Code installerat. Privat Git-repo med `.gitignore` för `data/` | Terminalen, mappar, versionshantering | Ett "hello world"-skript körs, repot finns och råfiler kan inte committas |
-| **1. Integritetsgrind (M)** | Skriptet skriver ut *bara fältnamn* i Takeout-JSON. Filtrera bort domänlistan (bank, hälsa, familj, jobb) — inte enhetsbaserat, alla enheter behandlas lika | JSON, SQLite, gruppering | Domänlistan är exkluderad innan något annat behandlas |
+| **1. Schemautforskning (S)** | Skriptet skriver ut *bara fältnamn* i Takeout-JSON, för att förstå formatet. Ingen filtrering — inget exkluderas (varken enheter eller domäner, beslut 2026-09-20) | JSON, SQLite, gruppering | Takeout- och `History`-formatens fält är kartlagda och redo för Fas 2 |
 | **2. Baslinjeprofil (M)** | Läs Takeout (Chrome, Min aktivitet, YouTube-historik), aggregera per domän och tema, viktning per antal besök | Datarensning, aggregering | `profile.json` med toppteman skapas från filtrerad data |
 | **Tunn skiva** | Kör en första brief manuellt i chatten med `profile.json` som underlag | Se om profilen ger relevanta teman | Du har läst ett första brev och vet vad som är fel |
 | **3. Veckoskript (M)** | Läs lokala `History` (skrivskyddat, kopia), lägg till veckoaggregat, dubblettskydd, ny profil. Schemalägg med launchd | Schemaläggning, idempotens (två körningar ger samma resultat) | Skriptet körs själv varje vecka och en missad vecka tas igen |
@@ -143,7 +141,7 @@ Rekommendation: A, eftersom fördjupningen som kombinerar källor kräver Claude
 
 | Risk | Åtgärd |
 |---|---|
-| Jobbdata hamnar i profilen | Enheter filtreras inte bort (beslut 2026-09-20) — domänlistan i Fas 1 är enda grinden. Arbetskategorin skrivs för hand |
+| Jobbdata hamnar i profilen | Accepterad risk (beslut 2026-09-20): inget exkluderas, varken enheter eller domäner. Arbetskategorin i `interests.yaml` skrivs ändå för hand, så jobbrelaterat kan hållas utanför nyhetsbrevets kategorier även om det finns i rådatan |
 | Pro-kvoten tar slut | Lokal förfiltrering ger få kandidater. Mät per körning och börja veckovis |
 | Schemalagd uppgift misslyckas utan varning | Kontrollera "Scheduled" i sidomenyn under första veckorna |
 | Macen är avstängd | Veckoskriptet tar igen missade veckor |
