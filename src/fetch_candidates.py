@@ -22,6 +22,7 @@ import yaml
 
 PROFILE_FILE = Path("data/profile/profile.json")
 QUERIES_FILE = Path("config/rss_queries.yaml")
+SOURCE_EXCLUSIONS_FILE = Path("config/candidate_source_exclusions.yaml")
 OUTPUT_DIR = Path("data/profile/candidates")
 
 POANG_TROSKEL = 0.03  # "hänt något"-tröskel, empiriskt startvärde - justeras
@@ -183,6 +184,13 @@ def rank_and_select(items: list, profile_word_set: set) -> list:
     return selected
 
 
+def load_source_exclusions() -> set:
+    if not SOURCE_EXCLUSIONS_FILE.exists():
+        return set()
+    groups = yaml.safe_load(SOURCE_EXCLUSIONS_FILE.read_text(encoding="utf-8")) or {}
+    return {source.lower() for sources in groups.values() for source in sources}
+
+
 def main() -> None:
     category = sys.argv[1] if len(sys.argv) > 1 else "ekonomi"
 
@@ -193,15 +201,23 @@ def main() -> None:
 
     profile_word_set = profile_words(profile[category])
 
+    excluded_sources = load_source_exclusions()
+
     all_items = []
     seen_links = set()
+    skipped_noise = 0
     for query in queries:
         print(f"Hämtar: {query}")
         for item in fetch_google_news_rss(query):
             if item["link"] in seen_links:
                 continue
             seen_links.add(item["link"])
+            if item["source"] and item["source"].lower() in excluded_sources:
+                skipped_noise += 1
+                continue
             all_items.append(item)
+    if skipped_noise:
+        print(f"({skipped_noise} artiklar från exkluderade brus-källor hoppades över)")
 
     # Spara hela råpoolen (inte bara slutresultatet) så internationella
     # kandidater kan slås ihop med den innan trend/rankning i merge_candidates.py.

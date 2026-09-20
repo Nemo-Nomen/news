@@ -1,0 +1,9 @@
+# Källor som ska uteslutas helt från Fas 5:s kandidatinsamling
+# (fetch_candidates.py) - inte samma sak som domain_exclusions.yaml
+# (som gäller den egna surfhistorik-profilen). Det här gäller
+# nyhetskandidater som hämtas brett via Google Nyheter.
+
+brus:
+  - vietnam.vn  # mallgenererade "dagens guldpris"-uppdateringar, vietnamesisk
+                # inrikesekonomi - matchar svenska sökord (guld, aktier) av en
+                # slump men är inte relevant. Upptäckt 2026-09-20.
