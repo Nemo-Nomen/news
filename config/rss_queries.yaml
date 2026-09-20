@@ -20,11 +20,18 @@ jobb:
   - Zalando ASOS Shein Primark Next
 
 politik:
+  # Utökat 2026-09-20: inte bara ekonomi, även vad som händer/hur det
+  # går i stora ekonomier (Kina, USA) och politik/val med global
+  # påverkan eller direkt påverkan i Sverige/Stockholm.
   - Riksbanken räntebesked
   - EU politik ekonomi
   - makroekonomi Sverige
   - Stockholm politik beslut
   - geopolitik ekonomi
+  - Kina ekonomi politik
+  - USA ekonomi politik
+  - mellanårsval USA
+  - val global påverkan
 
 noje:
   - Apple nyheter
@@ -38,5 +45,10 @@ ai:
   - AI verktyg tips
 
 skvaller:
-  - kändisnyheter Sverige
-  - kriminaljournalistik Sverige
+  # Bytt 2026-09-20: generiska "kändisnyheter Sverige"/"kriminaljournalistik
+  # Sverige" gav 0 träffar. Använder istället namn/termer som faktiskt syntes
+  # i tidigare sökhistorik (data/profile/news_titles_analysis.json,
+  # skvaller-kategorin: bianca, ingrosso, parnevik, orosanmäld,
+  # socialtjänsten) som konkreta sökfrågor.
+  - Bianca Ingrosso
+  - Parnevik
