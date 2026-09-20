@@ -1,3 +1,7 @@
 data/
 logs/
 .DS_Store
+
+# Konfiguration med personuppgifter (följda ämnen/källor/orter m.m.) — aldrig i repot
+config/interests_draft.yaml
+config/interests.yaml
