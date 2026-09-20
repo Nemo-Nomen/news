@@ -20,6 +20,16 @@ work:
   - statics.teams.cdn.office.net
   - benify.com
   - smartrecruiters.com
+  - app.powerbi.com  # förslag - bekräfta
+
+verktyg_brus:
+  # Verktyg/bakgrundstrafik utan egen ämnessignal - inte "arbete" eller
+  # "shopping", bara inte relevant att räkna som intresse.
+  - google.com  # domänen självt räknas inte - sökorden analyseras separat, se parse_google_searches.py
+  - mail.google.com
+  - hitta.se
+  - googleads.g.doubleclick.net
+  - googleadservices.com
 
 shopping:
   - blocket.se
@@ -70,3 +80,7 @@ shopping:
   - hatstore.se
   - proffsmagasinet.se
   - royaldesign.se
+  - oscarjacobson.com  # bekräftad shopping 2026-09-20
+  - annonsblad.power.se  # bekräftad shopping (reklamblad) 2026-09-20
+  - singular-society.com  # bekräftad "mestadels shopping" 2026-09-20
+  - vfo.se  # bekräftad "mestadels shopping" 2026-09-20

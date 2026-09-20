@@ -13,6 +13,8 @@ investeringar_privatekonomi:
   - realtid.se
   - affarsvarlden.se
   - dagensps.se  # "också ekonomi" - flyttad hit 2026-09-20, tidigare felaktigt i nöje/esport
+  - avanza.se  # handelsplattform - bekräftad intressesignal 2026-09-20
+  - booli.se  # "intresserad av fastighetsmarknaden i Stockholm" - bekräftad 2026-09-20
 
 politik_makro:
   - zerohedge.com
@@ -26,6 +28,7 @@ politik_makro:
   - kvartal.se
   - reuters.com
   - nytimes.com
+  - marcusoscarsson.se  # bekräftad nyhetssajt 2026-09-20 (Sverige/världen/USA/ekonomi)
 
 allmanna_nyheter_okategoriserat:
   - aftonbladet.se
@@ -39,3 +42,11 @@ noje_teknik:
   - macworld.se
   - cnet.com
   - theverge.com
+
+# Bekräftade intressesignaler 2026-09-20, men oklart vilken av de fyra
+# kategorierna de hör till - körs som en egen grupp, kategorisera efter
+# vilka ämnesord som faktiskt dyker upp.
+verktyg_ovrigt_intressesignal:
+  - linkedin.com
+  - chatgpt.com
+  - grok.com
