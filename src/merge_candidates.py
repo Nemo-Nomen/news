@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fetch_candidates import PROFILE_FILE, profile_words, rank_and_select
+from fetch_candidates import PROFILE_FILE, group_key_of, profile_words, rank_and_select
 
 RAW_DIR = Path("data/profile/candidates_raw")
 OUTPUT_DIR = Path("data/profile/candidates")
@@ -45,7 +45,22 @@ def main() -> None:
 
     print(f"{len(sverige)} svenska + {len(internationellt)} internationella = {len(combined)} kandidater totalt.")
 
+    # "Stort utomlands, ännu inte i Sverige": gruppens källor är bara
+    # internationella, men minst 2 oberoende internationella källor
+    # (annars är det bara en enskild artikel, inte ett "genombrott").
+    svenska_kallor = {i["source"] for i in sverige}
+    internationella_grupper: dict = {}
+    for item in internationellt:
+        internationella_grupper.setdefault(group_key_of(item["title"]), set()).add(item["source"])
+    genombrott_grupper = {
+        key for key, sources in internationella_grupper.items()
+        if len(sources) >= 2 and not (sources & svenska_kallor)
+    }
+
     candidates = rank_and_select(combined, profile_word_set)
+
+    for c in candidates:
+        c["stort_utomlands_ej_sverige"] = group_key_of(c["title"]) in genombrott_grupper
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     output_file = OUTPUT_DIR / f"{category}.json"
@@ -54,7 +69,8 @@ def main() -> None:
     print(f"Topp {len(candidates)} (svenskt + internationellt ihopslaget) sparade till {output_file}:\n")
     for c in candidates:
         flagga = "🌍" if c["source"] in {i["source"] for i in internationellt} else "🇸🇪"
-        print(f"  {flagga} {c['poang']:.3f}  ({c['intressematch']}/{c['trend']}/{c['farskhet']})  {c['title'][:65]}  [{c['source']}]")
+        genombrott = "  ⚡ stort utomlands, ej i Sverige" if c["stort_utomlands_ej_sverige"] else ""
+        print(f"  {flagga} {c['poang']:.3f}  ({c['intressematch']}/{c['trend']}/{c['farskhet']})  {c['title'][:65]}  [{c['source']}]{genombrott}")
 
 
 if __name__ == "__main__":

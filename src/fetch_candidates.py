@@ -114,16 +114,25 @@ def score(title: str, pub_date, profile_word_set: set, trend_group_sources: dict
     }
 
 
-def rank_and_select(items: list, profile_word_set: set) -> list:
-    """Grupperar för trend, poängsätter, filtrerar på tröskel och
-    källdiversifiering. items: dicts med title/link/source/pub_date
-    (pub_date som datetime eller None). Återanvänds av main() och av
-    merge_candidates.py (svenska + internationella källor ihopslagna)."""
+def build_trend_groups(items: list) -> dict:
     trend_group_sources: dict = {}
     for item in items:
         words = significant_words(item["title"])
         key = tuple(sorted(words)[:3])
         trend_group_sources.setdefault(key, set()).add(item["source"])
+    return trend_group_sources
+
+
+def group_key_of(title: str) -> tuple:
+    return tuple(sorted(significant_words(title))[:3])
+
+
+def rank_and_select(items: list, profile_word_set: set) -> list:
+    """Grupperar för trend, poängsätter, filtrerar på tröskel och
+    källdiversifiering. items: dicts med title/link/source/pub_date
+    (pub_date som datetime eller None). Återanvänds av main() och av
+    merge_candidates.py (svenska + internationella källor ihopslagna)."""
+    trend_group_sources = build_trend_groups(items)
 
     scored = []
     for item in items:
