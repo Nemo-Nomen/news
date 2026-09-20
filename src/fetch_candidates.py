@@ -114,6 +114,39 @@ def score(title: str, pub_date, profile_word_set: set, trend_group_sources: dict
     }
 
 
+def rank_and_select(items: list, profile_word_set: set) -> list:
+    """Grupperar för trend, poängsätter, filtrerar på tröskel och
+    källdiversifiering. items: dicts med title/link/source/pub_date
+    (pub_date som datetime eller None). Återanvänds av main() och av
+    merge_candidates.py (svenska + internationella källor ihopslagna)."""
+    trend_group_sources: dict = {}
+    for item in items:
+        words = significant_words(item["title"])
+        key = tuple(sorted(words)[:3])
+        trend_group_sources.setdefault(key, set()).add(item["source"])
+
+    scored = []
+    for item in items:
+        s = score(item["title"], item["pub_date"], profile_word_set, trend_group_sources)
+        scored.append({**item, "pub_date": item["pub_date"].isoformat() if item["pub_date"] else None, **s})
+
+    scored.sort(key=lambda x: -x["poang"])
+    over_threshold = [c for c in scored if c["poang"] >= POANG_TROSKEL]
+
+    # Källdiversifiering (Metod C): tak per källa så att en enda
+    # högfrekvent utgivare inte kan fylla hela listan.
+    per_source_count: Counter = Counter()
+    selected = []
+    for c in over_threshold:
+        if per_source_count[c["source"]] >= MAX_PER_KALLA:
+            continue
+        selected.append(c)
+        per_source_count[c["source"]] += 1
+        if len(selected) >= MAX_KANDIDATER:
+            break
+    return selected
+
+
 def main() -> None:
     category = sys.argv[1] if len(sys.argv) > 1 else "ekonomi"
 
@@ -134,39 +167,27 @@ def main() -> None:
             seen_links.add(item["link"])
             all_items.append(item)
 
-    # Billig lokal grupperingsheuristik för trend (samma betydande ord = samma
-    # händelse). Räknar OBEROENDE källor per grupp, inte antal artiklar.
-    trend_group_sources: dict = {}
-    for item in all_items:
-        words = significant_words(item["title"])
-        key = tuple(sorted(words)[:3])
-        trend_group_sources.setdefault(key, set()).add(item["source"])
+    # Spara hela råpoolen (inte bara slutresultatet) så internationella
+    # kandidater kan slås ihop med den innan trend/rankning i merge_candidates.py.
+    raw_dir = OUTPUT_DIR.parent / "candidates_raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    raw_file = raw_dir / f"{category}_sverige.json"
+    raw_file.write_text(
+        json.dumps(
+            [{**i, "pub_date": i["pub_date"].isoformat() if i["pub_date"] else None} for i in all_items],
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
-    scored = []
-    for item in all_items:
-        s = score(item["title"], item["pub_date"], profile_word_set, trend_group_sources)
-        scored.append({**item, "pub_date": item["pub_date"].isoformat() if item["pub_date"] else None, **s})
-
-    scored.sort(key=lambda x: -x["poang"])
-    over_threshold = [c for c in scored if c["poang"] >= POANG_TROSKEL]
-
-    # Källdiversifiering (Metod C): tak per källa så att en enda
-    # högfrekvent utgivare inte kan fylla hela listan.
-    per_source_count: Counter = Counter()
-    candidates = []
-    for c in over_threshold:
-        if per_source_count[c["source"]] >= MAX_PER_KALLA:
-            continue
-        candidates.append(c)
-        per_source_count[c["source"]] += 1
-        if len(candidates) >= MAX_KANDIDATER:
-            break
+    candidates = rank_and_select(all_items, profile_word_set)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     output_file = OUTPUT_DIR / f"{category}.json"
     output_file.write_text(json.dumps(candidates, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"\n{len(all_items)} unika artiklar hämtade, {len(over_threshold)} över poängtröskeln ({POANG_TROSKEL}).")
+    print(f"\n{len(all_items)} unika artiklar hämtade (sparade i {raw_file}).")
     print(f"Topp {len(candidates)} sparade till {output_file}:\n")
     for c in candidates:
         print(f"  {c['poang']:.3f}  ({c['intressematch']}/{c['trend']}/{c['farskhet']})  {c['title']}  [{c['source']}]")
