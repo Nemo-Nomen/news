@@ -1,0 +1,36 @@
+# Kända nyhets-/samhällsdomäner bland besökta domäner (från data/profile/domain_counts_filtered.json).
+# Används för att filtrera ut sidtitlar värda att ämnesanalysera, likt YouTube-kanalerna.
+# Bara domännamn - ingen personlig data. Komplettera själv om fler dyker upp.
+
+ekonomi_affarer:
+  - di.se
+  - realtid.se
+  - affarsvarlden.se
+  - rikatillsammans.se
+  - zerohedge.com
+
+allmanna_nyheter:
+  - dn.se
+  - svd.se
+  - expressen.se
+  - aftonbladet.se
+  - svt.se
+  - sverigesradio.se
+  - gp.se
+  - sydsvenskan.se
+  - omni.se
+  - nyheter24.se
+  - kvartal.se
+  - news.google.com
+  - reuters.com
+  - nytimes.com
+
+teknik:
+  - feber.se
+  - breakit.se
+  - macworld.se
+  - cnet.com
+  - theverge.com
+
+noje_esport:
+  - dagensps.se
