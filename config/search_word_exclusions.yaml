@@ -16,3 +16,16 @@ shopping:
   - swedoor
   - balance  # "New Balance" (sko-varumärke)
   - switch  # Nintendo Switch
+  - maui  # "Maui Jim" solglasögon, bekräftat via bigram 2026-09-20
+  - jim
+  - okina  # Maui Jim-modell
+  - jacobson  # "Oscar Jacobson" klädmärke, bekräftat via bigram
+  - tenn  # "Svenskt Tenn" inredning
+
+barn_aktiviteter:
+  # Sökningar om barnaktiviteter/spel - inte shopping, men inte heller en
+  # nyhetsintresse-signal. Bekräftat via bigram 2026-09-20 (Pokémon-spel,
+  # inomhusaktiviteter för barn).
+  - pokemon
+  - diamond
+  - emerald

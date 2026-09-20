@@ -48,6 +48,18 @@ def extract_query(url: str) -> Optional[str]:
     return q[0] if q else None
 
 
+def bigrams_of(tokens: list) -> list:
+    # Ordpar i ursprunglig ordning, t.ex. ["maui", "jim", "solglasögon"]
+    # -> "maui jim", "jim solglasögon". Hoppar bigram där båda orden är
+    # stoppord (informationslösa), annars behålls ordningen som den var.
+    pairs = []
+    for a, b in zip(tokens, tokens[1:]):
+        if a in STOPWORDS and b in STOPWORDS:
+            continue
+        pairs.append(f"{a} {b}")
+    return pairs
+
+
 def main() -> None:
     excluded_words = load_word_exclusions()
 
@@ -55,6 +67,7 @@ def main() -> None:
         data = json.load(f)
 
     word_counts: Counter[str] = Counter()
+    bigram_counts: Counter[str] = Counter()
     total_visits = 0
     total_searches = 0
 
@@ -64,14 +77,22 @@ def main() -> None:
         if not query:
             continue
         total_searches += 1
-        for word in WORD_RE.findall(query.lower()):
+        tokens = WORD_RE.findall(query.lower())
+        for word in tokens:
             if word not in STOPWORDS and word not in excluded_words:
                 word_counts[word] += 1
+        for bigram in bigrams_of(tokens):
+            bigram_counts[bigram] += 1
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(
         json.dumps(
-            {"total_visits": total_visits, "total_searches": total_searches, "words": word_counts.most_common(500)},
+            {
+                "total_visits": total_visits,
+                "total_searches": total_searches,
+                "words": word_counts.most_common(500),
+                "bigrams": bigram_counts.most_common(300),
+            },
             ensure_ascii=False,
             indent=2,
         ),
@@ -83,6 +104,9 @@ def main() -> None:
     print(f"Topp {TOP_N_PRINTED} sökord:")
     for word, count in word_counts.most_common(TOP_N_PRINTED):
         print(f"  {count:5d}  {word}")
+    print(f"\nTopp {TOP_N_PRINTED} ordpar (bigram):")
+    for bigram, count in bigram_counts.most_common(TOP_N_PRINTED):
+        print(f"  {count:5d}  {bigram}")
 
 
 if __name__ == "__main__":
