@@ -1,7 +1,6 @@
 # Sökfrågor mot Google Nyheter RSS per kategori (bred täckning, inte
 # begränsat till historiskt bekräftade källor - se PROJECT_PLAN.md
 # avsnitt 6 "Kandidatkälla: historik som utgångspunkt, källor brett").
-# Tunn skiva 2026-09-20: bara Ekonomi ifylld än.
 
 ekonomi:
   - guldpris
@@ -10,3 +9,34 @@ ekonomi:
   - bostadsmarknad Stockholm
   - kryptovaluta bitcoin
   - aktiemarknad
+
+jobb:
+  # H&M lägre tröskel per beslut (primärt), Inditex/Zara + Uniqlo primära
+  # konkurrenter, övriga (ASOS, Shein, Primark, Next, Zalando) sekundära -
+  # tröskel för "stort nog" hanteras av Metod B/LLM i Fas 6, inte här.
+  - H&M pressmeddelande
+  - Inditex Zara resultat
+  - Uniqlo Fast Retailing
+  - Zalando ASOS Shein Primark Next
+
+politik:
+  - Riksbanken räntebesked
+  - EU politik ekonomi
+  - makroekonomi Sverige
+  - Stockholm politik beslut
+  - geopolitik ekonomi
+
+noje:
+  - Apple nyheter
+  - ny bilmodell
+  - hantverk snickeri
+  - teknikprylar nyheter
+
+ai:
+  - AI företag transformation
+  - AI ny modell kapabilitet
+  - AI verktyg tips
+
+skvaller:
+  - kändisnyheter Sverige
+  - kriminaljournalistik Sverige

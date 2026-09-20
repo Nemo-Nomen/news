@@ -35,19 +35,46 @@ STOPWORDS = {
     "the", "a", "an", "of", "to", "in", "for", "on", "and", "is", "with",
 }
 WORD_RE = re.compile(r"[a-zA-ZåäöÅÄÖ]{3,}")
+HM_RE = re.compile(r"\bH\s*&\s*M\b", re.IGNORECASE)
+
+
+def normalize_text(text: str) -> str:
+    """H&M innehåller '&' som annars delar upp det i två för korta
+    tokens ('H', 'M') - normalisera till ett matchbart ord innan
+    ordextraktion, både för profiltext och kandidattitlar."""
+    return HM_RE.sub("HANDM", text)  # min 3 tecken krävs av WORD_RE, "HM" är för kort
+
+
+def flatten_text(value) -> list:
+    """Plockar ut alla strängar ur godtyckligt nästlade dict/list-strukturer
+    (t.ex. extra.konkurrenter.primara/sekundara), inte bara toppnivåfälten."""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        parts = []
+        for v in value.values():
+            parts += flatten_text(v)
+        return parts
+    if isinstance(value, list):
+        parts = []
+        for v in value:
+            parts += flatten_text(v)
+        return parts
+    return []
 
 
 def profile_words(category: dict) -> set:
     text_parts = list(category.get("amnen_handskrivna", []))
     text_parts += [w for w, _ in category.get("topp_ord_nyhetssajter", [])]
+    text_parts += flatten_text(category.get("extra", {}))
     words = set()
     for part in text_parts:
-        words |= set(WORD_RE.findall(part.lower()))
+        words |= set(WORD_RE.findall(normalize_text(part).lower()))
     return words - STOPWORDS
 
 
 def significant_words(title: str) -> set:
-    return set(WORD_RE.findall(title.lower())) - STOPWORDS
+    return set(WORD_RE.findall(normalize_text(title).lower())) - STOPWORDS
 
 
 PREFIX_LEN = 4  # fångar svenska sammansättningar (guld+pris, börs+fall) utan full stemmer
