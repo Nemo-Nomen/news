@@ -96,6 +96,7 @@ Varje fas ska köras och förstås innan nästa. Storlek: S = en kväll, M = nå
 | Signal | Källa | Föreslagen vikt |
 |---|---|---|
 | Egna tillägg (personer, ämnen) | `interests.yaml` | Starkast, uttryckligt |
+| Följda ämnen, källor, orter, tidskrifter i Google Nyheter | Takeout: `Nyheter/*.txt` | Starkt, uttryckligt — flera dimensioner (topic/source/location/magazine) hålls isär, inte slås ihop till en enda lista, så profilen kan vikta dem olika |
 | Sökfrågor | Takeout, Min aktivitet | Stark |
 | Följda personer och företag | LinkedIn-arkivet, efter gallring | Stark |
 | Betyg på brevets objekt | Feedback (Fas 7) | Stark |
