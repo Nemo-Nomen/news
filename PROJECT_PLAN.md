@@ -139,6 +139,17 @@ Praktiskt: samma logik gäller nyhetssajter som YouTube — det är inte bara *a
 | **Kurering** | Max 3–5 objekt per kategori, vart och ett med en rad om varför du får det | Schemalagd uppgift |
 | **Utforskning** | Ett objekt per kategori utanför profilen, så att tjänsten upptäcker nya intressen i stället för att bara bekräfta gamla | Schemalagd uppgift |
 
+**Vald kureringsmetod (beslut 2026-09-20).** Diskuterade fyra metodfamiljer (viktad poängformel, regelbaserad tröskel, utforskningsplats, LLM-slutgranskning) och landade i en kombination, olika per kategori:
+
+| Metod | Används för | Hur |
+|---|---|---|
+| **A — Poängformel** | Ekonomi, Politik, Nöje, Skvaller | Baslinjen: `poäng = intressematch × trend × färskhet` (se ovan). Bred, kontinuerlig matchning passar kategorier med vida teman |
+| **B — Regelbaserad tröskel, snävt ("overfittat")** | Jobb, AI | Uttryckligt val: för dessa två ska urvalet vara *snävt* mot de exakta ämnena i `interests.yaml` (H&M + namngivna konkurrenter med sina två trösklar; AI:s fyra specifika vinklar), inte löst nyckelordsmatchat. Motivering: bred intressematch riskerar dra in "AI" eller "affärsnyheter" som tekniskt matchar men inte är relevanta - hellre för smalt än för brett här |
+| **C — Utforskning + källdiversifiering** | Alla kategorier | Utökad utforskningsplats: inte bara ett ämne utanför profilen, utan även aktiv **källdiversifiering** - undvik att alltid välja från samma toppdomäner (t.ex. alltid di.se för Ekonomi). Konkret mekanism att implementera i Fas 5: mild nedviktning av en domän som användes i senaste brevet/veckorna, så att andra källor får chansen |
+| **D — LLM-slutgranskning** | Alla kategorier | Fokus specifikt på **dublettdetektering**: när flera kandidater handlar om samma händelse, känna igen det och slå ihop/välja bästa vinkel - inte en fullständig omprövning av poängen |
+
+**Kollaborativ signal (ny, 2026-09-20).** Uttryckligt önskemål: inte bara fortsätta bekräfta det jag redan läser/tittar på (ren innehållsbaserad matchning), utan också vad "såna som jag" gillar - en kompletterande signal utöver den egna historiken. Trendsignalen ovan mäter *redaktionell täckning* (hur många medier skriver om det), inte *läsarpopularitet*. Konkreta källor att undersöka i Fas 5: "mest lästa"-listor hos enskilda sajter, Reddit-uppröstningar, Hacker News-poäng (särskilt relevant för AI/teknik). Obekräftat om alla dessa är gratis/skrapbara - kontrolleras i Fas 5.
+
 **Fördjupning som kombinerar källor** (per nyhet, på begäran):
 
 | Källtyp | Exempel | Gratis? |
