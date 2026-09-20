@@ -57,16 +57,31 @@ def domains_per_category(news_domains: dict, domain_counts: dict) -> dict:
     return result
 
 
-def channels_per_category(youtube_channels: dict, channel_counts: dict) -> dict:
+def channels_per_category(youtube_channels: dict, channel_counts: dict, by_content: dict) -> dict:
+    """Innehållsbaserat (youtube_by_content.json, YouTubes egen videokategori
+    per video) är förstahandskälla för ekonomi/politik/noje - se beslut
+    2026-09-20 ("kategorisera baserat på innehåll istället för kanal").
+    Manuell kanallista (youtube_channels.yaml) fyller bara på för grupper
+    som inte täcks av en YouTube-kategori-mappning (hantverk, skvaller).
+    """
     counts = dict(channel_counts.get("channels", []))
     result = {cat: [] for cat in CATEGORIES}
+
+    for cat, channels in by_content.items():
+        if cat in result:
+            result[cat].extend({"kanal": ch, "videor": n, "kalla": "innehåll"} for ch, n in channels)
+
+    CONTENT_COVERED_GROUPS = {"ekonomi", "politik_makro", "politik_makro_aggregator", "noje_teknik", "noje_bilar"}
     for group, channels in youtube_channels.items():
+        if group in CONTENT_COVERED_GROUPS:
+            continue  # ersatt av innehållsbaserad kategorisering ovan
         category = GROUP_TO_CATEGORY.get(group)
         if not category:
             continue
         for channel in channels:
             if channel in counts:
-                result[category].append({"kanal": channel, "videor": counts[channel]})
+                result[category].append({"kanal": channel, "videor": counts[channel], "kalla": "kanal (manuell)"})
+
     for cat in result:
         result[cat].sort(key=lambda d: -d["videor"])
     return result
@@ -91,9 +106,10 @@ def main() -> None:
     domain_counts = load_json(PROFILE_DIR / "domain_counts_filtered.json")
     channel_counts = load_json(PROFILE_DIR / "youtube_channel_counts.json")
     news_titles = load_json(PROFILE_DIR / "news_titles_analysis.json")
+    by_content = load_json(PROFILE_DIR / "youtube_by_content.json")
 
     domaner = domains_per_category(news_domains, domain_counts)
-    kanaler = channels_per_category(youtube_channels, channel_counts)
+    kanaler = channels_per_category(youtube_channels, channel_counts, by_content)
     ord_per_kategori = words_per_category(news_titles)
 
     # interests.yaml-nycklar matchar inte alltid visningsnamnen 1:1

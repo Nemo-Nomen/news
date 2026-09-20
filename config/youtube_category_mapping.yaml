@@ -1,0 +1,18 @@
+# YouTubes officiella videokategori (hämtad per video via API, se
+# fetch_youtube_metadata.py) -> projektets kategorier.
+#
+# Beslut 2026-09-20: kategorisera baserat på videons faktiska innehåll,
+# inte kanalen som helhet - en kanal kan bidra till flera kategorier.
+# "News & Politics" mappas till BÅDA ekonomi och politik eftersom de hör
+# ihop innehållsmässigt (Politik är redan definierad som makroekonomi
+# och policy).
+#
+# Kategorier utan mappning (People & Blogs, Entertainment, Education,
+# Howto & Style, Film & Animation, Music, Gaming, Sport, Travel & Events,
+# Comedy, Pets & Animals) är medvetet lämnade omappade - för blandat/
+# oklart innehåll för att gissa på video-kategori-nivå. Komplettera vid
+# behov.
+
+"Autos & Vehicles": [noje]
+"Science & Technology": [noje]
+"News & Politics": [ekonomi, politik]

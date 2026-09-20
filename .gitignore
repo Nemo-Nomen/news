@@ -6,3 +6,6 @@ logs/
 # Konfiguration med personuppgifter (följda ämnen/källor/orter m.m.) — aldrig i repot
 config/interests_draft.yaml
 config/interests.yaml
+
+# Hemligheter — aldrig i repot
+config/.youtube_api_key
