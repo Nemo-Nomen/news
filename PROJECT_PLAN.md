@@ -121,6 +121,8 @@ Praktiskt: samma logik gäller nyhetssajter som YouTube — det är inte bara *a
 | Sidtitlar för domäner med blandat innehåll (t.ex. YouTube) | `History`, `Chrome/Historik.json` | Stark — domänen ensam räcker inte som signal där, se avsnitt 3 ("Domän vs. innehåll") |
 | Avsändare/kanal (YouTube-kanal, tidning, skribent) — egen dimension, skild från ämne | `YouTube och YouTube Music/historik/visningshistorik.html` (kanalnamn per video), artikel-URL:er på nyhetssajter | Stark — se dimensionsmodellen ovan |
 | Nyhetsbrev/prenumerationer via mejl | Takeout `E-post` (mbox) eller Gmail-etiketter | Stark, uttryckligt — inte implementerat än |
+| Ordpar/bigram i sökningar och titlar (fångar sammansatta namn som enskilda ord missar, t.ex. "maui jim") | `Chrome/Historik.json` | Medel — kompletterar ordfrekvens, avslöjar produktnamn och hela frågor |
+| Shopping-/varumärkessökningar tolkade som smaksignal för Nöje (inte bortkastade, inte heller likställda med bilar/teknik/hantverk) | Google-sökbigram, `config/interests.yaml` (`noje.varumarken_smak`) | Svag, balanserad — beslut 2026-09-20: Nöje har begränsat antal platser (max 3-5), varumärkessmak konkurrerar om samma platser, tar inte över |
 | Direkt inskriven adress kontra klick på länk | `transition`-fältet i `History` | Medel |
 | Hur nyligt (avtagande vikt) | `History`, Takeout | Medel |
 | Tid på sida (`visit_duration`) | `History` | Svag, valideras mot verkligheten |
