@@ -13,18 +13,29 @@ from pathlib import Path
 from typing import Optional
 from urllib.parse import parse_qs, urlparse
 
+import yaml
+
 SOURCE = Path("data/raw/takeout/2026-09-20/extracted/Takeout/Chrome/Historik.json")
+EXCLUSIONS_FILE = Path("config/search_word_exclusions.yaml")
 OUTPUT = Path("data/profile/google_search_words.json")
 TOP_N_PRINTED = 40
 
 STOPWORDS = {
     "och", "att", "det", "som", "för", "med", "den", "på", "av", "en", "ett",
     "är", "till", "om", "du", "jag", "vi", "de", "han", "hon", "man", "kan",
-    "inte", "har", "var", "ska", "hur", "vad", "vem", "när", "vart", "the",
-    "a", "an", "of", "to", "in", "for", "on", "and", "is", "with", "you",
-    "your", "how", "what", "why", "from", "com",
+    "inte", "har", "var", "ska", "hur", "vad", "vem", "när", "vart", "eller",
+    "mig", "finns", "the", "a", "an", "of", "to", "in", "for", "on", "and",
+    "is", "with", "you", "your", "how", "what", "why", "from", "com", "new",
 }
 WORD_RE = re.compile(r"[a-zA-ZåäöÅÄÖ0-9]{2,}")
+
+
+def load_word_exclusions() -> set:
+    if not EXCLUSIONS_FILE.exists():
+        return set()
+    with EXCLUSIONS_FILE.open(encoding="utf-8") as f:
+        groups = yaml.safe_load(f) or {}
+    return {word for words in groups.values() for word in words}
 
 
 def extract_query(url: str) -> Optional[str]:
@@ -38,6 +49,8 @@ def extract_query(url: str) -> Optional[str]:
 
 
 def main() -> None:
+    excluded_words = load_word_exclusions()
+
     with SOURCE.open(encoding="utf-8") as f:
         data = json.load(f)
 
@@ -52,7 +65,7 @@ def main() -> None:
             continue
         total_searches += 1
         for word in WORD_RE.findall(query.lower()):
-            if word not in STOPWORDS:
+            if word not in STOPWORDS and word not in excluded_words:
                 word_counts[word] += 1
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)

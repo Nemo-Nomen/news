@@ -1,0 +1,18 @@
+# Sökord som INTE räknas som nyhetsintresse-signal (samma princip som
+# domain_exclusions.yaml, fast för enskilda ord ur Google-sökningar).
+
+shopping:
+  - pärlplatta
+  - ikea
+  - sneakers
+  - keps
+  - jeans
+  - herr
+  - lego
+  - hm
+  - bosch
+  - bordslampa
+  - string
+  - swedoor
+  - balance  # "New Balance" (sko-varumärke)
+  - switch  # Nintendo Switch
