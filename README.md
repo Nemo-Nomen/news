@@ -22,7 +22,7 @@ Regler för Claude, särskilt läsförbudet på rådata, i [CLAUDE.md](CLAUDE.md
 - [x] Fas 5 (v1): nyhetsinsamling + poängsättning + källdiversifiering, alla sex kategorier — se `src/fetch_candidates.py`, `src/merge_candidates.py`
 - [x] Fas 3: lokal veckovis historikläsning + schemaläggning (launchd, söndagar 09:00) — se `src/build_weekly_history_snapshot.py`
 - [ ] Fas 4b: LinkedIn-import (valfri)
-- [ ] Fas 6: schemalagd uppgift (brevet), LLM-dublettdetektering, källvinkel-bedömning, Gmail-utkast
+- [x] Fas 6 (v1): schemalagd uppgift `axel-news-brief` skapad (manuell körning, inget schema än) — se `/Users/axel/.claude/scheduled-tasks/axel-news-brief/SKILL.md`
 - [ ] Fas 7: feedback-loop
 
 ## Köra Fas 5 manuellt
