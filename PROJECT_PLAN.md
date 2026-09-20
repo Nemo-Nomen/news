@@ -161,6 +161,10 @@ Konkret för Fas 5: samla in brett per kategori - RSS från fler nyhetssajter ä
 
 Källor: [A Contextual-Bandit Approach to Personalized News Article Recommendation](https://arxiv.org/pdf/1003.0146), [Personalized News Recommendation: Methods and Challenges](https://arxiv.org/pdf/2106.08934), [Surprise me! A longitudinal user study on serendipitous recommendation](https://ceur-ws.org/Vol-4027/paper6.pdf).
 
+**Ekonomi: aktivt motargument mot min egen tes (beslut 2026-09-20).** Om profilen visar att jag konsumerat mycket av en viss riktning (t.ex. flera källor om att guldpriset ska stiga), ska brevet också aktivt leta upp och inkludera trovärdiga motargument - inte bara det som redan bekräftar tesen. Tröskel för att en motartikel ska räknas: **stor spridning** (samma trendsignal som redan finns i poängmodellen) **och/eller** **hög ethos och logos** - klassisk retorik: ethos = källans trovärdighet/auktoritet (etablerad analytiker, erkänd institution), logos = argumentets logiska styrka (inte bara en rubrik som säger motsatsen, ett faktiskt underbyggt resonemang). Skiljer sig från den generella utforskningsplatsen (Metod C) genom att vara **riktad** - leta specifikt efter motsatsen till den egna tesen, inte slumpmässig bredd. Implementeras i Fas 5: identifiera "aktuell tes" per ämne från profilens riktning, sök separat efter motsatt vinkel, applicera samma ethos/logos-tröskel innan inkludering.
+
+**Politik: undvik vänster/socialistisk vinkel (beslut 2026-09-20).** Till skillnad från Ekonomi-regeln ovan (som handlar om att aktivt visa båda sidor av en sakfråga) är det här en explicit **uteslutningsregel** på källnivå: när kandidatkällor väljs ut för Politik (makroekonomi/policy) ska källor/kommentatorer med tydlig vänster- eller socialistisk redaktionell vinkel undvikas eller nedprioriteras. Implementeras i Fas 5 som en del av källurvalet (vilka RSS-flöden/kommentatorer som ingår i kandidatpoolen för Politik), inte som ett filter på enskilda artiklar i efterhand.
+
 **Fördjupning som kombinerar källor** (per nyhet, på begäran):
 
 | Källtyp | Exempel | Gratis? |
