@@ -1,7 +1,14 @@
 # Kategoriserade YouTube-kanaler (från data/profile/youtube_channel_counts.json).
 # Bygger på genomgången i konversationen 2026-09-20. Kanaler med oklar/
-# blandad/privat karaktär (SveaKanal, Anis Don Demina, Crazy Frog,
-# CaseyNeistat, Vägen mot skilsmässan m.fl.) är medvetet utelämnade.
+# blandad/privat karaktär (Anis Don Demina, Crazy Frog, CaseyNeistat,
+# Vägen mot skilsmässan m.fl.) är medvetet utelämnade.
+#
+# VIKTIGT (upptäckt 2026-09-20): ren kanalnamn-igenkänning missade
+# SveaKanal (89/119 videor med ekonomi-nyckelord i titeln!) och Felix
+# Nordqvist (32/55) helt, eftersom namnen inte "låter" som ekonomikanaler.
+# Kompletterat via nyckelordssökning i titlar (samma metod som
+# domän-vs-innehåll tidigare) - se PROJECT_PLAN.md avsnitt 3/6. Gör om
+# den sökningen i Fas 3 istället för att bara läsa av kanalnamn.
 
 noje_bilar:
   - Shmee150
@@ -22,6 +29,7 @@ noje_bilar:
   - The Shmuseum
   - Top Gear
   - Pitstop
+  - Classic cars
 
 noje_hantverk:
   - 731 Woodworks
@@ -35,6 +43,7 @@ noje_teknik:
 politik_makro:
   - Tucker Carlson
   - Henrik Jönsson
+  - "The Fall or Rise of Europe? with Henrik Jönsson"  # Henrik Jönssons andra kanal/serie
 
 ekonomi:
   - Financial Times
@@ -45,6 +54,29 @@ ekonomi:
   - Bloomberg Podcasts
   - Andrei Jikh
   - EFN Ekonomikanalen
+  # Tillagda 2026-09-20 via nyckelordssökning i titlar (se not ovan):
+  - SveaKanal  # 89/119 videor ekonomi-nyckelord - störst missad signal
+  - Felix Nordqvist  # 32/55
+  - Dagens industri  # egen YouTube-kanal, skild från domänen di.se
+  - Avanza  # egen YouTube-kanal, skild från domänen avanza.se
+  - The Bullion Brief
+  - Kitco NEWS
+  - GoldCore TV
+  - Jason Pizzino
+  - Nico Built
+  - IB INVESTOR
+  - Nick Bencino Finance
+  - The Commodity Report
+  - CPM Group
+  - Silver Dragons
+  - TheDailyGold
+  - iGold Advisor
+  - Nordnet Sverige
+  - GoldRepublic Global
+  - Soar Financially
+  - Finance Manager Interviews
+  - WSJ News
+  - Günther Mårder  # svensk ekonomikommentator - bekräfta
 
 skvaller:
   - Aftonbladet
