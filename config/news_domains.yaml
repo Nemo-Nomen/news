@@ -44,10 +44,16 @@ noje_teknik:
   - theverge.com
 
 noje_bilar:
-  # Bilregister/bilmarknadsplats - kompletterar YouTube-bilkanalerna,
-  # tillagd 2026-09-20 för att inte underrepresentera bilar i balansen.
-  - biluppgifter.se
-  - kvd.se
+  # Genuina bilnyhets-/specsajter - låg volym (8-39 besök) men äkta signal.
+  # OBS 2026-09-20: biluppgifter.se och kvd.se (bilregister/marknadsplats,
+  # 131+93 besök) togs bort härifrån - lägre volym på just dessa
+  # nyhetssajter jämfört med köp-/leasingklustret (upp till 112 besök,
+  # se domain_exclusions.yaml bil_transaktion) bekräftade att det är en
+  # faktisk bilaffär, inte nytt-modell-intresse. Testet: äkta intresse för
+  # nya modeller borde synas MER på nyhetssajter, inte mindre.
+  - vibilagare.se
+  - autoevolution.com
+  - car.info
 
 # Bekräftade intressesignaler 2026-09-20, men oklart vilken av de fyra
 # kategorierna de hör till - körs som en egen grupp, kategorisera efter

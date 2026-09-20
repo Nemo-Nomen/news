@@ -84,3 +84,25 @@ shopping:
   - annonsblad.power.se  # bekräftad shopping (reklamblad) 2026-09-20
   - singular-society.com  # bekräftad "mestadels shopping" 2026-09-20
   - vfo.se  # bekräftad "mestadels shopping" 2026-09-20
+  - careofcarl.se  # klockåterförsäljare (inte bilar, trots namnet) - upptäckt 2026-09-20
+  - careofcarl.com
+
+bil_transaktion:
+  # Beslut 2026-09-20: köp-/leasingrelaterat bilkluster (försäkring, delar,
+  # återförsäljare) har klart högre volym än de genuina bilnyhetssajterna
+  # (se noje_bilar i news_domains.yaml, 8-39 besök) - bekräftar att det är
+  # en faktisk bilaffär, inte nytt-modell-intresse. Samma logik som
+  # bil_kopresearch i interests.yaml, men här är det domäner som helt
+  # exkluderas (inte ens svag signal), eftersom det är entydigt transaktion.
+  - volkswagenbilforsakring.se
+  - toyotabilforsakring.se
+  - skodabilforsakring.se
+  - porschebilforsakring.se
+  - kinto-mobility.se  # Toyota-leasing
+  - biltema.se
+  - bildelsbasen.se
+  - holmgrensbil.se
+  - volvocarretail.se
+  - bilskatt.nu
+  - meternbilpool.se
+  - europcar.se  # biluthyrning
