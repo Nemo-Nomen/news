@@ -8,7 +8,7 @@ Version 1, 20 september 2026. Läroprojekt för nybörjare.
 |---|---|
 | **Steg 1** | Nyhetsbrev via mail (först veckovis, sedan ev. dagligt) med *nya* artiklar på teman jag är intresserad av |
 | **Steg 2** | Interaktiv app eller hemsida för att djupdyka i nyheterna. Form avgörs senare |
-| **Kategorier** | Arbete, Investeringar och privatekonomi, Politik, Nöje (bilar, elektronik m.m.) |
+| **Kategorier** | Arbete (handskriven, ej från surfhistorik). Investeringar och privatekonomi (privata investeringar + ekonomi som är relevant för dem). Politik = makroekonomi och policy, globalt/EU/Sverige/Stockholm — inte allmän partipolitik. Nöje = teknik, bilar, hantverk. Definitioner uppdaterade 2026-09-20 |
 | **Aldrig** | Sammanfatta sådant jag redan läst. Intresseprofilen styr *vilka teman*, inte vad som återberättas |
 | **Kurering** | Få, utvalda nyheter per kategori med en rad om varför jag får dem. Inte en flod av träffar |
 | **Trend** | Nyheter som är viktiga eller på väg upp just nu, vägda mot mina intressen |

@@ -1,36 +1,41 @@
 # Kända nyhets-/samhällsdomäner bland besökta domäner (från data/profile/domain_counts_filtered.json).
-# Används för att filtrera ut sidtitlar värda att ämnesanalysera, likt YouTube-kanalerna.
-# Bara domännamn - ingen personlig data. Komplettera själv om fler dyker upp.
+# Kategorierna matchar nu projektets fyra kategorier (PROJECT_PLAN.md avsnitt 1,
+# definitioner uppdaterade 2026-09-20). Bara domännamn - ingen personlig data.
+#
+# Osäkra/ej kategoriserade (se konversation 2026-09-20):
+# - aftonbladet.se, expressen.se: innehållet som synts hittills liknar kändis-/
+#   kriminaljournalistik (skvaller), inte tydligt makroekonomi/policy. Kvar i
+#   allmanna_nyheter tills vidare - fråga öppen.
 
-ekonomi_affarer:
+investeringar_privatekonomi:
   - di.se
+  - rikatillsammans.se
   - realtid.se
   - affarsvarlden.se
-  - rikatillsammans.se
-  - zerohedge.com
+  - dagensps.se  # "också ekonomi" - flyttad hit 2026-09-20, tidigare felaktigt i nöje/esport
 
-allmanna_nyheter:
+politik_makro:
+  - zerohedge.com
   - dn.se
   - svd.se
-  - expressen.se
-  - aftonbladet.se
   - svt.se
   - sverigesradio.se
   - gp.se
   - sydsvenskan.se
   - omni.se
-  - nyheter24.se
   - kvartal.se
-  - news.google.com
   - reuters.com
   - nytimes.com
 
-teknik:
+allmanna_nyheter_okategoriserat:
+  - aftonbladet.se
+  - expressen.se
+  - news.google.com
+  - nyheter24.se
+
+noje_teknik:
   - feber.se
   - breakit.se
   - macworld.se
   - cnet.com
   - theverge.com
-
-noje_esport:
-  - dagensps.se
