@@ -1,0 +1,50 @@
+# Kategoriserade YouTube-kanaler (från data/profile/youtube_channel_counts.json).
+# Bygger på genomgången i konversationen 2026-09-20. Kanaler med oklar/
+# blandad/privat karaktär (SveaKanal, Anis Don Demina, Crazy Frog,
+# CaseyNeistat, Vägen mot skilsmässan m.fl.) är medvetet utelämnade.
+
+noje_bilar:
+  - Shmee150
+  - HeavyDSparks
+  - Mat Armstrong
+  - Mat Armstrong MK2
+  - Mat Armstrong Shorts
+  - carwow
+  - Mark Ellis Reviews
+  - Alriks Bilar
+  - Auto Focus
+  - Chris Harris on Cars
+  - DRIVETRIBE
+  - WhistlinDiesel
+  - Supercar Blondie
+  - Hoovies Garage
+  - Car Chronicles
+  - The Shmuseum
+  - Top Gear
+  - Pitstop
+
+noje_hantverk:
+  - 731 Woodworks
+  - Festool Canada
+  - This Old House
+
+noje_teknik:
+  - Marques Brownlee
+  - SoundGuys
+
+politik_makro:
+  - Tucker Carlson
+  - Henrik Jönsson
+
+ekonomi:
+  - Financial Times
+  - Principles by Ray Dalio
+  - RikaTillsammans
+  - CNBC Television
+  - Bloomberg Television
+  - Bloomberg Podcasts
+  - Andrei Jikh
+  - EFN Ekonomikanalen
+
+skvaller:
+  - Aftonbladet
