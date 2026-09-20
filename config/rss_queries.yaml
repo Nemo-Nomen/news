@@ -1,0 +1,12 @@
+# Sökfrågor mot Google Nyheter RSS per kategori (bred täckning, inte
+# begränsat till historiskt bekräftade källor - se PROJECT_PLAN.md
+# avsnitt 6 "Kandidatkälla: historik som utgångspunkt, källor brett").
+# Tunn skiva 2026-09-20: bara Ekonomi ifylld än.
+
+ekonomi:
+  - guldpris
+  - börsen Sverige
+  - Riksbanken ränta
+  - bostadsmarknad Stockholm
+  - kryptovaluta bitcoin
+  - aktiemarknad
