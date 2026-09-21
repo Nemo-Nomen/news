@@ -3,9 +3,15 @@
 # (se PROJECT_PLAN.md avsnitt 6) - konkurrerar inte om poängtröskeln,
 # tas alltid med om de publicerat något nytt sen förra körningen.
 #
-# Kortsikt saknar känt RSS-flöde än (kollat 2026-09-20: inte på Substack
-# under det namnet) - hanteras via Gmail-sökning i Fas 6 tills vidare.
-
+# Båda kända nyhetsbrev har RSS-flöden (bekräftat 2026-09-21) - ingen
+# Gmail-sökning behövs längre för dem. Om fler nyhetsbrev läggs till i
+# interests.yaml utan känt RSS-flöde, lägg till dem här med url: null
+# så faller Fas 6 tillbaka på Gmail-sökning för just de.
+#
 - namn: Fernando del Pino Calvo-Sotelo
   url: https://www.fpcs.es/feed/
   kategori: politik  # osäker - hans innehåll spänner bredare (även filosofi/hälsa), flagga vid tvekan
+
+- namn: Kortsikt
+  url: https://kortsikt.com/feed/
+  kategori: ekonomi  # WordPress.com-blogg, hittad 2026-09-21 via länk från användaren
