@@ -197,15 +197,25 @@ Källor: [A Contextual-Bandit Approach to Personalized News Article Recommendati
 
 Fördjupningen körs som en Claude-konversation (projekt). Varje objekt i brevet får en färdig "Djupdyk"-prompt som du kopierar. Kopplade verktyg finns i chatten. Att de fungerar i schemalagda molnuppgifter är obekräftat.
 
-## 7. Steg 2: alternativ (beslut skjuts)
+## 7. Steg 2: beslutat 2026-09-21
 
-| Alternativ | Innehåll | Kostnad och begränsning |
+Ursprungliga alternativ (A: Claude-publicerad Artefakt, B: lokal statisk sida, C: egen webbapp med live-Claude-anrop, kostar API) - **D, en ny variant, valdes istället** efter diskussion om cross-device-åtkomst, lärosyfte och betygsättning (Fas 7-synergin):
+
+**D. Statisk sida (GitHub Pages) + Supabase som databas, ev. Lovable som frontend-generator senare.**
+
+| Del | Lösning | Kostnad |
 |---|---|---|
-| **A. Sida som Claude publicerar** | Artefakt med kategorier och länkar, djupdykning i Claude-chatten eller ett projekt | Ryms i Pro. Djupdykningen sker i Claude, inte i själva sidan |
-| **B. Lokal statisk sida** | Skriptet genererar en HTML-sida per vecka på Macen | Gratis. Ingen modell i sidan, bara sammanfattningar från brevet |
-| **C. Egen webbapp med live-djupdykning** | Sidan anropar Claude direkt | Kräver API, som faktureras separat. Utanför ramen |
+| Hosting | GitHub Pages (helt statisk, GitHub-konto krävs) | Gratis |
+| Betyg/data-lagring | Supabase (Postgres + auto-genererat API, anropas direkt från webbläsarens JavaScript) | Gratis (Supabase-konto krävs) |
+| Fördjupning ("Läs mer"/"Varför viktigt") | Förberett av Fas 6 (har redan Claude-tillgång), inbäddat i sidans data - INTE ett live Claude-anrop från sidan | Ingen extra kostnad, kräver inget API |
+| Frontend, v1 | Jag bygger (HTML/CSS/JS) | - |
+| Frontend, v2 (senare, valfritt) | Lovable (separat AI-verktyg, bygger mot samma Supabase-projekt) - en annan AI skriver den koden, inte Claude | Gratis nivå har begränsad kvot |
 
-Rekommendation: A, eftersom fördjupningen som kombinerar källor kräver Claude med kopplade verktyg. B kan komplettera som lokal översiktssida över veckans brev. C först om du senare accepterar en API-kostnad.
+**Varför D istället för A:** Artefakt-varianten (A) skulle skicka fördjupningsfrågor till Claude-chatten, inte visa dem inbäddat på sidan - matchade inte önskemålet om en sammanhängande, app-liknande upplevelse. D löser det genom att låta Fas 6 förbereda fördjupningstexterna i förväg istället för att generera dem live.
+
+**Cross-device:** löst utan extra kostnad - GitHub Pages-sidan är redan nåbar från vilken enhet som helst med internetuppkoppling, ingen Tailscale/domän-fråga kvarstår för just den här varianten (till skillnad från en lokalt körd lösning).
+
+**Lösenordsskydd:** inte löst än - sidan visar kurerad profil och betyg (personlig preferensdata), bör inte vara helt öppen. Löses när sidan faktiskt byggs, inte en plattformsfunktion utan kod vi skriver själva/via Supabase Auth.
 
 ## 8. Risker
 
