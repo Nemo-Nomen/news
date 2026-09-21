@@ -14,6 +14,8 @@
     --tag-border: #0A0A0A;
     --rating-on-bg: #0A0A0A;
     --rating-on-text: #F7F5F0;
+    --up: #0A7A2E;
+    --down: #C22B2B;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -30,6 +32,8 @@
       --tag-border: #EFECE3;
       --rating-on-bg: #EFECE3;
       --rating-on-text: #17150F;
+      --up: #3DDC73;
+      --down: #FF6B6B;
     }
   }
   :root[data-theme="dark"] {
@@ -46,6 +50,8 @@
     --tag-border: #EFECE3;
     --rating-on-bg: #EFECE3;
     --rating-on-text: #17150F;
+    --up: #3DDC73;
+    --down: #FF6B6B;
   }
 
   * { box-sizing: border-box; }
@@ -66,6 +72,42 @@
   }
 
   .wrap { max-width: 620px; margin: 0 auto; }
+
+  .ticker-bar {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule-light);
+    padding: 7px max(16px, calc((100% - 620px) / 2));
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .ticker-bar::-webkit-scrollbar { display: none; }
+  .ticker-caret {
+    flex: none;
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 10px; color: var(--text-muted);
+  }
+  .ticker-track {
+    display: flex; gap: 22px; white-space: nowrap;
+    font-family: "Public Sans", Arial, sans-serif;
+  }
+  .ticker-item {
+    display: inline-flex; align-items: baseline; gap: 6px;
+    font-size: 12px;
+  }
+  .ticker-item .t-sym {
+    font-weight: 700; color: var(--text-primary); letter-spacing: 0.01em;
+  }
+  .ticker-item .t-price {
+    font-weight: 700; color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .ticker-item .t-chg {
+    font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  .ticker-item .t-chg.up { color: var(--up); }
+  .ticker-item .t-chg.down { color: var(--down); }
+  .ticker-item .t-chg.flat { color: var(--text-muted); }
 
   header.masthead {
     position: sticky; top: env(safe-area-inset-top, 0px);
@@ -258,6 +300,11 @@
 
 <h2 class="sr-only">Axel News, ett personligt kuraterat dagligt nyhetsbrev med sex kategorier: Jobb, Ekonomi, Politik, Nöje, AI och Skvaller, i Wall Street Journal-inspirerad design. Varje nyhet går att expandera för mer information och betygsätta.</h2>
 
+<div class="ticker-bar" id="tickerBar" aria-label="Marknadsöversikt">
+  <span class="ticker-caret" aria-hidden="true">&#9662;</span>
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
 <div class="wrap">
   <header class="masthead">
     <div class="edition-line">
@@ -275,7 +322,8 @@
 
   <footer class="note">
     Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.<br>
-    Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.
+    Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.<br>
+    Börstickern ovan är fröad med riktiga kurser men simulerar rörelsen lokalt i förhandsvisningen — riktig live-uppdatering kräver ett fetch-anrop som är blockerat i Claude-förhandsvisningens sandlåda, men fungerar på den riktiga GitHub Pages-sidan.
   </footer>
 </div>
 
@@ -608,5 +656,50 @@ function render() {
   });
 }
 
+const TICKER_ITEMS = [
+  { symbol: "OMXS30", price: 3307.02, baseline: 3264.33, decimals: 2 },
+  { symbol: "H&M", price: 162.55, baseline: 162.50, decimals: 2 },
+  { symbol: "USD/SEK", price: 9.8129, baseline: 9.8129, decimals: 2 },
+  { symbol: "GULD", price: 4390.80, baseline: 4424.90, decimals: 2 },
+  { symbol: "BTC", price: 86505, baseline: 81291, decimals: 0 }
+];
+
+function fmtNum(n, decimals) {
+  return n.toLocaleString('sv-SE', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+}
+
+function updateTickerDom(idx) {
+  const item = TICKER_ITEMS[idx];
+  const el = document.querySelector(`.ticker-item[data-idx="${idx}"]`);
+  if (!el) return;
+  const pct = ((item.price - item.baseline) / item.baseline) * 100;
+  const dir = pct > 0.001 ? 'up' : pct < -0.001 ? 'down' : 'flat';
+  const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '–';
+  el.querySelector('.t-price').textContent = fmtNum(item.price, item.decimals);
+  const chgEl = el.querySelector('.t-chg');
+  chgEl.textContent = `${arrow} ${Math.abs(pct).toFixed(2).replace('.', ',')}%`;
+  chgEl.className = `t-chg ${dir}`;
+}
+
+function initTicker() {
+  const track = document.getElementById('tickerTrack');
+  track.innerHTML = TICKER_ITEMS.map((item, idx) => `
+    <span class="ticker-item" data-idx="${idx}">
+      <span class="t-sym">${item.symbol}</span>
+      <span class="t-price"></span>
+      <span class="t-chg"></span>
+    </span>
+  `).join('');
+  TICKER_ITEMS.forEach((_, idx) => updateTickerDom(idx));
+
+  setInterval(() => {
+    const idx = Math.floor(Math.random() * TICKER_ITEMS.length);
+    const item = TICKER_ITEMS[idx];
+    item.price = item.price * (1 + (Math.random() - 0.5) * 0.002);
+    updateTickerDom(idx);
+  }, 2500);
+}
+
+initTicker();
 render();
 </script>
