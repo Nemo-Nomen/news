@@ -219,6 +219,14 @@ Ursprungliga alternativ (A: Claude-publicerad Artefakt, B: lokal statisk sida, C
 
 **Börsticker (design-prototypen, beslutat 2026-09-21):** tre varianter testade. 1) Eget schemalagt Claude Code-jobb som skrev en JSON-fil några gånger/dag - fungerande, men beroende av att Axels dator och Claude Code är igång, precis som Fas 6-begränsningen. 2) TradingViews gratis klientsidan-widget, inbäddad direkt i sidan - uppdaterades i besökarens egen webbläsare utan server, men gick inte att styla likt WSJ-originalets smala rad (eget typsnitt/ikoner/"D"-märkning låsta i en iframe). **Landade i en tredje variant:** samma egna, WSJ-styliserade ticker-design som i (1), men datakällan (`src/fetch_ticker.py`, samma fria nyckelfria API:er: Yahoo, Frankfurter.app, CoinGecko) körs nu av ett GitHub Actions-schemalagt jobb (`.github/workflows/update-ticker.yml`, var 4:e timme) istället för ett lokalt Claude Code-jobb - på GitHub:s servrar, inte Axels dator. Sidans JS läser `web/ticker.json` (samma ursprung, ingen CORS-fråga) och faller tillbaka till fröade/simulerade värden om filen inte är nåbar (Claude-artefaktens sandlåda, eller innan sajten är deployad). Symboler: OMXS30, H&M, USD/SEK, EUR/SEK, GULD, BTC.
 
+**"Tyck till"-feedbackruta (design-prototypen, tillagd 2026-09-21, Supabase-plan samma dag):** en fritextruta längst ned på sidan sparar just nu bara till `localStorage` (samma mönster som betygsknapparna), med en "Kopiera allt"-knapp som manuell brygga till nästa Claude Code-session. **Planerat nästa steg, när Supabase kopplas in (steg 5 nedan):**
+
+- Ny tabell `feedback` i Supabase (schema i `config/brief_schema.md`) med kolumnerna `text`, `status` (`ny`/`hanterad`), `skapad`, `hanterad_at`.
+- Sidans JS byter från ren `localStorage`-skrivning till att `insert`:a direkt i `feedback`-tabellen via samma Supabase-klient som betygsknapparna redan kommer använda (samma anon-nyckel, samma init). `localStorage` behålls som lokal offline-kö/fallback om insert misslyckas (ingen uppkoppling) - försöker synka igen nästa sidladdning.
+- En liten skript, `src/fetch_feedback.py` (samma mönster som `fetch_ticker.py` - fria HTTP-anrop, ingen extra dependency), frågar Supabases REST-API efter rader med `status = 'ny'` i början av en underhålls-session i Claude Code. Det ersätter "Kopiera allt"-bryggan - jag slipper klistra in något manuellt.
+- Efter att ha åtgärdat (eller medvetet valt bort) punkter i en session: `update feedback set status = 'hanterad', hanterad_at = now() where id in (...)` för de posterna, så nästa körning bara ser nytt.
+- "Kopiera allt"-knappen i UI:t behålls ändå som redundant fallback (kostar inget, funkar även om Supabase är nere).
+
 ## 8. Risker
 
 | Risk | Åtgärd |

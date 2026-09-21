@@ -56,3 +56,17 @@ create table ratings (
 ```
 
 Enkelt tumme upp/ner, enligt planens Fas 7-beskrivning ("Enkelt betyg per artikel"). En rad per betyg (inte en uppdaterad kolumn), så historik bevaras även om man ändrar sig.
+
+## Feedback (Supabase-tabell, planerad - se PROJECT_PLAN.md avsnitt 7)
+
+```sql
+create table feedback (
+  id uuid primary key default gen_random_uuid(),
+  text text not null,
+  status text not null default 'ny' check (status in ('ny', 'hanterad')),
+  skapad timestamptz default now(),
+  hanterad_at timestamptz
+);
+```
+
+`status` gör att en Claude Code-session bara behöver fråga efter `status = 'ny'` istället för att läsa allt varje gång, och kan sätta `hanterad`/`hanterad_at` på det som faktiskt åtgärdats i den sessionen - så feedbacken fungerar som en enkel att-göra-lista snarare än en logg som växer obegränsat.
