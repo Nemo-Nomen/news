@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fetch_candidates import PROFILE_FILE, group_key_of, profile_words, rank_and_select
+from fetch_candidates import MAX_KANDIDATER, PROFILE_FILE, group_key_of, profile_words, rank_and_select
 
 RAW_DIR = Path("data/profile/candidates_raw")
 OUTPUT_DIR = Path("data/profile/candidates")
@@ -62,12 +62,34 @@ def main() -> None:
     for c in candidates:
         c["stort_utomlands_ej_sverige"] = group_key_of(c["title"]) in genombrott_grupper
 
+    # Nyhetsbrev väger starkast av alla signaler (beslut 2026-09-20) -
+    # konkurrerar inte om poängtröskeln, tas alltid med. Prioriterade
+    # slots: tränger undan de lägst rankade vanliga kandidaterna om
+    # taket annars skulle nås.
+    nyhetsbrev_raw = load_raw(RAW_DIR / f"{category}_nyhetsbrev.json")
+    nyhetsbrev_links = {i["link"] for i in nyhetsbrev_raw}
+    nyhetsbrev_candidates = [
+        {
+            **i,
+            "pub_date": i["pub_date"].isoformat() if i["pub_date"] else None,
+            "poang": None,
+            "nyhetsbrev": True,
+        }
+        for i in nyhetsbrev_raw
+    ]
+    if nyhetsbrev_candidates:
+        rest = [c for c in candidates if c["link"] not in nyhetsbrev_links]
+        candidates = nyhetsbrev_candidates + rest[: max(0, MAX_KANDIDATER - len(nyhetsbrev_candidates))]
+
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     output_file = OUTPUT_DIR / f"{category}.json"
     output_file.write_text(json.dumps(candidates, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"Topp {len(candidates)} (svenskt + internationellt ihopslaget) sparade till {output_file}:\n")
+    print(f"Topp {len(candidates)} (svenskt + internationellt + nyhetsbrev ihopslaget) sparade till {output_file}:\n")
     for c in candidates:
+        if c.get("nyhetsbrev"):
+            print(f"  📬 NYHETSBREV  {c['title'][:65]}  [{c['source']}]")
+            continue
         flagga = "🌍" if c["source"] in {i["source"] for i in internationellt} else "🇸🇪"
         genombrott = "  ⚡ stort utomlands, ej i Sverige" if c["stort_utomlands_ej_sverige"] else ""
         print(f"  {flagga} {c['poang']:.3f}  ({c['intressematch']}/{c['trend']}/{c['farskhet']})  {c['title'][:65]}  [{c['source']}]{genombrott}")

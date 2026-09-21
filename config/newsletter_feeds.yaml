@@ -1,0 +1,11 @@
+# Kända nyhetsbrev med riktiga RSS-flöden - hämtas lokalt i Fas 5 (gratis,
+# ingen Claude/Gmail behövs för dessa). Väger starkast av alla signaler
+# (se PROJECT_PLAN.md avsnitt 6) - konkurrerar inte om poängtröskeln,
+# tas alltid med om de publicerat något nytt sen förra körningen.
+#
+# Kortsikt saknar känt RSS-flöde än (kollat 2026-09-20: inte på Substack
+# under det namnet) - hanteras via Gmail-sökning i Fas 6 tills vidare.
+
+- namn: Fernando del Pino Calvo-Sotelo
+  url: https://www.fpcs.es/feed/
+  kategori: politik  # osäker - hans innehåll spänner bredare (även filosofi/hälsa), flagga vid tvekan
