@@ -1,35 +1,83 @@
 {
-  "genererad": "2026-09-21T20:47:53.299895",
+  "genererad": "2026-09-21T21:15:07.264245",
   "kategorier": {
-    "jobb": [],
+    "jobb": [
+      {
+        "id": "e6144ddb7d7c",
+        "rubrik": "H&M:s tremånadersrapport slog förväntan",
+        "sammanfattning": "Rörelseresultatet landade över analytikerkonsensus, driven av lägre lagernivåer.",
+        "las_mer": "Rapporten visar en förbättrad bruttomarginal för tredje kvartalet i rad. Ledningen pekar särskilt ut Kina och USA som marknader där omstruktureringen börjar synas i siffrorna, samtidigt som antalet fysiska butiker fortsätter minska till förmån för e-handel.",
+        "varfor_viktigt": "Din primära bevakning - kvartalsrapport räcker som tröskel enligt din regel.",
+        "kalla": "H&M Group Newsroom",
+        "lank": "https://hmgroup.com/example",
+        "publicerad": "2026-09-21T21:15:07.264256",
+        "kategori": "jobb",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
+      },
+      {
+        "id": "4af3b591cc19",
+        "rubrik": "Inditex stark höststart trots europeisk värmebölja",
+        "sammanfattning": "Zara-ägaren rapporterar +9% i försäljning augusti-september.",
+        "las_mer": "Inditex fortsätter sin expansion i USA med nya Bershka- och Massimo Dutti-butiker, samtidigt som bolaget investerar rekordbelopp i logistik för att korta leveranstiderna mot H&M.",
+        "varfor_viktigt": "Primär konkurrent - direkt jämförbar strategi och tidsperiod med H&M:s rapport.",
+        "kalla": "WWD",
+        "lank": "https://wwd.com/example",
+        "publicerad": "2026-09-21T21:15:07.264259",
+        "kategori": "jobb",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
+      }
+    ],
     "ekonomi": [
       {
         "id": "39280f060441",
         "rubrik": "Fokus på upptrappningen i Iran",
         "sammanfattning": "Kortsikt om geopolitikens effekt på marknaderna denna vecka.",
-        "las_mer": "En längre genomgång av hur situationen i Mellanöstern påverkar olje- och guldpriser, med historiska paralleller till tidigare kriser.",
+        "las_mer": "En längre genomgång av hur situationen i Mellanöstern påverkar olje- och guldpriser, med historiska paralleller till tidigare kriser och en bedömning av hur uthållig prisrörelsen är.",
         "varfor_viktigt": "Från ditt nyhetsbrev Kortsikt - väger starkast av alla dina källor.",
         "kalla": "Kortsikt",
         "lank": "https://kortsikt.com/example",
-        "publicerad": "2026-09-21T20:47:53.299910",
+        "publicerad": "2026-09-21T21:15:07.264261",
         "kategori": "ekonomi",
         "nyhetsbrev": true,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false
+        "motargument": false,
+        "bild": "placeholder"
+      },
+      {
+        "id": "d031299a4ae4",
+        "rubrik": "Nordiska fastighetsaffärer upp 36 procent",
+        "sammanfattning": "Sverige bär hela lyftet i regionen enligt ny sammanställning.",
+        "las_mer": "Transaktionsvolymen för kommersiella fastigheter i Norden steg kraftigt under tredje kvartalet, med Stockholmsregionen som starkaste enskilda marknad.",
+        "varfor_viktigt": "Matchar din bevakning av fastighetsmarknaden i Stockholm.",
+        "kalla": "Börskollen",
+        "lank": "https://borskollen.se/example",
+        "publicerad": "2026-09-21T21:15:07.264263",
+        "kategori": "ekonomi",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
       },
       {
         "id": "96796225ca1c",
         "rubrik": "Schiff varnar för att tokeniserade aktier drar likviditet från Bitcoin",
         "sammanfattning": "Peter Schiff ser en risk i den växande marknaden för tokeniserade tillgångar.",
-        "las_mer": "Schiff argumenterar att kapital som annars gått till kryptovalutor nu istället söker sig till tokeniserade traditionella tillgångar, vilket kan pressa priset på Bitcoin nedåt på kort sikt.",
-        "varfor_viktigt": "Ett motargument mot det mer optimistiska Bitcoin-sentimentet i dina andra källor den här veckan.",
+        "las_mer": "Schiff argumenterar att kapital som annars gått till kryptovalutor nu istället söker sig till tokeniserade traditionella tillgångar, vilket kan pressa priset på Bitcoin nedåt på kort sikt - ett perspektiv som utmanar veckans mer optimistiska röster.",
+        "varfor_viktigt": "Ett aktivt sökt motargument mot det mer optimistiska Bitcoin-sentimentet i dina andra källor den här veckan.",
         "kalla": "Bitcoin News",
         "lank": "https://example.com/schiff",
-        "publicerad": "2026-09-21T20:47:53.299913",
+        "publicerad": "2026-09-21T21:15:07.264264",
         "kategori": "ekonomi",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": true
+        "motargument": true,
+        "bild": null
       }
     ],
     "politik": [
@@ -37,19 +85,113 @@
         "id": "22dd9a2b1e90",
         "rubrik": "Grönland-kopplade aktier stiger efter Trumps säkerhetsbesked",
         "sammanfattning": "Ovanligt stort internationellt intresse - ännu inte plockat upp av svensk media.",
-        "las_mer": "Flera internationella källor (Seeking Alpha, Bloomberg) rapporterar samtidigt om detta, men det syns ännu inte i de svenska källor vi bevakar.",
-        "varfor_viktigt": "Flaggad som stort utomlands men inte i Sverige än - värt att hålla koll på.",
+        "las_mer": "Flera internationella källor (Seeking Alpha, Bloomberg) rapporterar samtidigt om detta, men det syns ännu inte i de svenska källor vi bevakar - ett tidigt tecken värt att hålla koll på.",
+        "varfor_viktigt": "Flaggad som stort utomlands men inte i Sverige än.",
         "kalla": "Seeking Alpha",
         "lank": "https://example.com/greenland",
-        "publicerad": "2026-09-21T20:47:53.299915",
+        "publicerad": "2026-09-21T21:15:07.264266",
         "kategori": "politik",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": true,
-        "motargument": false
+        "motargument": false,
+        "bild": "placeholder"
+      },
+      {
+        "id": "1d3ce2d8239d",
+        "rubrik": "Riksbanken lämnar räntan oförändrad",
+        "sammanfattning": "Augustis inflationssiffror gjorde att marknaden övergav höjningsscenariot helt.",
+        "las_mer": "KPIF-inflationen kom in på 0,7 procent, klart under Riksbankens junisprognos. Nästa penningpolitiska rapport väntas den 24 september med en uppdaterad bedömning av räntebanan.",
+        "varfor_viktigt": "Makroekonomi/policy på Sverige-nivå, enligt din definition av kategorin.",
+        "kalla": "Sveriges Riksbank",
+        "lank": "https://riksbank.se/example",
+        "publicerad": "2026-09-21T21:15:07.264268",
+        "kategori": "politik",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
       }
     ],
-    "noje": [],
-    "ai": [],
-    "skvaller": []
+    "noje": [
+      {
+        "id": "63a33f1ebc8b",
+        "rubrik": "Apples \"Surprise and Shine\"-event: iPhone 18 Pro och en vikbar Duo",
+        "sammanfattning": "Nya AirPods 5, Apple Watch Series 12 och Ultra 4 presenterades samtidigt.",
+        "las_mer": "Den vikbara \"iPhone Duo\" med två skärmar blev den stora överraskningen - förhandsbeställning öppnar i oktober. iPhone 18 Pro får A20 Pro-chippet och förbättrad kylning.",
+        "varfor_viktigt": "Matchar ditt intresse för Apple/teknikprylar.",
+        "kalla": "MacRumors",
+        "lank": "https://macrumors.com/example",
+        "publicerad": "2026-09-21T21:15:07.264273",
+        "kategori": "noje",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": "placeholder"
+      },
+      {
+        "id": "1f8a9a5e1b5c",
+        "rubrik": "Volvo lanserar 13 helt nya bilar - största satsningen i märkets historia",
+        "sammanfattning": "En strategisk helomvändning mot fler modeller på kortare tid.",
+        "las_mer": "Satsningen omfattar både helt nya elbilsmodeller och uppdaterade klassiker, med första leveranser redan under första kvartalet nästa år.",
+        "varfor_viktigt": "Matchar ditt bilintresse - stor, sammanhållen nyhet snarare än en enskild recension.",
+        "kalla": "Metro Mode",
+        "lank": "https://example.com/volvo13",
+        "publicerad": "2026-09-21T21:15:07.264275",
+        "kategori": "noje",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
+      }
+    ],
+    "ai": [
+      {
+        "id": "9f6191a0bae8",
+        "rubrik": "Salesforce lanserar sju namngivna Agentforce-AI-agenter",
+        "sammanfattning": "Varje agent byggd för en specifik affärsfunktion - sälj, service, ekonomi.",
+        "las_mer": "Agenterna opererar inom företagets befintliga regler och behörigheter. Analytiker spår att 40 procent av alla företagsapplikationer har uppgiftsspecifika AI-agenter vid årsskiftet, upp från under 5 procent förra året.",
+        "varfor_viktigt": "Exakt din vinkel - hur företag applicerar/transformerar med AI.",
+        "kalla": "Writer.com",
+        "lank": "https://writer.com/example",
+        "publicerad": "2026-09-21T21:15:07.264277",
+        "kategori": "ai",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
+      },
+      {
+        "id": "d450573a20fd",
+        "rubrik": "Dansk läkemedelsjätte samarbetar med amerikanskt AI-företag",
+        "sammanfattning": "Målet är att korta utvecklingstiden för nya läkemedelskandidater.",
+        "las_mer": "Samarbetet fokuserar på att använda maskininlärning för att identifiera lovande molekyler tidigare i processen, vilket kan spara flera års utvecklingstid per läkemedel.",
+        "varfor_viktigt": "Konkret exempel på AI-tillämpning i en etablerad bransch.",
+        "kalla": "Dagens.se",
+        "lank": "https://dagens.se/example",
+        "publicerad": "2026-09-21T21:15:07.264278",
+        "kategori": "ai",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
+      }
+    ],
+    "skvaller": [
+      {
+        "id": "ce83203fb13e",
+        "rubrik": "\"Lex Bianca\" - Liberalerna vill se ny lagstiftning",
+        "sammanfattning": "Ett politikförslag uppkallat efter en tidigare uppmärksammad kändishändelse.",
+        "las_mer": "Förslaget har väckt debatt för sin ovanliga koppling mellan en enskild persons upplevelse och ett konkret lagförslag inför valet.",
+        "varfor_viktigt": "Matchar ditt intresse enligt historiken kring namnet Bianca.",
+        "kalla": "SVT Nyheter",
+        "lank": "https://svt.se/example",
+        "publicerad": "2026-09-21T21:15:07.264280",
+        "kategori": "skvaller",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false,
+        "bild": null
+      }
+    ]
   }
 }

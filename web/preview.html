@@ -1,0 +1,427 @@
+<title>Axel News</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-hover: #F7F6F4;
+    --border: #DEDDDA;
+    --border-strong: #1A1A1A;
+    --text-primary: #1A1A1A;
+    --text-secondary: #54595F;
+    --text-muted: #8A8E93;
+    --red: #B31217;
+    --red-text: #FFFFFF;
+    --red-soft: #FBEAEA;
+    --red-soft-text: #8C0E12;
+    --warm-soft: #FBF1DE;
+    --warm-soft-text: #7A5A16;
+    --info-soft: #E8EEF6;
+    --info-soft-text: #2B4C7E;
+    --rating-on-bg: #1A1A1A;
+    --rating-on-text: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #121212;
+      --surface: #1A1A1A;
+      --surface-hover: #212121;
+      --border: #333333;
+      --border-strong: #F2F2F2;
+      --text-primary: #F2F2F2;
+      --text-secondary: #ABABAB;
+      --text-muted: #7A7A7A;
+      --red: #E2434B;
+      --red-text: #1A1A1A;
+      --red-soft: #3A1315;
+      --red-soft-text: #F2A3A7;
+      --warm-soft: #3A2E10;
+      --warm-soft-text: #E8C888;
+      --info-soft: #17233A;
+      --info-soft-text: #A9C4EB;
+      --rating-on-bg: #F2F2F2;
+      --rating-on-text: #1A1A1A;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #121212;
+    --surface: #1A1A1A;
+    --surface-hover: #212121;
+    --border: #333333;
+    --border-strong: #F2F2F2;
+    --text-primary: #F2F2F2;
+    --text-secondary: #ABABAB;
+    --text-muted: #7A7A7A;
+    --red: #E2434B;
+    --red-text: #1A1A1A;
+    --red-soft: #3A1315;
+    --red-soft-text: #F2A3A7;
+    --warm-soft: #3A2E10;
+    --warm-soft-text: #E8C888;
+    --info-soft: #17233A;
+    --info-soft-text: #A9C4EB;
+    --rating-on-bg: #F2F2F2;
+    --rating-on-text: #1A1A1A;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: "PT Sans", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0 16px;
+  }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  h1, h2, h3, .headline {
+    font-family: "PT Serif", Georgia, serif;
+    text-wrap: balance;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  header.masthead {
+    position: sticky; top: env(safe-area-inset-top, 0px);
+    background: var(--bg);
+    padding-top: max(22px, env(safe-area-inset-top, 0px));
+    padding-bottom: 10px;
+    z-index: 5;
+  }
+  header.masthead .title-row {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  header.masthead h1 {
+    font-size: 30px; font-weight: 700; margin: 0; letter-spacing: -0.01em;
+  }
+  header.masthead .date {
+    font-size: 12px; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.06em; font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  header.masthead .rule {
+    height: 3px; background: var(--border-strong); margin-top: 10px;
+  }
+  nav.chips {
+    display: flex; gap: 14px; overflow-x: auto; margin-top: 10px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  nav.chips::-webkit-scrollbar { display: none; }
+  nav.chips a {
+    flex: none;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+  nav.chips a .count {
+    color: var(--text-muted); font-weight: 400; margin-left: 3px;
+  }
+
+  main { padding-block: 24px 48px; display: flex; flex-direction: column; gap: 40px; }
+
+  section.category .kicker {
+    display: inline-block;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--red);
+    margin: 0 0 8px;
+  }
+  section.category h2 {
+    font-size: 24px; font-weight: 700; margin: 0 0 16px;
+    scroll-margin-top: 116px;
+    border-bottom: 2px solid var(--border-strong);
+    padding-bottom: 8px;
+  }
+
+  /* Featured item (has an image) */
+  details.featured {
+    display: block; margin-bottom: 18px;
+  }
+  details.featured summary {
+    list-style: none; cursor: pointer;
+  }
+  details.featured summary::-webkit-details-marker { display: none; }
+  details.featured .thumb {
+    width: 100%; aspect-ratio: 16/9; object-fit: cover;
+    border-radius: 2px; margin-bottom: 10px; display: block;
+    background: var(--surface-hover);
+  }
+  details.featured .thumb-placeholder {
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 16px;
+    font-size: 12px; color: var(--text-muted);
+    background: repeating-linear-gradient(135deg, var(--surface-hover), var(--surface-hover) 10px, var(--bg) 10px, var(--bg) 20px);
+    border: 1px dashed var(--border);
+  }
+  details.featured .rubrik {
+    font-size: 24px; font-weight: 700; line-height: 1.2; margin: 0 0 8px;
+  }
+  details.featured .sammanfattning {
+    font-size: 15px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px;
+  }
+
+  /* Compact list item (no image) */
+  details.compact {
+    border-top: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  details.compact:last-child { border-bottom: 1px solid var(--border); }
+  details.compact summary {
+    list-style: none; cursor: pointer;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  details.compact summary::-webkit-details-marker { display: none; }
+  details.compact .rubrik {
+    font-size: 17px; font-weight: 700; line-height: 1.3; margin: 0;
+  }
+  details.compact .sammanfattning {
+    font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;
+  }
+
+  .meta-row {
+    display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap;
+  }
+  .kalla {
+    font-size: 11.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .badge {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px;
+  }
+  .badge.nyhetsbrev { background: var(--warm-soft); color: var(--warm-soft-text); }
+  .badge.genombrott { background: var(--info-soft); color: var(--info-soft-text); }
+  .badge.motargument { background: var(--red-soft); color: var(--red-soft-text); }
+
+  .expand-arrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--red); margin-top: 6px; display: inline-block;
+  }
+  details[open] .expand-arrow::before { content: "Dölj \2212"; }
+  details:not([open]) .expand-arrow::before { content: "Läs mer +"; }
+
+  .body-text {
+    padding-top: 12px;
+  }
+  .las-mer {
+    font-family: "PT Serif", Georgia, serif;
+    font-size: 15.5px; line-height: 1.7; color: var(--text-primary); margin: 0 0 14px;
+  }
+  .varfor {
+    background: var(--info-soft);
+    color: var(--info-soft-text);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 13px; line-height: 1.5;
+    margin: 0 0 14px;
+  }
+  .varfor .label {
+    font-weight: 700; font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase;
+    display: block; margin-bottom: 3px;
+  }
+  .footer-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  }
+  .source-link {
+    font-size: 13px; color: var(--red); text-decoration: none; font-weight: 700;
+  }
+  .source-link:hover { text-decoration: underline; }
+
+  .rating { display: flex; gap: 6px; }
+  .rating button {
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text-primary);
+    border-radius: 3px;
+    padding: 5px 11px;
+    cursor: pointer;
+  }
+  .rating button:hover { background: var(--surface-hover); }
+  .rating button[aria-pressed="true"] {
+    background: var(--rating-on-bg); color: var(--rating-on-text); border-color: var(--rating-on-bg);
+  }
+
+  footer.note {
+    font-size: 12px; color: var(--text-muted); text-align: center;
+    padding: 8px 0 40px; line-height: 1.6;
+  }
+
+  @media (max-width: 420px) {
+    header.masthead h1 { font-size: 25px; }
+    details.featured .rubrik { font-size: 20px; }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap">
+
+<h2 class="sr-only">Axel News, ett personligt kuraterat dagligt nyhetsbrev med sex kategorier: Jobb, Ekonomi, Politik, Nöje, AI och Skvaller. Huvudnyheter visas med bild där tillgängligt, övriga som textlista. Varje nyhet går att expandera för mer information och betygsätta.</h2>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="title-row">
+      <h1>Axel News</h1>
+      <div class="date" id="dateLabel"></div>
+    </div>
+    <div class="rule"></div>
+    <nav class="chips" id="chipNav"></nav>
+  </header>
+
+  <main id="main"></main>
+
+  <footer class="note">
+    Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.<br>
+    Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.
+  </footer>
+</div>
+
+<script>
+const DATA = {"genererad": "2026-09-21T21:15:07.264245", "kategorier": {"jobb": [{"id": "e6144ddb7d7c", "rubrik": "H&M:s tremånadersrapport slog förväntan", "sammanfattning": "Rörelseresultatet landade över analytikerkonsensus, driven av lägre lagernivåer.", "las_mer": "Rapporten visar en förbättrad bruttomarginal för tredje kvartalet i rad. Ledningen pekar särskilt ut Kina och USA som marknader där omstruktureringen börjar synas i siffrorna, samtidigt som antalet fysiska butiker fortsätter minska till förmån för e-handel.", "varfor_viktigt": "Din primära bevakning - kvartalsrapport räcker som tröskel enligt din regel.", "kalla": "H&M Group Newsroom", "lank": "https://hmgroup.com/example", "publicerad": "2026-09-21T21:15:07.264256", "kategori": "jobb", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}, {"id": "4af3b591cc19", "rubrik": "Inditex stark höststart trots europeisk värmebölja", "sammanfattning": "Zara-ägaren rapporterar +9% i försäljning augusti-september.", "las_mer": "Inditex fortsätter sin expansion i USA med nya Bershka- och Massimo Dutti-butiker, samtidigt som bolaget investerar rekordbelopp i logistik för att korta leveranstiderna mot H&M.", "varfor_viktigt": "Primär konkurrent - direkt jämförbar strategi och tidsperiod med H&M:s rapport.", "kalla": "WWD", "lank": "https://wwd.com/example", "publicerad": "2026-09-21T21:15:07.264259", "kategori": "jobb", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}], "ekonomi": [{"id": "39280f060441", "rubrik": "Fokus på upptrappningen i Iran", "sammanfattning": "Kortsikt om geopolitikens effekt på marknaderna denna vecka.", "las_mer": "En längre genomgång av hur situationen i Mellanöstern påverkar olje- och guldpriser, med historiska paralleller till tidigare kriser och en bedömning av hur uthållig prisrörelsen är.", "varfor_viktigt": "Från ditt nyhetsbrev Kortsikt - väger starkast av alla dina källor.", "kalla": "Kortsikt", "lank": "https://kortsikt.com/example", "publicerad": "2026-09-21T21:15:07.264261", "kategori": "ekonomi", "nyhetsbrev": true, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": "placeholder"}, {"id": "d031299a4ae4", "rubrik": "Nordiska fastighetsaffärer upp 36 procent", "sammanfattning": "Sverige bär hela lyftet i regionen enligt ny sammanställning.", "las_mer": "Transaktionsvolymen för kommersiella fastigheter i Norden steg kraftigt under tredje kvartalet, med Stockholmsregionen som starkaste enskilda marknad.", "varfor_viktigt": "Matchar din bevakning av fastighetsmarknaden i Stockholm.", "kalla": "Börskollen", "lank": "https://borskollen.se/example", "publicerad": "2026-09-21T21:15:07.264263", "kategori": "ekonomi", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}, {"id": "96796225ca1c", "rubrik": "Schiff varnar för att tokeniserade aktier drar likviditet från Bitcoin", "sammanfattning": "Peter Schiff ser en risk i den växande marknaden för tokeniserade tillgångar.", "las_mer": "Schiff argumenterar att kapital som annars gått till kryptovalutor nu istället söker sig till tokeniserade traditionella tillgångar, vilket kan pressa priset på Bitcoin nedåt på kort sikt - ett perspektiv som utmanar veckans mer optimistiska röster.", "varfor_viktigt": "Ett aktivt sökt motargument mot det mer optimistiska Bitcoin-sentimentet i dina andra källor den här veckan.", "kalla": "Bitcoin News", "lank": "https://example.com/schiff", "publicerad": "2026-09-21T21:15:07.264264", "kategori": "ekonomi", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": true, "bild": null}], "politik": [{"id": "22dd9a2b1e90", "rubrik": "Grönland-kopplade aktier stiger efter Trumps säkerhetsbesked", "sammanfattning": "Ovanligt stort internationellt intresse - ännu inte plockat upp av svensk media.", "las_mer": "Flera internationella källor (Seeking Alpha, Bloomberg) rapporterar samtidigt om detta, men det syns ännu inte i de svenska källor vi bevakar - ett tidigt tecken värt att hålla koll på.", "varfor_viktigt": "Flaggad som stort utomlands men inte i Sverige än.", "kalla": "Seeking Alpha", "lank": "https://example.com/greenland", "publicerad": "2026-09-21T21:15:07.264266", "kategori": "politik", "nyhetsbrev": false, "stort_utomlands_ej_sverige": true, "motargument": false, "bild": "placeholder"}, {"id": "1d3ce2d8239d", "rubrik": "Riksbanken lämnar räntan oförändrad", "sammanfattning": "Augustis inflationssiffror gjorde att marknaden övergav höjningsscenariot helt.", "las_mer": "KPIF-inflationen kom in på 0,7 procent, klart under Riksbankens junisprognos. Nästa penningpolitiska rapport väntas den 24 september med en uppdaterad bedömning av räntebanan.", "varfor_viktigt": "Makroekonomi/policy på Sverige-nivå, enligt din definition av kategorin.", "kalla": "Sveriges Riksbank", "lank": "https://riksbank.se/example", "publicerad": "2026-09-21T21:15:07.264268", "kategori": "politik", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}], "noje": [{"id": "63a33f1ebc8b", "rubrik": "Apples \"Surprise and Shine\"-event: iPhone 18 Pro och en vikbar Duo", "sammanfattning": "Nya AirPods 5, Apple Watch Series 12 och Ultra 4 presenterades samtidigt.", "las_mer": "Den vikbara \"iPhone Duo\" med två skärmar blev den stora överraskningen - förhandsbeställning öppnar i oktober. iPhone 18 Pro får A20 Pro-chippet och förbättrad kylning.", "varfor_viktigt": "Matchar ditt intresse för Apple/teknikprylar.", "kalla": "MacRumors", "lank": "https://macrumors.com/example", "publicerad": "2026-09-21T21:15:07.264273", "kategori": "noje", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": "placeholder"}, {"id": "1f8a9a5e1b5c", "rubrik": "Volvo lanserar 13 helt nya bilar - största satsningen i märkets historia", "sammanfattning": "En strategisk helomvändning mot fler modeller på kortare tid.", "las_mer": "Satsningen omfattar både helt nya elbilsmodeller och uppdaterade klassiker, med första leveranser redan under första kvartalet nästa år.", "varfor_viktigt": "Matchar ditt bilintresse - stor, sammanhållen nyhet snarare än en enskild recension.", "kalla": "Metro Mode", "lank": "https://example.com/volvo13", "publicerad": "2026-09-21T21:15:07.264275", "kategori": "noje", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}], "ai": [{"id": "9f6191a0bae8", "rubrik": "Salesforce lanserar sju namngivna Agentforce-AI-agenter", "sammanfattning": "Varje agent byggd för en specifik affärsfunktion - sälj, service, ekonomi.", "las_mer": "Agenterna opererar inom företagets befintliga regler och behörigheter. Analytiker spår att 40 procent av alla företagsapplikationer har uppgiftsspecifika AI-agenter vid årsskiftet, upp från under 5 procent förra året.", "varfor_viktigt": "Exakt din vinkel - hur företag applicerar/transformerar med AI.", "kalla": "Writer.com", "lank": "https://writer.com/example", "publicerad": "2026-09-21T21:15:07.264277", "kategori": "ai", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}, {"id": "d450573a20fd", "rubrik": "Dansk läkemedelsjätte samarbetar med amerikanskt AI-företag", "sammanfattning": "Målet är att korta utvecklingstiden för nya läkemedelskandidater.", "las_mer": "Samarbetet fokuserar på att använda maskininlärning för att identifiera lovande molekyler tidigare i processen, vilket kan spara flera års utvecklingstid per läkemedel.", "varfor_viktigt": "Konkret exempel på AI-tillämpning i en etablerad bransch.", "kalla": "Dagens.se", "lank": "https://dagens.se/example", "publicerad": "2026-09-21T21:15:07.264278", "kategori": "ai", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}], "skvaller": [{"id": "ce83203fb13e", "rubrik": "\"Lex Bianca\" - Liberalerna vill se ny lagstiftning", "sammanfattning": "Ett politikförslag uppkallat efter en tidigare uppmärksammad kändishändelse.", "las_mer": "Förslaget har väckt debatt för sin ovanliga koppling mellan en enskild persons upplevelse och ett konkret lagförslag inför valet.", "varfor_viktigt": "Matchar ditt intresse enligt historiken kring namnet Bianca.", "kalla": "SVT Nyheter", "lank": "https://svt.se/example", "publicerad": "2026-09-21T21:15:07.264280", "kategori": "skvaller", "nyhetsbrev": false, "stort_utomlands_ej_sverige": false, "motargument": false, "bild": null}]}};
+
+const CATEGORY_LABELS = {
+  jobb: "Jobb", ekonomi: "Ekonomi", politik: "Politik",
+  noje: "Nöje", ai: "AI", skvaller: "Skvaller"
+};
+const CATEGORY_ORDER = ["jobb", "ekonomi", "politik", "noje", "ai", "skvaller"];
+
+function fmtDate(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('sv-SE', { weekday: 'long', day: 'numeric', month: 'long' });
+  } catch (e) { return ""; }
+}
+
+function loadRatings() {
+  try { return JSON.parse(localStorage.getItem('axelnews_ratings') || '{}'); }
+  catch (e) { return {}; }
+}
+function saveRating(id, value) {
+  try {
+    const r = loadRatings();
+    r[id] = value;
+    localStorage.setItem('axelnews_ratings', JSON.stringify(r));
+  } catch (e) {}
+}
+
+function badgeRow(item) {
+  const badges = [];
+  if (item.nyhetsbrev) badges.push('<span class="badge nyhetsbrev">Nyhetsbrev</span>');
+  if (item.stort_utomlands_ej_sverige) badges.push('<span class="badge genombrott">Stort utomlands</span>');
+  if (item.motargument) badges.push('<span class="badge motargument">Motargument</span>');
+  return badges.join('');
+}
+
+function ratingButtons(item, ratings) {
+  const current = ratings[item.id];
+  const upPressed = current === 'upp' ? 'true' : 'false';
+  const downPressed = current === 'ner' ? 'true' : 'false';
+  return `
+    <div class="rating">
+      <button type="button" data-rate="upp" aria-pressed="${upPressed}">Relevant</button>
+      <button type="button" data-rate="ner" aria-pressed="${downPressed}">Skippa fler</button>
+    </div>
+  `;
+}
+
+function bodyContent(item) {
+  return `
+    <div class="body-text">
+      <p class="las-mer">${item.las_mer}</p>
+      <div class="varfor">
+        <span class="label">Varför du får den</span>
+        ${item.varfor_viktigt}
+      </div>
+      <div class="footer-row">
+        <a class="source-link" href="${item.lank}" target="_blank" rel="noopener">Läs originalet &rarr;</a>
+        ${ratingButtons(item, loadRatings())}
+      </div>
+    </div>
+  `;
+}
+
+function renderFeatured(item) {
+  const thumb = item.bild === 'placeholder'
+    ? `<div class="thumb thumb-placeholder">Bild (förhandsvisningen kan inte ladda externa bilder — fungerar på den riktiga sidan)</div>`
+    : `<img class="thumb" src="${item.bild}" alt="" loading="lazy">`;
+  return `
+    <details class="featured" data-id="${item.id}">
+      <summary>
+        ${thumb}
+        <p class="rubrik">${item.rubrik}</p>
+        <p class="sammanfattning">${item.sammanfattning}</p>
+        <div class="meta-row">
+          <span class="kalla">${item.kalla}</span>
+          ${badgeRow(item)}
+        </div>
+        <span class="expand-arrow"></span>
+      </summary>
+      ${bodyContent(item)}
+    </details>
+  `;
+}
+
+function renderCompact(item) {
+  return `
+    <details class="compact" data-id="${item.id}">
+      <summary>
+        <p class="rubrik">${item.rubrik}</p>
+        <p class="sammanfattning">${item.sammanfattning}</p>
+        <div class="meta-row">
+          <span class="kalla">${item.kalla}</span>
+          ${badgeRow(item)}
+        </div>
+        <span class="expand-arrow"></span>
+      </summary>
+      ${bodyContent(item)}
+    </details>
+  `;
+}
+
+function render() {
+  const dateLabel = document.getElementById('dateLabel');
+  dateLabel.textContent = fmtDate(DATA.genererad);
+
+  const chipNav = document.getElementById('chipNav');
+  const main = document.getElementById('main');
+  chipNav.innerHTML = '';
+  main.innerHTML = '';
+
+  CATEGORY_ORDER.forEach(cat => {
+    const items = DATA.kategorier[cat] || [];
+    if (items.length === 0) return;
+
+    chipNav.innerHTML += `<a href="#cat-${cat}">${CATEGORY_LABELS[cat]}<span class="count">${items.length}</span></a>`;
+
+    const featured = items.filter(i => i.bild);
+    const rest = items.filter(i => !i.bild);
+
+    const section = document.createElement('section');
+    section.className = 'category';
+    section.id = `cat-${cat}`;
+    section.innerHTML = `
+      <span class="kicker">Idag</span>
+      <h2>${CATEGORY_LABELS[cat]}</h2>
+      ${featured.map(renderFeatured).join('')}
+      ${rest.map(renderCompact).join('')}
+    `;
+    main.appendChild(section);
+  });
+
+  main.querySelectorAll('[data-rate]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const details = btn.closest('details');
+      const id = details.getAttribute('data-id');
+      const value = btn.getAttribute('data-rate');
+      const current = loadRatings()[id];
+      const next = current === value ? null : value;
+      saveRating(id, next);
+      render();
+    });
+  });
+}
+
+render();
+</script>
