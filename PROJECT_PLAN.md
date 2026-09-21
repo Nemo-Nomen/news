@@ -239,3 +239,19 @@ Ursprungliga alternativ (A: Claude-publicerad Artefakt, B: lokal statisk sida, C
 | Takeout-formatet ändras | Läsaren ska ge tydliga fel och ha tester |
 | **Datahygien** (tillagd 2026-09-20) | Rådatan (inkl. 3 GB mejl-mbox) ligger okrypterad utöver diskkryptering i `data/raw/takeout/`. FileVault bekräftat påslaget (kollat 2026-09-20: `fdesetup status` → On), vilket skyddar vid stöld/borttappad dator. Kvarstår: ingen fjärrkopia av repot (git har ingen remote) - en förlustrisk, inte en exponeringsrisk, om datorn dör. Best practice #11 ("Radera eller kryptera råfiler efter bearbetning") inte genomförd än |
 | **Kvot/tokenrisk för Fas 6** (tillagd 2026-09-20) | Fas 6:s omfattning växte under sessionen (dublettdetektering + källvinkel-bedömning + motargumentslogik + internationellt komplement + Gmail-sökning, alla LLM-baserade) jämfört med den enkla uppskattningen som gjordes tidigare ("några procent av veckokvoten"). Åtgärd: mät verkligt utfall från första skarpa körningen, inte bara uppskatta i förväg |
+
+## 9. Backlog
+
+**Nyhetskort v2 (design-prototypen, backlog-post tillagd 2026-09-21, ej påbörjad):** fyra ändringar av nyhetskorten i `web/preview.html`, Omni-inspirerat.
+
+1. **Längre förstanivå-sammanfattning.** `sammanfattning`-fältet (visas innan man klickar) blir ~3 meningar istället för dagens en rad. Ren schema-/kureringsprompt-ändring, inga öppna frågor.
+
+2. **Sammanslagen `las_mer`-text över flera källor.** Vid klick: en kuraterad text som väver ihop alla källor som rapporterat om händelsen (inte bara en artikels sammanfattning), ~30 sekunders läsning (~100-130 ord). Kräver att datamodellen kan hålla flera källor per nyhet (`kallor: [{kalla, lank}, ...]` istället för dagens enda `kalla`+`lank`). **Känd begränsning:** många kandidater bara har en källa - för dem blir "sammanslagen text" i praktiken samma som enkällig text, inget att bygga bort, bara att vänta sig.
+
+3. **Länkar till alla underliggande källor** i den expanderade vyn (följer direkt av punkt 2:s `kallor`-lista).
+
+4. **"Följ ämne"-knapp**, bredvid Relevant/Skippa fler. Diskuterat två varianter:
+   - *A (avfärdad):* begränsa till redan namngivna ämnen i `config/interests.yaml`. Tillför inget utöver befintlig intressepoängsättning - de ämnena är redan privilegierade av `poäng = intressematch × trend × färskhet`.
+   - **B (vald):** låt Fas 6:s kurering LLM-tagga varje nyhet med ett kanoniskt ämnesnamn (kollat mot en växande registrering av tidigare använda taggar, troligen en utökning av den befintliga trend-grupperingslogiken i `merge_candidates.py`/avsnitt 6), så att godtyckliga/oplanerade ämnen (t.ex. en enskild stor nyhetshändelse) kan följas, inte bara fördefinierade intressen.
+   
+   **Hård beroende, samma som feedback-rutan (avsnitt 7):** följda ämnen sparas i webbläsaren (`localStorage`/senare Supabase), men Fas 6:s kurering körs som ett schemalagt jobb utan åtkomst till webbläsarens lagring. Kureringen behöver läsa listan över följda ämnen från Supabase vid varje körning och sätta en `foljt_amne: true`-flagga på matchande nyheter (samma mönster som `nyhetsbrev`/`motargument`-flaggorna) - fuzzy-matchningen görs alltså av Claude under kureringen, inte av klientkoden. **Kan därför inte byggas före Supabase-steget (5)** - bör sekvenseras tillsammans med feedback-rutans Supabase-koppling, inte separat.
