@@ -1,0 +1,22 @@
+# Kända internationella källor med egna RSS-flöden, hämtas lokalt i
+# Fas 5 (gratis) och läggs i samma "internationellt"-pool som
+# finance-news-MCP:n skriver till. Går igenom NORMAL poängsättning
+# (till skillnad från newsletter_feeds.yaml som alltid tas med) -
+# det här är allmänna nyhetskällor, inte personliga prenumerationer.
+#
+# EFN saknar eget RSS-flöde (kollat 2026-09-21: 404, modern JS-sajt
+# utan feed) - dyker redan upp naturligt via Google Nyheter-sökningarna,
+# ingen åtgärd behövs.
+# Financial Times och Wall Street Journal hämtas via finance-news-MCP:n
+# istället (redan namngivna källor där) - ingen egen RSS-hämtning här
+# för att undvika dubbelarbete.
+
+ekonomi:
+  - namn: Washington Post (Business)
+    url: https://feeds.washingtonpost.com/rss/business
+
+politik:
+  - namn: Washington Post (Politics)
+    url: https://feeds.washingtonpost.com/rss/politics
+  - namn: Washington Post (World)
+    url: https://feeds.washingtonpost.com/rss/world

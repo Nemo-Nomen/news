@@ -1,0 +1,91 @@
+"""Hämtar kända internationella källors egna RSS-flöden
+(config/trusted_international_feeds.yaml) och lägger till dem i samma
+"internationellt"-pool som finance-news-MCP:n skriver till
+(data/profile/candidates_raw/<kategori>_internationellt.json).
+
+Till skillnad från nyhetsbreven (fetch_newsletter_feeds.py) går de här
+genom NORMAL poängsättning i merge_candidates.py - allmänna
+nyhetskällor, inte "alltid med"-signaler.
+
+Körs lokalt, gratis, ingen Claude behövs.
+"""
+
+import datetime
+import json
+import urllib.request
+import xml.etree.ElementTree as ET
+from email.utils import parsedate_to_datetime
+from pathlib import Path
+
+import yaml
+
+FEEDS_FILE = Path("config/trusted_international_feeds.yaml")
+RAW_DIR = Path("data/profile/candidates_raw")
+LOOKBACK_DAYS = 3
+
+
+def fetch_feed(url: str) -> list:
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (AxelNews RSS-läsare)"})
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        xml_bytes = resp.read()
+    root = ET.fromstring(xml_bytes)
+    items = []
+    for item in root.findall("./channel/item"):
+        title = item.findtext("title", "")
+        link = item.findtext("link", "")
+        pub_date_raw = item.findtext("pubDate", "")
+        try:
+            pub_date = parsedate_to_datetime(pub_date_raw)
+        except (TypeError, ValueError):
+            pub_date = None
+        items.append({"title": title, "link": link, "pub_date": pub_date})
+    return items
+
+
+def load_existing(path: Path) -> list:
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def main() -> None:
+    feeds_by_category = yaml.safe_load(FEEDS_FILE.read_text(encoding="utf-8")) or {}
+    cutoff = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=LOOKBACK_DAYS)
+
+    for category, feeds in feeds_by_category.items():
+        out_file = RAW_DIR / f"{category}_internationellt.json"
+        existing = load_existing(out_file)
+        seen_links = {i["link"] for i in existing}
+
+        for feed in feeds:
+            print(f"[{category}] Hämtar: {feed['namn']} ({feed['url']})")
+            try:
+                items = fetch_feed(feed["url"])
+            except Exception as exc:
+                print(f"  Fel: {exc}")
+                continue
+            new_count = 0
+            for item in items:
+                if not item["pub_date"] or item["pub_date"] < cutoff:
+                    continue
+                if item["link"] in seen_links:
+                    continue
+                seen_links.add(item["link"])
+                existing.append(
+                    {
+                        "title": item["title"],
+                        "link": item["link"],
+                        "source": feed["namn"],
+                        "pub_date": item["pub_date"].isoformat(),
+                    }
+                )
+                new_count += 1
+            print(f"  {new_count} nya senaste {LOOKBACK_DAYS} dagarna")
+
+        RAW_DIR.mkdir(parents=True, exist_ok=True)
+        out_file.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"Sparat: {out_file} ({len(existing)} totalt)")
+
+
+if __name__ == "__main__":
+    main()
