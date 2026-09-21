@@ -217,6 +217,8 @@ Ursprungliga alternativ (A: Claude-publicerad Artefakt, B: lokal statisk sida, C
 
 **Lösenordsskydd:** inte löst än - sidan visar kurerad profil och betyg (personlig preferensdata), bör inte vara helt öppen. Löses när sidan faktiskt byggs, inte en plattformsfunktion utan kod vi skriver själva/via Supabase Auth.
 
+**Börsticker (design-prototypen, beslutat 2026-09-21):** provade först ett eget schemalagt Claude Code-jobb som skrev en JSON-fil några gånger/dag - fungerande, men beroende av att Axels dator och Claude Code är igång, precis som Fas 6-begränsningen. Bytte istället till TradingViews gratis klientsidan-widget (`embed-widget-ticker-tape.js`, ingen nyckel, inget konto) inbäddad direkt i sidan - uppdateras i besökarens egen webbläsare, helt utan server eller schemaläggning. Symboler: OMXSTO:OMXS30, OMXSTO:HM_B, OANDA:USDSEK, CMCMARKETS:GOLD, BITSTAMP:BTCUSD. En egen fröad/simulerad ticker ligger kvar som fallback för de fall widget-scriptet blockeras (bara Claude-artefaktens CSP-sandlåda - vanlig webbläsare, inklusive `file://`, blockerar inte script-taggar).
+
 ## 8. Risker
 
 | Risk | Åtgärd |
