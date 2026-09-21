@@ -293,6 +293,109 @@
     padding: 8px 0 40px; line-height: 1.6;
   }
 
+  section.feedback {
+    border-top: 3px solid var(--rule);
+    padding-top: 18px;
+    margin-top: 6px;
+  }
+  section.feedback .kicker {
+    font-family: "Public Sans", Arial, sans-serif;
+    display: block;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 2px;
+  }
+  section.feedback h2 {
+    font-family: "PT Serif", Georgia, "Times New Roman", serif;
+    font-size: 22px; font-weight: 700; margin: 0 0 6px;
+  }
+  section.feedback .feedback-intro {
+    font-size: 13.5px; color: var(--text-secondary); line-height: 1.5;
+    margin: 0 0 14px;
+  }
+  .feedback-form textarea {
+    width: 100%;
+    font-family: "PT Serif", Georgia, serif;
+    font-size: 14px; line-height: 1.5; color: var(--text-primary);
+    background: var(--surface);
+    border: 1px solid var(--rule-light);
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 76px;
+  }
+  .feedback-form textarea:focus {
+    outline: none; border-color: var(--rule);
+  }
+  .feedback-form-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    margin-top: 8px; flex-wrap: wrap;
+  }
+  .feedback-status {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 11.5px; color: var(--text-muted);
+  }
+  .feedback-status.saved { color: var(--up); }
+  .btn-primary, .btn-secondary {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 8px 16px;
+    cursor: pointer;
+    border: 1px solid var(--tag-border);
+  }
+  .btn-primary {
+    background: var(--rating-on-bg); color: var(--rating-on-text);
+  }
+  .btn-secondary {
+    background: var(--surface); color: var(--text-primary);
+  }
+  .btn-secondary:hover { background: var(--surface-hover); }
+
+  .feedback-log {
+    margin-top: 20px;
+  }
+  .feedback-log-header {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    border-bottom: 1px solid var(--rule-light);
+    padding-bottom: 6px; margin-bottom: 4px;
+  }
+  .feedback-log-header .label {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .feedback-log-actions {
+    display: flex; gap: 14px;
+  }
+  .feedback-log-actions button {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+    background: none; border: none; color: var(--accent); cursor: pointer; padding: 0;
+  }
+  .feedback-empty {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 12px; color: var(--text-muted); padding: 10px 0;
+  }
+  .feedback-item {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule-light);
+  }
+  .feedback-item .fi-text {
+    font-size: 13.5px; line-height: 1.5; color: var(--text-primary);
+    white-space: pre-wrap;
+  }
+  .feedback-item .fi-date {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 10px; color: var(--text-muted); display: block; margin-top: 4px;
+  }
+  .feedback-item .fi-remove {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    background: none; border: none; color: var(--text-muted); cursor: pointer;
+    flex: none; padding: 0;
+  }
+  .feedback-item .fi-remove:hover { color: var(--down); }
+
   @media (max-width: 420px) {
     header.masthead h1 { font-size: 27px; }
     .thumb-wrap { width: 64px; height: 64px; }
@@ -322,6 +425,30 @@
   </header>
 
   <main id="main"></main>
+
+  <section class="feedback">
+    <span class="kicker meta-caps">Din åsikt</span>
+    <h2>Tyck till</h2>
+    <p class="feedback-intro">Något som känns fel, saknas eller borde se annorlunda ut? Skriv det här - det sparas i den här webbläsaren tills jag tar med det till Claude Code och uppdaterar sajten.</p>
+    <form class="feedback-form" id="feedbackForm">
+      <textarea id="feedbackText" placeholder="T.ex. &quot;För få nyheter i AI-kategorin&quot; eller &quot;Byt typsnitt på datumraden&quot;..." required></textarea>
+      <div class="feedback-form-row">
+        <button type="submit" class="btn-primary">Spara feedback</button>
+        <span class="feedback-status" id="feedbackStatus"></span>
+      </div>
+    </form>
+
+    <div class="feedback-log">
+      <div class="feedback-log-header">
+        <span class="label">Sparad feedback</span>
+        <div class="feedback-log-actions">
+          <button type="button" id="feedbackCopyAll">Kopiera allt</button>
+          <button type="button" id="feedbackClearAll">Rensa allt</button>
+        </div>
+      </div>
+      <div id="feedbackList"></div>
+    </div>
+  </section>
 
   <footer class="note">
     Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.<br>
@@ -737,6 +864,120 @@ function initTicker() {
   loadTickerData();
 }
 
+// "Tyck till"-rutan: sparar fritextfeedback i den här webbläsarens
+// localStorage (samma mönster som betygen ovan). Ingen backend finns
+// än, så detta är per enhet/webbläsare - "Kopiera allt" gör det enkelt
+// att ta med sig innehållet till nästa Claude Code-session ändå.
+const FEEDBACK_KEY = 'axelnews_feedback';
+
+function loadFeedback() {
+  try {
+    return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveFeedbackList(list) {
+  try {
+    localStorage.setItem(FEEDBACK_KEY, JSON.stringify(list));
+  } catch (e) {
+    // localStorage otillgängligt (privat läge e.d.) - kan inte spara
+  }
+}
+
+function fmtFeedbackDate(iso) {
+  try {
+    return new Date(iso).toLocaleString('sv-SE', { dateStyle: 'medium', timeStyle: 'short' });
+  } catch (e) {
+    return iso;
+  }
+}
+
+function renderFeedbackList() {
+  const list = loadFeedback();
+  const el = document.getElementById('feedbackList');
+  if (list.length === 0) {
+    el.innerHTML = '<p class="feedback-empty">Inget sparat än.</p>';
+    return;
+  }
+  el.innerHTML = list.slice().reverse().map(item => `
+    <div class="feedback-item">
+      <div>
+        <div class="fi-text">${item.text.replace(/</g, '&lt;')}</div>
+        <span class="fi-date">${fmtFeedbackDate(item.created)}</span>
+      </div>
+      <button type="button" class="fi-remove" data-remove="${item.id}">Ta bort</button>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-remove');
+      saveFeedbackList(loadFeedback().filter(i => i.id !== id));
+      renderFeedbackList();
+    });
+  });
+}
+
+function initFeedback() {
+  renderFeedbackList();
+
+  const form = document.getElementById('feedbackForm');
+  const textarea = document.getElementById('feedbackText');
+  const status = document.getElementById('feedbackStatus');
+  const showStatus = (text, ok) => {
+    status.textContent = text;
+    status.classList.toggle('saved', !!ok);
+    setTimeout(() => { status.textContent = ''; status.classList.remove('saved'); }, 3000);
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = textarea.value.trim();
+    if (!text) return;
+    const list = loadFeedback();
+    list.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      text,
+      created: new Date().toISOString()
+    });
+    saveFeedbackList(list);
+    textarea.value = '';
+    renderFeedbackList();
+    showStatus('Sparat.', true);
+  });
+
+  document.getElementById('feedbackCopyAll').addEventListener('click', async () => {
+    const list = loadFeedback();
+    if (list.length === 0) return;
+    const text = list.map(i => `[${fmtFeedbackDate(i.created)}] ${i.text}`).join('\n\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      showStatus('Kopierat till urklipp.', true);
+    } catch (e) {
+      showStatus('Kunde inte komma åt urklipp - markera och kopiera manuellt.', false);
+    }
+  });
+
+  let clearArmed = false;
+  const clearBtn = document.getElementById('feedbackClearAll');
+  clearBtn.addEventListener('click', () => {
+    if (loadFeedback().length === 0) return;
+    if (!clearArmed) {
+      clearArmed = true;
+      clearBtn.textContent = 'Säker? Klicka igen';
+      setTimeout(() => { clearArmed = false; clearBtn.textContent = 'Rensa allt'; }, 3000);
+      return;
+    }
+    clearArmed = false;
+    clearBtn.textContent = 'Rensa allt';
+    saveFeedbackList([]);
+    renderFeedbackList();
+  });
+}
+
 initTicker();
+initFeedback();
 render();
 </script>
