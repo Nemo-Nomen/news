@@ -1,0 +1,55 @@
+{
+  "genererad": "2026-09-21T20:47:53.299895",
+  "kategorier": {
+    "jobb": [],
+    "ekonomi": [
+      {
+        "id": "39280f060441",
+        "rubrik": "Fokus på upptrappningen i Iran",
+        "sammanfattning": "Kortsikt om geopolitikens effekt på marknaderna denna vecka.",
+        "las_mer": "En längre genomgång av hur situationen i Mellanöstern påverkar olje- och guldpriser, med historiska paralleller till tidigare kriser.",
+        "varfor_viktigt": "Från ditt nyhetsbrev Kortsikt - väger starkast av alla dina källor.",
+        "kalla": "Kortsikt",
+        "lank": "https://kortsikt.com/example",
+        "publicerad": "2026-09-21T20:47:53.299910",
+        "kategori": "ekonomi",
+        "nyhetsbrev": true,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": false
+      },
+      {
+        "id": "96796225ca1c",
+        "rubrik": "Schiff varnar för att tokeniserade aktier drar likviditet från Bitcoin",
+        "sammanfattning": "Peter Schiff ser en risk i den växande marknaden för tokeniserade tillgångar.",
+        "las_mer": "Schiff argumenterar att kapital som annars gått till kryptovalutor nu istället söker sig till tokeniserade traditionella tillgångar, vilket kan pressa priset på Bitcoin nedåt på kort sikt.",
+        "varfor_viktigt": "Ett motargument mot det mer optimistiska Bitcoin-sentimentet i dina andra källor den här veckan.",
+        "kalla": "Bitcoin News",
+        "lank": "https://example.com/schiff",
+        "publicerad": "2026-09-21T20:47:53.299913",
+        "kategori": "ekonomi",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": false,
+        "motargument": true
+      }
+    ],
+    "politik": [
+      {
+        "id": "22dd9a2b1e90",
+        "rubrik": "Grönland-kopplade aktier stiger efter Trumps säkerhetsbesked",
+        "sammanfattning": "Ovanligt stort internationellt intresse - ännu inte plockat upp av svensk media.",
+        "las_mer": "Flera internationella källor (Seeking Alpha, Bloomberg) rapporterar samtidigt om detta, men det syns ännu inte i de svenska källor vi bevakar.",
+        "varfor_viktigt": "Flaggad som stort utomlands men inte i Sverige än - värt att hålla koll på.",
+        "kalla": "Seeking Alpha",
+        "lank": "https://example.com/greenland",
+        "publicerad": "2026-09-21T20:47:53.299915",
+        "kategori": "politik",
+        "nyhetsbrev": false,
+        "stort_utomlands_ej_sverige": true,
+        "motargument": false
+      }
+    ],
+    "noje": [],
+    "ai": [],
+    "skvaller": []
+  }
+}
