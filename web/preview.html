@@ -112,20 +112,6 @@
   .ticker-item .t-chg.down { color: var(--down); }
   .ticker-item .t-chg.flat { color: var(--text-muted); }
 
-  .ticker-live {
-    border-bottom: 1px solid var(--rule-light);
-  }
-  .ticker-live[data-pending] {
-    position: absolute;
-    visibility: hidden;
-    width: 100%;
-    pointer-events: none;
-  }
-  .tradingview-widget-container,
-  .tradingview-widget-container__widget {
-    width: 100%;
-  }
-
   header.masthead {
     position: sticky; top: env(safe-area-inset-top, 0px);
     background: var(--bg);
@@ -317,12 +303,7 @@
 
 <h2 class="sr-only">Axel News, ett personligt kuraterat dagligt nyhetsbrev med sex kategorier: Jobb, Ekonomi, Politik, Nöje, AI och Skvaller, i Wall Street Journal-inspirerad design. Varje nyhet går att expandera för mer information och betygsätta.</h2>
 
-<div class="ticker-live" id="tickerLive" data-pending>
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget" id="tickerLiveWidget"></div>
-  </div>
-</div>
-<div class="ticker-bar" id="tickerBar" aria-label="Marknadsöversikt (exempelvärden)">
+<div class="ticker-bar" id="tickerBar" aria-label="Marknadsöversikt">
   <span class="ticker-caret" aria-hidden="true">&#9662;</span>
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
@@ -345,7 +326,7 @@
   <footer class="note">
     Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.<br>
     Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.<br>
-    Börstickern försöker ladda TradingViews riktiga, live uppdaterade widget (fungerar helt utan egen server) — i just den här förhandsvisningen är externa script blockerade så du ser istället en fröad exempelversion som simulerar rörelsen lokalt.
+    Börstickern hämtar riktiga kurser från web/ticker.json, uppdaterat av ett GitHub Actions-jobb på GitHub:s servrar (inte min dator) — fram tills sajten är deployad ser du fröade exempelvärden som simulerar rörelsen lokalt istället.
   </footer>
 </div>
 
@@ -678,15 +659,13 @@ function render() {
   });
 }
 
-// Fallback-ticker med fröade exempelvärden (hämtade manuellt 2026-09-21)
-// + lokal simulering. Visas direkt och tills/om TradingViews riktiga
-// live-widget (se initTicker) lyckas ladda - vilket den gör på en
-// riktig sajt, men inte i Claude-artifactens sandlåda eller i
-// file://-förhandsvisning där externa script är blockerade.
+// Fröade exempelvärden (hämtade manuellt 2026-09-21) + lokal simulering -
+// används tills/om web/ticker.json (se nedan) går att läsa.
 let TICKER_ITEMS = [
   { symbol: "OMXS30", price: 3307.02, baseline: 3264.33, decimals: 2 },
   { symbol: "H&M", price: 162.55, baseline: 162.50, decimals: 2 },
   { symbol: "USD/SEK", price: 9.8129, baseline: 9.8129, decimals: 2 },
+  { symbol: "EUR/SEK", price: 11.275, baseline: 11.275, decimals: 2 },
   { symbol: "GULD", price: 4390.80, baseline: 4424.90, decimals: 2 },
   { symbol: "BTC", price: 86505, baseline: 81291, decimals: 0 }
 ];
@@ -731,71 +710,31 @@ function startTickerJitter() {
   }, 2500);
 }
 
-// Riktig live-ticker: TradingViews Ticker Tape-widget (BTC, guld, OMXS30,
-// H&M, USD/SEK) - helt klientsidan, ingen egen server eller schemalagt
-// jobb behövs, uppdateras i besökarens webbläsare oavsett om min dator
-// är igång. Om widget-scriptet blockeras (Artifact-sandlådans CSP,
-// file://) ligger fallback-tickern ovan kvar synlig istället.
-function tryLoadLiveTicker() {
-  const liveWrap = document.getElementById('tickerLive');
-  const fallbackWrap = document.getElementById('tickerBar');
-  const widgetHost = document.getElementById('tickerLiveWidget');
-
-  const swapToLive = () => {
-    liveWrap.removeAttribute('data-pending');
-    fallbackWrap.hidden = true;
-    if (tickerJitterId) clearInterval(tickerJitterId);
-  };
-
-  // TradingViews klassiska ticker tape-widget - en smal, skrollande
-  // rad utan per-symbol-diagram (till skillnad från deras nyare
-  // webbkomponent, som renderar mycket större chart-kort). Widgeten
-  // behöver mätbar layout för att initiera - data-pending håller den
-  // kvar i flödet men osynlig (display:none hade gett nollhöjd och
-  // blockerat renderingen helt). Scriptet ERSÄTTER själva widgetHost-
-  // diven med en egen iframe (id:t på diven försvinner då med), så vi
-  // pollar på den stabila yttre wrappern (liveWrap) istället för att
-  // hålla kvar en referens till widgetHost.
-  let attempts = 0;
-  const poll = setInterval(() => {
-    attempts++;
-    if (liveWrap.querySelector('iframe')) {
-      clearInterval(poll);
-      swapToLive();
-    } else if (attempts > 16) {
-      clearInterval(poll);
+// web/ticker.json skrivs av src/fetch_ticker.py, körd av ett schemalagt
+// GitHub Actions-jobb (.github/workflows/update-ticker.yml, se den filen) -
+// inte beroende av att min egen dator är igång. Fetch:en funkar same-
+// origin på den riktiga sajten men är blockerad i Claude-artifactens
+// sandlåda och når ingen fil lokalt innan sajten är deployad - då
+// stannar tickern kvar på de fröade värdena + lokal simulering ovan.
+async function loadTickerData() {
+  try {
+    const resp = await fetch('ticker.json', { cache: 'no-store' });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (Array.isArray(data.items) && data.items.length) {
+        TICKER_ITEMS = data.items;
+        renderTicker();
+      }
     }
-  }, 500);
-
-  const explicitTheme = document.documentElement.getAttribute('data-theme');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const isDark = explicitTheme === 'dark' || (explicitTheme !== 'light' && prefersDark);
-
-  const script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
-  script.async = true;
-  script.text = JSON.stringify({
-    symbols: [
-      { proName: 'OMXSTO:OMXS30', title: 'OMXS30' },
-      { proName: 'OMXSTO:HM_B', title: 'H&M' },
-      { proName: 'OANDA:USDSEK', title: 'USD/SEK' },
-      { proName: 'CMCMARKETS:GOLD', title: 'GULD' },
-      { proName: 'BITSTAMP:BTCUSD', title: 'BTC' }
-    ],
-    showSymbolLogo: false,
-    isTransparent: true,
-    displayMode: 'compact',
-    colorTheme: isDark ? 'dark' : 'light',
-    locale: 'sv'
-  });
-  widgetHost.parentElement.appendChild(script);
+  } catch (e) {
+    // ticker.json inte nåbar - kör vidare med fröade värden + simulering
+  }
 }
 
 function initTicker() {
   renderTicker();
   startTickerJitter();
-  tryLoadLiveTicker();
+  loadTickerData();
 }
 
 initTicker();
