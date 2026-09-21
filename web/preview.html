@@ -88,16 +88,19 @@
   }
   header.masthead .title-row {
     display: flex; justify-content: center;
-    padding: 12px 0 2px;
+    padding: 14px 0 4px;
+    overflow: hidden;
   }
   header.masthead h1 {
-    font-family: "Playfair Display", Georgia, serif;
-    font-weight: 900; font-size: 42px; margin: 0;
+    font-family: "Abril Fatface", Georgia, serif;
+    font-weight: 400; font-size: 54px; margin: 0;
     text-transform: uppercase; letter-spacing: 0.005em;
-    text-align: center;
-    text-wrap: balance;
+    text-wrap: nowrap;
+    display: inline-block;
+    transform: scaleX(0.7);
+    transform-origin: center;
   }
-  header.masthead h1 .dot { color: var(--accent); }
+  header.masthead h1 .dot { color: var(--text-primary); }
   header.masthead .double-rule {
     margin-top: 6px;
     border-top: 3px solid var(--rule);
@@ -251,7 +254,7 @@
     .item-text .rubrik { font-size: 16px; }
   }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=PT+Serif:wght@400;700&family=Public+Sans:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=PT+Serif:wght@400;700&family=Public+Sans:wght@400;700&display=swap">
 
 <h2 class="sr-only">Axel News, ett personligt kuraterat dagligt nyhetsbrev med sex kategorier: Jobb, Ekonomi, Politik, Nöje, AI och Skvaller, i Wall Street Journal-inspirerad design. Varje nyhet går att expandera för mer information och betygsätta.</h2>
 
