@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Axel News</title>
 <style>
   :root {
@@ -656,7 +658,12 @@ function render() {
   });
 }
 
-const TICKER_ITEMS = [
+// Fröade exempelvärden (hämtade manuellt 2026-09-21) - används tills/om
+// web/ticker.json (skrivet av src/fetch_ticker.py, några ggr/dag) går
+// att läsa. Fetch är blockerad i Claude-artifactens sandlåda och i
+// file://-förhandsvisning, men fungerar same-origin på riktiga
+// GitHub Pages-sidan.
+let TICKER_ITEMS = [
   { symbol: "OMXS30", price: 3307.02, baseline: 3264.33, decimals: 2 },
   { symbol: "H&M", price: 162.55, baseline: 162.50, decimals: 2 },
   { symbol: "USD/SEK", price: 9.8129, baseline: 9.8129, decimals: 2 },
@@ -681,7 +688,7 @@ function updateTickerDom(idx) {
   chgEl.className = `t-chg ${dir}`;
 }
 
-function initTicker() {
+function renderTicker() {
   const track = document.getElementById('tickerTrack');
   track.innerHTML = TICKER_ITEMS.map((item, idx) => `
     <span class="ticker-item" data-idx="${idx}">
@@ -691,13 +698,32 @@ function initTicker() {
     </span>
   `).join('');
   TICKER_ITEMS.forEach((_, idx) => updateTickerDom(idx));
+}
 
+function startTickerJitter() {
   setInterval(() => {
     const idx = Math.floor(Math.random() * TICKER_ITEMS.length);
     const item = TICKER_ITEMS[idx];
     item.price = item.price * (1 + (Math.random() - 0.5) * 0.002);
     updateTickerDom(idx);
   }, 2500);
+}
+
+async function initTicker() {
+  renderTicker();
+  startTickerJitter();
+  try {
+    const resp = await fetch('ticker.json', { cache: 'no-store' });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (Array.isArray(data.items) && data.items.length) {
+        TICKER_ITEMS = data.items;
+        renderTicker();
+      }
+    }
+  } catch (e) {
+    // fetch blockerad (Artifact-sandlåda/file://) - kör vidare med fröade värden ovan
+  }
 }
 
 initTicker();
