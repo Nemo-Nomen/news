@@ -37,10 +37,25 @@
 #   (se config/interests.yaml) bättre än de källor som redan fanns.
 # Båda ger Atom-flöden, inte RSS 2.0 - fetch_trusted_international.py
 # uppdaterad 2026-09-22 för att tolka båda formaten.
+#
+# All-In Podcast (önskad källa, tillagd 2026-09-22): allin.com har
+# inget eget RSS-flöde (404 överallt), men det riktiga poddflödet
+# hittades via iTunes Search API (feedUrl-fältet för podcast-id
+# 1502871393, "All-In Podcast, LLC" - den officiella, inte de andra
+# ospårade träffarna i sökningen). Vanlig RSS 2.0, verifierad fungera
+# direkt med befintlig parser (427 poster). Lagd under ekonomi (VC/
+# makro/business är showens kärna) även om enskilda avsnitt ofta
+# handlar minst lika mycket om AI eller politik - flytta om det visar
+# sig missvisande i praktiken. OBS: poddavsnitt ger bara titel+länk
+# till avsnittssidan (samma som andra RSS-källor), ingen transkription
+# - kureringen får jobba med avsnittstiteln som kontext, som för
+# nyhetsbreven.
 
 ekonomi:
   - namn: Washington Post (Business)
     url: https://feeds.washingtonpost.com/rss/business
+  - namn: All-In Podcast
+    url: https://rss.libsyn.com/shows/254861/destinations/1928300.xml
 
 politik:
   - namn: Washington Post (Politics)
