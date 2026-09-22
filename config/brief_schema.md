@@ -24,6 +24,8 @@
 
 **`sammanfattning`** - ~3 meningar (tidigare en rad). Visas innan man klickar - ska ge en fullständig bild på egen hand, inte bara en rubrikförlängning.
 
+**Hård regel:** `las_mer` MÅSTE vara längre än `sammanfattning` och innehålla genuint nytt - fler detaljer, siffror, kontext eller konsekvenser - aldrig en kortare omskrivning eller upprepning av sammanfattningen. Poängen med att klicka är att få mer, inte mindre (bugg hittad och fixad 2026-09-22: flera `las_mer`-texter var kortare än den nya 3-menings-sammanfattningen efter att bara `sammanfattning` utökades).
+
 **`id`** = de första 12 tecknen av SHA-256(länken i `kallor[0].lank`, den primära/först hittade källan), hex. Deterministiskt - samma primärlänk ger alltid samma id, ingen databas eller state behövs för att räkna ut det. Gör det möjligt att koppla ett betyg till en artikel även om den dyker upp igen en annan vecka. Om `kallor[0]` byts (t.ex. en bättre källa hittas i efterhand) byts även id:t - accepterad avvägning, samma princip som redan gäller för länkbaserade id:n.
 
 **`kallor`** (tidigare enskilda fälten `kalla`/`lank`) - lista med minst ett objekt `{kalla, lank}`. Flera poster när dublettdetekteringen i kureringen (avsnitt 6 i `PROJECT_PLAN.md`) hittar samma händelse hos flera källor - då slås de ihop till EN nyhet med flera källor istället för flera separata nyheter. Sidan visar länkar till samtliga i den expanderade vyn.
