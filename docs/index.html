@@ -518,7 +518,7 @@
   </section>
 
   <footer class="note">
-    Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.<br>
+    <span id="dataSourceNote">Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.</span><br>
     Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.<br>
     Börstickern hämtar riktiga kurser från ticker.json, uppdaterat var 4:e timme av ett GitHub Actions-jobb på GitHub:s servrar (inte min dator).<br>
     <button type="button" id="authLogout" class="link-btn">Logga ut</button>
@@ -534,7 +534,11 @@ const SUPABASE_URL = 'https://obefdjxlvgjddwysqhum.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Fh4m74glekh0DLbXDLk3UQ_szRs4j7F';
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-const DATA = {
+// Fröad exempeldata - ersätts av loadBriefData() om Supabase har ett
+// riktigt brev (se showSite()). Ligger kvar som fallback om tabellen
+// är tom (skarpt kureringsjobb har inte körts än) eller Supabase inte
+// går att nå.
+let DATA = {
   "genererad": "2026-09-21T21:15:07.264245",
   "kategorier": {
     "jobb": [
@@ -1110,9 +1114,44 @@ function initFeedback() {
 // fil i docs/ - den måste läsas från en Supabase-tabell skyddad av
 // RLS som kräver en inloggad session, inte bara vara "gömd" bakom
 // den här inloggningsrutan.
-function showSite() {
+// Läser det riktiga, inloggningsskyddade brevet från Supabase (RLS
+// kräver en autentiserad session - klienten skickar automatiskt med
+// inloggningens token, ingen extra kod behövs för det). Byter ut den
+// fröade DATA bara om det faktiskt finns rader - annars ligger
+// exempeldatan kvar som fallback.
+async function loadBriefData() {
+  if (!supabaseClient) return;
+  try {
+    const { data, error } = await supabaseClient.from('brief_items').select('*');
+    if (error || !data || data.length === 0) return;
+    const kategorier = { jobb: [], ekonomi: [], politik: [], noje: [], ai: [], skvaller: [] };
+    let senast = null;
+    for (const row of data) {
+      if (!kategorier[row.kategori]) continue;
+      kategorier[row.kategori].push({
+        id: row.id, rubrik: row.rubrik, sammanfattning: row.sammanfattning,
+        las_mer: row.las_mer, varfor_viktigt: row.varfor_viktigt,
+        kallor: row.kallor, publicerad: row.publicerad,
+        nyhetsbrev: row.nyhetsbrev, stort_utomlands_ej_sverige: row.stort_utomlands_ej_sverige,
+        motargument: row.motargument, bild: row.bild
+      });
+      if (!senast || row.publicerad > senast) senast = row.publicerad;
+    }
+    Object.keys(kategorier).forEach(cat => {
+      kategorier[cat].sort((a, b) => (a.publicerad < b.publicerad ? 1 : -1));
+    });
+    DATA = { genererad: senast || new Date().toISOString(), kategorier };
+    const note = document.getElementById('dataSourceNote');
+    if (note) note.textContent = 'Riktigt kuraterat brev, uppdaterat ' + fmtDate(DATA.genererad) + '.';
+  } catch (e) {
+    console.warn('Kunde inte läsa riktig brevdata, visar exempeldata:', e);
+  }
+}
+
+async function showSite() {
   document.getElementById('authGate').hidden = true;
   document.getElementById('siteContent').hidden = false;
+  await loadBriefData();
   initTicker();
   initFeedback();
   render();

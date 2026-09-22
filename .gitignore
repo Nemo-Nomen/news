@@ -9,3 +9,4 @@ config/interests.yaml
 
 # Hemligheter — aldrig i repot
 config/.youtube_api_key
+config/.supabase_service_key
