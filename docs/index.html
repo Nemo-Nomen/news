@@ -1130,13 +1130,21 @@ async function initAuth() {
   authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     authError.textContent = '';
+    if (!supabaseClient) {
+      authError.textContent = 'Inloggningen har inte laddat klart än - vänta någon sekund och försök igen.';
+      return;
+    }
     const email = document.getElementById('authEmail').value.trim();
     const password = document.getElementById('authPassword').value;
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) {
-      authError.textContent = 'Fel e-post eller lösenord.';
-    } else {
-      showSite();
+    try {
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        authError.textContent = 'Fel e-post eller lösenord.';
+      } else {
+        showSite();
+      }
+    } catch (err) {
+      authError.textContent = 'Något gick fel - kontrollera nätverksanslutningen och försök igen.';
     }
   });
 
