@@ -414,6 +414,7 @@
   }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=PT+Serif:wght@400;700&family=Public+Sans:wght@400;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
 <h2 class="sr-only">Axel News, ett personligt kuraterat dagligt nyhetsbrev med sex kategorier: Jobb, Ekonomi, Politik, Nöje, AI och Skvaller, i Wall Street Journal-inspirerad design. Varje nyhet går att expandera för mer information och betygsätta.</h2>
 
@@ -469,6 +470,13 @@
 </div>
 
 <script>
+// Supabase - skrivåtkomst bara (RLS-policy tillåter enbart insert för
+// anon-rollen, se config/brief_schema.md). publishable key är säker
+// att exponera i klientkod, det är hela poängen med den.
+const SUPABASE_URL = 'https://obefdjxlvgjddwysqhum.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Fh4m74glekh0DLbXDLk3UQ_szRs4j7F';
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 const DATA = {
   "genererad": "2026-09-21T21:15:07.264245",
   "kategorier": {
@@ -706,6 +714,16 @@ function saveRating(id, value) {
     r[id] = value;
     localStorage.setItem('axelnews_ratings', JSON.stringify(r));
   } catch (e) {}
+
+  // Skickar bara en rad vid en faktisk betygsättning (inte när man
+  // klickar ur den) - historik, inte aktuellt-state (se
+  // config/brief_schema.md). Best effort: sajten ska fungera även om
+  // detta misslyckas (offline, Supabase nere etc).
+  if (supabaseClient && (value === 'upp' || value === 'ner')) {
+    supabaseClient.from('ratings').insert({ item_id: id, betyg: value }).then(({ error }) => {
+      if (error) console.warn('Kunde inte spara betyg till Supabase:', error.message);
+    });
+  }
 }
 
 function tagRow(item) {
@@ -987,6 +1005,15 @@ function initFeedback() {
     textarea.value = '';
     renderFeedbackList();
     showStatus('Sparat.', true);
+
+    // localStorage ovan är den lokala kön/fallbacken - detta är den
+    // riktiga, Claude-läsbara lagringen. Best effort: sparas lokalt
+    // oavsett om det här misslyckas.
+    if (supabaseClient) {
+      supabaseClient.from('feedback').insert({ text }).then(({ error }) => {
+        if (error) console.warn('Kunde inte spara feedback till Supabase:', error.message);
+      });
+    }
   });
 
   document.getElementById('feedbackCopyAll').addEventListener('click', async () => {
