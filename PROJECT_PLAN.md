@@ -242,15 +242,15 @@ Ursprungliga alternativ (A: Claude-publicerad Artefakt, B: lokal statisk sida, C
 
 ## 9. Backlog
 
-**Nyhetskort v2 (design-prototypen, backlog-post tillagd 2026-09-21, ej påbörjad):** fyra ändringar av nyhetskorten i `web/preview.html`, Omni-inspirerat.
+**Nyhetskort v2 (design-prototypen, backlog-post tillagd 2026-09-21):** fyra ändringar av nyhetskorten i `web/preview.html`, Omni-inspirerat.
 
-1. **Längre förstanivå-sammanfattning.** `sammanfattning`-fältet (visas innan man klickar) blir ~3 meningar istället för dagens en rad. Ren schema-/kureringsprompt-ändring, inga öppna frågor.
+1. **✅ Klart 2026-09-22. Längre förstanivå-sammanfattning.** `sammanfattning`-fältet (visas innan man klickar) är nu ~3 meningar istället för en rad. Uppdaterat i `config/brief_schema.md`, exempeldatan i `web/preview.html` och kureringsinstruktionen i det schemalagda jobbet (`axel-news-brief`).
 
-2. **Sammanslagen `las_mer`-text över flera källor.** Vid klick: en kuraterad text som väver ihop alla källor som rapporterat om händelsen (inte bara en artikels sammanfattning), ~30 sekunders läsning (~100-130 ord). Kräver att datamodellen kan hålla flera källor per nyhet (`kallor: [{kalla, lank}, ...]` istället för dagens enda `kalla`+`lank`). **Känd begränsning:** många kandidater bara har en källa - för dem blir "sammanslagen text" i praktiken samma som enkällig text, inget att bygga bort, bara att vänta sig.
+2. **✅ Klart 2026-09-22. Sammanslagen `las_mer`-text över flera källor.** Vid klick: en kuraterad text som väver ihop alla källor som rapporterat om händelsen (inte bara en artikels sammanfattning), ~30 sekunders läsning (~100-130 ord). Datamodellen håller nu flera källor per nyhet (`kallor: [{kalla, lank}, ...]` istället för det gamla enda `kalla`+`lank`-paret). **Känd begränsning, kvarstår:** många kandidater har bara en källa - för dem blir "sammanslagen text" i praktiken samma som enkällig text, inget att bygga bort, bara att vänta sig.
 
-3. **Länkar till alla underliggande källor** i den expanderade vyn (följer direkt av punkt 2:s `kallor`-lista).
+3. **✅ Klart 2026-09-22. Länkar till alla underliggande källor** i den expanderade vyn - en `KÄLLOR (n)`-lista med länk till varje `kallor`-post, singular `KÄLLA` när det bara finns en.
 
-4. **"Följ ämne"-knapp**, bredvid Relevant/Skippa fler. Diskuterat två varianter:
+4. **Ej byggd - hårt Supabase-beroende. "Följ ämne"-knapp**, bredvid Relevant/Skippa fler. Diskuterat två varianter:
    - *A (avfärdad):* begränsa till redan namngivna ämnen i `config/interests.yaml`. Tillför inget utöver befintlig intressepoängsättning - de ämnena är redan privilegierade av `poäng = intressematch × trend × färskhet`.
    - **B (vald):** låt Fas 6:s kurering LLM-tagga varje nyhet med ett kanoniskt ämnesnamn (kollat mot en växande registrering av tidigare använda taggar, troligen en utökning av den befintliga trend-grupperingslogiken i `merge_candidates.py`/avsnitt 6), så att godtyckliga/oplanerade ämnen (t.ex. en enskild stor nyhetshändelse) kan följas, inte bara fördefinierade intressen.
    

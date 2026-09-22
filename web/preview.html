@@ -260,8 +260,19 @@
     font-weight: 700; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
     display: block; margin-bottom: 3px; color: var(--text-primary);
   }
+  .sources-block {
+    margin: 0 0 14px;
+  }
+  .sources-label {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-weight: 700; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
+    display: block; margin-bottom: 5px; color: var(--text-muted);
+  }
+  .sources-links {
+    display: flex; flex-wrap: wrap; gap: 6px 16px;
+  }
   .footer-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap;
   }
   .source-link {
     font-family: "Public Sans", Arial, sans-serif;
@@ -465,11 +476,13 @@ const DATA = {
       {
         "id": "e6144ddb7d7c",
         "rubrik": "H&M:s tremånadersrapport slog förväntan",
-        "sammanfattning": "Rörelseresultatet landade över analytikerkonsensus, driven av lägre lagernivåer.",
-        "las_mer": "Rapporten visar en förbättrad bruttomarginal för tredje kvartalet i rad. Ledningen pekar särskilt ut Kina och USA som marknader där omstruktureringen börjar synas i siffrorna, samtidigt som antalet fysiska butiker fortsätter minska till förmån för e-handel.",
+        "sammanfattning": "Rörelseresultatet landade över analytikerkonsensus för tredje kvartalet i rad, driven av lägre lagernivåer och en förbättrad bruttomarginal. Ledningen pekar särskilt ut Kina och USA som marknader där omstruktureringen börjar synas i siffrorna. Samtidigt fortsätter antalet fysiska butiker minska till förmån för e-handel, en trend som väntas hålla i sig in i nästa år.",
+        "las_mer": "Bruttomarginalen förbättrades för tredje kvartalet i rad, och både bolagets egen rapport och den efterföljande analytikerbevakningen pekar ut samma två förklaringar: lägre lagernivåer efter förra årets omstrukturering, och en starkare utveckling i Kina och USA än väntat. Analytiker som kommenterat rapporten lyfter särskilt att marginalförbättringen ser ut att vara strukturell snarare än en engångseffekt av lageravveckling, vilket är det som fått aktien att röra sig mest. Antalet fysiska butiker fortsätter minska i takt med att e-handeln tar större andel - en utveckling ledningen själva beskriver som medveten, inte ett tecken på svaghet.",
         "varfor_viktigt": "Din primära bevakning - kvartalsrapport räcker som tröskel enligt din regel.",
-        "kalla": "H&M Group Newsroom",
-        "lank": "https://hmgroup.com/example",
+        "kallor": [
+          { "kalla": "H&M Group Newsroom", "lank": "https://hmgroup.com/example" },
+          { "kalla": "Dagens industri", "lank": "https://di.se/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264256",
         "kategori": "jobb",
         "nyhetsbrev": false,
@@ -480,11 +493,12 @@ const DATA = {
       {
         "id": "4af3b591cc19",
         "rubrik": "Inditex stark höststart trots europeisk värmebölja",
-        "sammanfattning": "Zara-ägaren rapporterar +9% i försäljning augusti-september.",
+        "sammanfattning": "Zara-ägaren rapporterar +9% i försäljning för perioden augusti-september, klart över branschsnittet trots en ovanligt varm start på hösten i stora delar av Europa. Bolaget fortsätter sin expansion i USA med nya Bershka- och Massimo Dutti-butiker. Samtidigt investeras rekordbelopp i logistik för att korta leveranstiderna, en direkt respons på konkurrensen från H&M.",
         "las_mer": "Inditex fortsätter sin expansion i USA med nya Bershka- och Massimo Dutti-butiker, samtidigt som bolaget investerar rekordbelopp i logistik för att korta leveranstiderna mot H&M.",
         "varfor_viktigt": "Primär konkurrent - direkt jämförbar strategi och tidsperiod med H&M:s rapport.",
-        "kalla": "WWD",
-        "lank": "https://wwd.com/example",
+        "kallor": [
+          { "kalla": "WWD", "lank": "https://wwd.com/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264259",
         "kategori": "jobb",
         "nyhetsbrev": false,
@@ -497,11 +511,12 @@ const DATA = {
       {
         "id": "39280f060441",
         "rubrik": "Fokus på upptrappningen i Iran",
-        "sammanfattning": "Kortsikt om geopolitikens effekt på marknaderna denna vecka.",
+        "sammanfattning": "Kortsikt om geopolitikens effekt på marknaderna denna vecka, med särskilt fokus på hur situationen i Mellanöstern påverkar olje- och guldpriser. Historiska paralleller dras till tidigare kriser i regionen för att bedöma hur uthållig den senaste prisrörelsen är. Slutsatsen är att riskpremien sannolikt består så länge läget förblir olöst, snarare än att snabbt reversera som vid tidigare, kortare upptrappningar.",
         "las_mer": "En längre genomgång av hur situationen i Mellanöstern påverkar olje- och guldpriser, med historiska paralleller till tidigare kriser och en bedömning av hur uthållig prisrörelsen är.",
         "varfor_viktigt": "Från ditt nyhetsbrev Kortsikt - väger starkast av alla dina källor.",
-        "kalla": "Kortsikt",
-        "lank": "https://kortsikt.com/example",
+        "kallor": [
+          { "kalla": "Kortsikt", "lank": "https://kortsikt.com/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264261",
         "kategori": "ekonomi",
         "nyhetsbrev": true,
@@ -512,11 +527,12 @@ const DATA = {
       {
         "id": "d031299a4ae4",
         "rubrik": "Nordiska fastighetsaffärer upp 36 procent",
-        "sammanfattning": "Sverige bär hela lyftet i regionen enligt ny sammanställning.",
+        "sammanfattning": "Sverige bär hela lyftet i regionen enligt en ny sammanställning av transaktionsvolymer för kommersiella fastigheter. Ökningen är koncentrerad till Stockholmsregionen, som sticker ut som den klart starkaste enskilda marknaden i Norden under tredje kvartalet. Övriga nordiska huvudstäder visar en betydligt svagare eller till och med negativ utveckling under samma period.",
         "las_mer": "Transaktionsvolymen för kommersiella fastigheter i Norden steg kraftigt under tredje kvartalet, med Stockholmsregionen som starkaste enskilda marknad.",
         "varfor_viktigt": "Matchar din bevakning av fastighetsmarknaden i Stockholm.",
-        "kalla": "Börskollen",
-        "lank": "https://borskollen.se/example",
+        "kallor": [
+          { "kalla": "Börskollen", "lank": "https://borskollen.se/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264263",
         "kategori": "ekonomi",
         "nyhetsbrev": false,
@@ -527,11 +543,12 @@ const DATA = {
       {
         "id": "96796225ca1c",
         "rubrik": "Schiff varnar för att tokeniserade aktier drar likviditet från Bitcoin",
-        "sammanfattning": "Peter Schiff ser en risk i den växande marknaden för tokeniserade tillgångar.",
+        "sammanfattning": "Peter Schiff ser en risk i den växande marknaden för tokeniserade tillgångar och argumenterar att kapital som annars gått till kryptovalutor nu istället söker sig dit. Det kan enligt honom pressa priset på Bitcoin nedåt på kort sikt. Perspektivet utmanar veckans mer optimistiska röster i dina andra källor, vilket gör det till ett relevant motargument snarare än bara ännu en Bitcoin-analys.",
         "las_mer": "Schiff argumenterar att kapital som annars gått till kryptovalutor nu istället söker sig till tokeniserade traditionella tillgångar, vilket kan pressa priset på Bitcoin nedåt på kort sikt - ett perspektiv som utmanar veckans mer optimistiska röster.",
         "varfor_viktigt": "Ett aktivt sökt motargument mot det mer optimistiska Bitcoin-sentimentet i dina andra källor den här veckan.",
-        "kalla": "Bitcoin News",
-        "lank": "https://example.com/schiff",
+        "kallor": [
+          { "kalla": "Bitcoin News", "lank": "https://example.com/schiff" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264264",
         "kategori": "ekonomi",
         "nyhetsbrev": false,
@@ -544,11 +561,13 @@ const DATA = {
       {
         "id": "22dd9a2b1e90",
         "rubrik": "Grönland-kopplade aktier stiger efter Trumps säkerhetsbesked",
-        "sammanfattning": "Ovanligt stort internationellt intresse - ännu inte plockat upp av svensk media.",
-        "las_mer": "Flera internationella källor (Seeking Alpha, Bloomberg) rapporterar samtidigt om detta, men det syns ännu inte i de svenska källor vi bevakar - ett tidigt tecken värt att hålla koll på.",
+        "sammanfattning": "Ovanligt stort internationellt intresse kring beskedet - flera stora källor rapporterar samtidigt, men det syns ännu inte i de svenska källor vi bevakar. Kursrörelserna är koncentrerade till bolag med gruv- och mineralrättigheter på ön. Ett tidigt tecken värt att hålla koll på innan det når svensk press.",
+        "las_mer": "Både Seeking Alpha och Bloomberg rapporterade samtidigt om säkerhetsbeskedet, och båda pekar ut samma sak: det är gruv- och mineralbolag med rättigheter på Grönland som rört sig mest, snarare än en bred uppgång i Grönland-relaterade aktier. Bloomberg lägger till kontexten att beskedet kommer efter månader av bakgrundsförhandlingar som inte varit offentliga, vilket förklarar varför reaktionen kom så plötsligt. Ingen av de svenska källor vi bevakar har ännu skrivit om det - ett tidigt tecken värt att hålla koll på under de kommande dagarna.",
         "varfor_viktigt": "Flaggad som stort utomlands men inte i Sverige än.",
-        "kalla": "Seeking Alpha",
-        "lank": "https://example.com/greenland",
+        "kallor": [
+          { "kalla": "Seeking Alpha", "lank": "https://example.com/greenland" },
+          { "kalla": "Bloomberg", "lank": "https://bloomberg.com/example-greenland" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264266",
         "kategori": "politik",
         "nyhetsbrev": false,
@@ -559,11 +578,13 @@ const DATA = {
       {
         "id": "1d3ce2d8239d",
         "rubrik": "Riksbanken lämnar räntan oförändrad",
-        "sammanfattning": "Augustis inflationssiffror gjorde att marknaden övergav höjningsscenariot helt.",
-        "las_mer": "KPIF-inflationen kom in på 0,7 procent, klart under Riksbankens junisprognos. Nästa penningpolitiska rapport väntas den 24 september med en uppdaterad bedömning av räntebanan.",
+        "sammanfattning": "Augustis inflationssiffror gjorde att marknaden övergav höjningsscenariot helt inför räntebeskedet. KPIF-inflationen kom in på 0,7 procent, klart under Riksbankens egen junisprognos. Nästa penningpolitiska rapport väntas den 24 september med en uppdaterad bedömning av räntebanan, där en sänkning nu ses som mer sannolik än en fortsatt paus.",
+        "las_mer": "KPIF-inflationen kom in på 0,7 procent, klart under Riksbankens junisprognos, vilket var det som fick marknaden att helt prisa ut en höjning inför mötet. Riksbankens eget pressmeddelande pekar på en svagare arbetsmarknad och dämpade löneökningar som ytterligare skäl att avvakta, snarare än att agera på inflationssiffran isolerat. Den efterföljande nyhetsbevakningen noterar att detta är tredje mötet i rad utan förändring, och att tonläget i kommunikationen skiftat mot en öppning för sänkning vid nästa rapport den 24 september.",
         "varfor_viktigt": "Makroekonomi/policy på Sverige-nivå, enligt din definition av kategorin.",
-        "kalla": "Sveriges Riksbank",
-        "lank": "https://riksbank.se/example",
+        "kallor": [
+          { "kalla": "Sveriges Riksbank (pressmeddelande)", "lank": "https://riksbank.se/example" },
+          { "kalla": "Dagens industri", "lank": "https://di.se/example-riksbanken" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264268",
         "kategori": "politik",
         "nyhetsbrev": false,
@@ -576,11 +597,13 @@ const DATA = {
       {
         "id": "63a33f1ebc8b",
         "rubrik": "Apples \"Surprise and Shine\"-event: iPhone 18 Pro och en vikbar Duo",
-        "sammanfattning": "Nya AirPods 5, Apple Watch Series 12 och Ultra 4 presenterades samtidigt.",
-        "las_mer": "Den vikbara \"iPhone Duo\" med två skärmar blev den stora överraskningen - förhandsbeställning öppnar i oktober. iPhone 18 Pro får A20 Pro-chippet och förbättrad kylning.",
+        "sammanfattning": "Nya AirPods 5, Apple Watch Series 12 och Ultra 4 presenterades samtidigt som huvudnyheten - en vikbar iPhone. iPhone 18 Pro får det nya A20 Pro-chippet och en förbättrad kylning för att hantera prestandan. Förhandsbeställning av samtliga produkter öppnar i oktober, med leveransstart strax innan jul.",
+        "las_mer": "Den vikbara \"iPhone Duo\" med två skärmar blev den stora överraskningen på eventet enligt de flesta bevakande källor, och förhandsbeställning öppnar redan i oktober. iPhone 18 Pro får A20 Pro-chippet och en märkbart förbättrad kylning, vilket flera källor kopplar till de nya AI-funktionerna som kräver mer lokal beräkningskraft. AirPods 5 och de uppdaterade klockorna fick betydligt mindre uppmärksamhet i bevakningen, trots egna hårdvaruförbättringar, eftersom den vikbara telefonen dominerade nyhetscykeln helt.",
         "varfor_viktigt": "Matchar ditt intresse för Apple/teknikprylar.",
-        "kalla": "MacRumors",
-        "lank": "https://macrumors.com/example",
+        "kallor": [
+          { "kalla": "MacRumors", "lank": "https://macrumors.com/example" },
+          { "kalla": "9to5Mac", "lank": "https://9to5mac.com/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264273",
         "kategori": "noje",
         "nyhetsbrev": false,
@@ -591,11 +614,12 @@ const DATA = {
       {
         "id": "1f8a9a5e1b5c",
         "rubrik": "Volvo lanserar 13 helt nya bilar - största satsningen i märkets historia",
-        "sammanfattning": "En strategisk helomvändning mot fler modeller på kortare tid.",
+        "sammanfattning": "En strategisk helomvändning mot fler modeller på kortare tid, med 13 nya bilar aviserade på en och samma gång. Satsningen omfattar både helt nya elbilsmodeller och uppdaterade klassiker i den befintliga line-upen. Första leveranserna väntas redan under första kvartalet nästa år, ett ovanligt kort intervall för en så stor produktlansering.",
         "las_mer": "Satsningen omfattar både helt nya elbilsmodeller och uppdaterade klassiker, med första leveranser redan under första kvartalet nästa år.",
         "varfor_viktigt": "Matchar ditt bilintresse - stor, sammanhållen nyhet snarare än en enskild recension.",
-        "kalla": "Metro Mode",
-        "lank": "https://example.com/volvo13",
+        "kallor": [
+          { "kalla": "Metro Mode", "lank": "https://example.com/volvo13" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264275",
         "kategori": "noje",
         "nyhetsbrev": false,
@@ -608,11 +632,12 @@ const DATA = {
       {
         "id": "9f6191a0bae8",
         "rubrik": "Salesforce lanserar sju namngivna Agentforce-AI-agenter",
-        "sammanfattning": "Varje agent byggd för en specifik affärsfunktion - sälj, service, ekonomi.",
+        "sammanfattning": "Varje agent är byggd för en specifik affärsfunktion - sälj, service, ekonomi - och opererar inom företagets befintliga regler och behörigheter. Analytiker spår att 40 procent av alla företagsapplikationer kommer ha uppgiftsspecifika AI-agenter vid årsskiftet. Det är upp från under 5 procent förra året, en av de snabbaste adoptionstakterna som mätts för ny företagsmjukvara.",
         "las_mer": "Agenterna opererar inom företagets befintliga regler och behörigheter. Analytiker spår att 40 procent av alla företagsapplikationer har uppgiftsspecifika AI-agenter vid årsskiftet, upp från under 5 procent förra året.",
         "varfor_viktigt": "Exakt din vinkel - hur företag applicerar/transformerar med AI.",
-        "kalla": "Writer.com",
-        "lank": "https://writer.com/example",
+        "kallor": [
+          { "kalla": "Writer.com", "lank": "https://writer.com/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264277",
         "kategori": "ai",
         "nyhetsbrev": false,
@@ -623,11 +648,12 @@ const DATA = {
       {
         "id": "d450573a20fd",
         "rubrik": "Dansk läkemedelsjätte samarbetar med amerikanskt AI-företag",
-        "sammanfattning": "Målet är att korta utvecklingstiden för nya läkemedelskandidater.",
+        "sammanfattning": "Målet är att korta utvecklingstiden för nya läkemedelskandidater genom att använda maskininlärning tidigare i processen. Samarbetet fokuserar på att identifiera lovande molekyler innan traditionell laboratorietestning inleds. Det kan enligt bolagen spara flera års utvecklingstid per läkemedel, vilket vore en betydande kostnadsbesparing i en bransch där utveckling ofta tar över ett decennium.",
         "las_mer": "Samarbetet fokuserar på att använda maskininlärning för att identifiera lovande molekyler tidigare i processen, vilket kan spara flera års utvecklingstid per läkemedel.",
         "varfor_viktigt": "Konkret exempel på AI-tillämpning i en etablerad bransch.",
-        "kalla": "Dagens.se",
-        "lank": "https://dagens.se/example",
+        "kallor": [
+          { "kalla": "Dagens.se", "lank": "https://dagens.se/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264278",
         "kategori": "ai",
         "nyhetsbrev": false,
@@ -640,11 +666,12 @@ const DATA = {
       {
         "id": "ce83203fb13e",
         "rubrik": "\"Lex Bianca\" - Liberalerna vill se ny lagstiftning",
-        "sammanfattning": "Ett politikförslag uppkallat efter en tidigare uppmärksammad kändishändelse.",
+        "sammanfattning": "Ett politikförslag uppkallat efter en tidigare uppmärksammad kändishändelse har väckt debatt inför valet. Förslaget kopplar en enskild persons upplevelse till en konkret lagändring, ett grepp som både fått stöd och kritiserats som populistiskt. Partiet självt beskriver namnvalet som medvetet för att göra en annars teknisk lagfråga mer begriplig för väljarna.",
         "las_mer": "Förslaget har väckt debatt för sin ovanliga koppling mellan en enskild persons upplevelse och ett konkret lagförslag inför valet.",
         "varfor_viktigt": "Matchar ditt intresse enligt historiken kring namnet Bianca.",
-        "kalla": "SVT Nyheter",
-        "lank": "https://svt.se/example",
+        "kallor": [
+          { "kalla": "SVT Nyheter", "lank": "https://svt.se/example" }
+        ],
         "publicerad": "2026-09-21T21:15:07.264280",
         "kategori": "skvaller",
         "nyhetsbrev": false,
@@ -701,6 +728,12 @@ function ratingButtons(item, ratings) {
   `;
 }
 
+function sourceLinksMarkup(item) {
+  return item.kallor.map(k =>
+    `<a class="source-link" href="${k.lank}" target="_blank" rel="noopener">${k.kalla} &rarr;</a>`
+  ).join('');
+}
+
 function bodyContent(item) {
   return `
     <div class="body-text">
@@ -709,8 +742,11 @@ function bodyContent(item) {
         <span class="label">Varför du får den</span>
         ${item.varfor_viktigt}
       </div>
+      <div class="sources-block">
+        <span class="sources-label">${item.kallor.length > 1 ? `Källor (${item.kallor.length})` : 'Källa'}</span>
+        <div class="sources-links">${sourceLinksMarkup(item)}</div>
+      </div>
       <div class="footer-row">
-        <a class="source-link" href="${item.lank}" target="_blank" rel="noopener">Läs originalet &rarr;</a>
         ${ratingButtons(item, loadRatings())}
       </div>
     </div>
@@ -725,6 +761,11 @@ function thumbMarkup(item) {
   return `<div class="thumb-wrap"><img src="${item.bild}" alt="" loading="lazy"></div>`;
 }
 
+function metaKallaLabel(item) {
+  const first = item.kallor[0].kalla;
+  return item.kallor.length > 1 ? `${first} m.fl. (${item.kallor.length} källor)` : first;
+}
+
 function renderItem(item) {
   return `
     <details class="item" data-id="${item.id}">
@@ -734,7 +775,7 @@ function renderItem(item) {
           <p class="rubrik">${item.rubrik}</p>
           <p class="sammanfattning">${item.sammanfattning}</p>
           <div class="meta-row">
-            <span class="kalla">${item.kalla}</span>
+            <span class="kalla">${metaKallaLabel(item)}</span>
             ${tagRow(item)}
           </div>
           <span class="expand-arrow"></span>

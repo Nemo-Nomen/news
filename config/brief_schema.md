@@ -6,11 +6,13 @@
 {
   "id": "a3f9c1e2b7d4",
   "rubrik": "Riksbanken höjer inte i september",
-  "sammanfattning": "Inflationen kom in lägre än väntat - marknaden slutade nästan helt prisa in en höjning.",
-  "las_mer": "En längre paragraf med mer sammanhang - vad som hänt, vilka källor som rapporterat det, eventuella olika vinklar.",
+  "sammanfattning": "Inflationen kom in lägre än väntat under augusti, vilket fick marknaden att nästan helt prisa ut en höjning inför mötet. Riksbanken själv pekade på en svagare arbetsmarknad och dämpade löneökningar som ytterligare skäl att avvakta. Nästa penningpolitiska besked väntas i november, med öppning för en sänkning om inflationen fortsätter ner.",
+  "las_mer": "En kuraterad text (~30 sekunders läsning, ~100-130 ord) som väver ihop ALLA källor i `kallor` nedan - inte bara den första. Ska läsas som en sammanhållen artikel, inte en lista av separata källsammanfattningar: vad som hänt, eventuella olika vinklar mellan källorna, och varför det är läsvärt. Om bara en källa finns blir texten i praktiken enkällig - inget att sammanställa, det är förväntat, inte ett fel.",
   "varfor_viktigt": "En rad om varför just den här personen får den här nyheten - kopplat till profilen (t.ex. 'matchar ditt intresse för Riksbanken/makroekonomi').",
-  "kalla": "Dagens industri",
-  "lank": "https://...",
+  "kallor": [
+    { "kalla": "Dagens industri", "lank": "https://..." },
+    { "kalla": "Riksbanken (pressmeddelande)", "lank": "https://..." }
+  ],
   "publicerad": "2026-09-21T08:00:00+02:00",
   "kategori": "politik",
   "nyhetsbrev": false,
@@ -20,7 +22,11 @@
 }
 ```
 
-**`id`** = de första 12 tecknen av SHA-256(`lank`), hex. Deterministiskt - samma länk ger alltid samma id, ingen databas eller state behövs för att räkna ut det. Gör det möjligt att koppla ett betyg till en artikel även om den dyker upp igen en annan vecka.
+**`sammanfattning`** - ~3 meningar (tidigare en rad). Visas innan man klickar - ska ge en fullständig bild på egen hand, inte bara en rubrikförlängning.
+
+**`id`** = de första 12 tecknen av SHA-256(länken i `kallor[0].lank`, den primära/först hittade källan), hex. Deterministiskt - samma primärlänk ger alltid samma id, ingen databas eller state behövs för att räkna ut det. Gör det möjligt att koppla ett betyg till en artikel även om den dyker upp igen en annan vecka. Om `kallor[0]` byts (t.ex. en bättre källa hittas i efterhand) byts även id:t - accepterad avvägning, samma princip som redan gäller för länkbaserade id:n.
+
+**`kallor`** (tidigare enskilda fälten `kalla`/`lank`) - lista med minst ett objekt `{kalla, lank}`. Flera poster när dublettdetekteringen i kureringen (avsnitt 6 i `PROJECT_PLAN.md`) hittar samma händelse hos flera källor - då slås de ihop till EN nyhet med flera källor istället för flera separata nyheter. Sidan visar länkar till samtliga i den expanderade vyn.
 
 **`nyhetsbrev` / `stort_utomlands_ej_sverige` / `motargument`** - booleska flaggor, redan beräknade av `fetch_candidates.py`/`merge_candidates.py`. Sidan visar en badge för dessa istället för att gissa.
 

@@ -10,6 +10,19 @@
 # Financial Times och Wall Street Journal hämtas via finance-news-MCP:n
 # istället (redan namngivna källor där) - ingen egen RSS-hämtning här
 # för att undvika dubbelarbete.
+#
+# Kollat 2026-09-22 (önskade källor: Kvartal, Epoch Times, 100.se,
+# Bulletin, Gavekal):
+# - Epoch Times svenska (epochtimes.se) saknar eget RSS-flöde (modern
+#   JS-sajt, samma situation som EFN) - använder istället internationella
+#   Epoch Times egna Europe-flöde nedan.
+# - Kvartal, Bulletin och 100.se saknar alla publikt RSS-flöde (moderna
+#   JS-sajter utan feed, bara sitemap.xml som inte fungerar för
+#   XML-parsern i fetch_trusted_international.py). Dyker upp naturligt
+#   via Google Nyheter-sökningarna om Google indexerar dem, annars ingen
+#   åtgärd möjlig utan att skriva en sajt-specifik skrapare.
+# - Gavekal Research är en betald institutionell tjänst (prenumeranter
+#   only) - inget publikt RSS-flöde finns eller kan förväntas finnas.
 
 ekonomi:
   - namn: Washington Post (Business)
@@ -20,3 +33,5 @@ politik:
     url: https://feeds.washingtonpost.com/rss/politics
   - namn: Washington Post (World)
     url: https://feeds.washingtonpost.com/rss/world
+  - namn: Epoch Times (Europe)
+    url: https://feed.theepochtimes.com/world/europe/feed
