@@ -1,7 +1,7 @@
 import functools
 import http.server
 
-DIRECTORY = "/Users/axel/Documents/Axel News/web"
+DIRECTORY = "/Users/axel/Documents/Axel News/docs"
 PORT = 8743
 
 handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=DIRECTORY)

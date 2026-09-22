@@ -30,3 +30,5 @@ och läs den utskriften istället.
 - `config/` — `interests.yaml` och annan handskriven konfiguration
 - `data/` — rådata och genererade profiler (git-ignorerad, aldrig committad)
 - `logs/` — körloggar (git-ignorerad)
+- `docs/` — hemsidan (GitHub Pages serveras från denna mapp, kräver namnet `docs` — se PROJECT_PLAN.md avsnitt 7)
+- `.github/workflows/` — schemalagda GitHub Actions-jobb (t.ex. börstickerns kursuppdatering)

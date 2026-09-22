@@ -2,7 +2,7 @@ name: Uppdatera börsticker
 
 # Kör på GitHub:s egna servrar - helt oberoende av om Axels dator är
 # igång. Hämtar aktuella kurser (src/fetch_ticker.py) och committar
-# web/ticker.json om något ändrats. Se PROJECT_PLAN.md avsnitt 7.
+# docs/ticker.json om något ändrats. Se PROJECT_PLAN.md avsnitt 7.
 on:
   schedule:
     - cron: "5 6,10,14,18 * * *"
@@ -26,10 +26,10 @@ jobs:
 
       - name: Committa ticker.json om det ändrats
         run: |
-          if ! git diff --quiet -- web/ticker.json; then
+          if ! git diff --quiet -- docs/ticker.json; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add web/ticker.json
+            git add docs/ticker.json
             git commit -m "Uppdatera börsticker"
             git push
           else

@@ -1,5 +1,5 @@
 """Hämtar en handfull marknadskurser (index, aktie, valutor, guld, BTC)
-till börstickern överst på hemsidan (web/ticker.json).
+till börstickern överst på hemsidan (docs/ticker.json).
 
 Tre fria källor utan nyckel, samma mönster som fetch_trusted_international.py:
 - Yahoo Finance chart-endpoint (index/aktie/guld) - ingen nyckel, används
@@ -10,7 +10,7 @@ Tre fria källor utan nyckel, samma mönster som fetch_trusted_international.py:
 - CoinGecko publika pris-endpoint för BTC.
 
 Körs av .github/workflows/update-ticker.yml på GitHub:s servrar - inte
-beroende av att Axels egen dator är igång. web/ticker.json committas
+beroende av att Axels egen dator är igång. docs/ticker.json committas
 till git och serveras statiskt av GitHub Pages; sidans JS läser den
 filen istället för att anropa något API direkt från webbläsaren (som
 annars stöter på CORS-problem för allt utom BTC/CoinGecko).
@@ -21,7 +21,7 @@ import json
 import urllib.request
 from pathlib import Path
 
-OUT_FILE = Path("web/ticker.json")
+OUT_FILE = Path("docs/ticker.json")
 UA = {"User-Agent": "Mozilla/5.0 (AxelNews ticker-läsare)"}
 TIMEOUT = 10
 

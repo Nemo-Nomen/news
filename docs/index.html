@@ -464,7 +464,7 @@
   <footer class="note">
     Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.<br>
     Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.<br>
-    Börstickern hämtar riktiga kurser från web/ticker.json, uppdaterat av ett GitHub Actions-jobb på GitHub:s servrar (inte min dator) — fram tills sajten är deployad ser du fröade exempelvärden som simulerar rörelsen lokalt istället.
+    Börstickern hämtar riktiga kurser från ticker.json, uppdaterat var 4:e timme av ett GitHub Actions-jobb på GitHub:s servrar (inte min dator).
   </footer>
 </div>
 
@@ -828,7 +828,7 @@ function render() {
 }
 
 // Fröade exempelvärden (hämtade manuellt 2026-09-21) + lokal simulering -
-// används tills/om web/ticker.json (se nedan) går att läsa.
+// används tills/om ticker.json (se nedan) går att läsa.
 let TICKER_ITEMS = [
   { symbol: "OMXS30", price: 3307.02, baseline: 3264.33, decimals: 2 },
   { symbol: "H&M", price: 162.55, baseline: 162.50, decimals: 2 },
@@ -878,7 +878,7 @@ function startTickerJitter() {
   }, 2500);
 }
 
-// web/ticker.json skrivs av src/fetch_ticker.py, körd av ett schemalagt
+// docs/ticker.json skrivs av src/fetch_ticker.py, körd av ett schemalagt
 // GitHub Actions-jobb (.github/workflows/update-ticker.yml, se den filen) -
 // inte beroende av att min egen dator är igång. Fetch:en funkar same-
 // origin på den riktiga sajten men är blockerad i Claude-artifactens
