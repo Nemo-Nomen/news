@@ -769,7 +769,7 @@ function loadRatings() {
   try { return JSON.parse(localStorage.getItem('axelnews_ratings') || '{}'); }
   catch (e) { return {}; }
 }
-function saveRating(id, value) {
+function saveRating(id, value, context) {
   try {
     const r = loadRatings();
     r[id] = value;
@@ -778,10 +778,18 @@ function saveRating(id, value) {
 
   // Skickar bara en rad vid en faktisk betygsättning (inte när man
   // klickar ur den) - historik, inte aktuellt-state (se
-  // config/brief_schema.md). Best effort: sajten ska fungera även om
-  // detta misslyckas (offline, Supabase nere etc).
+  // config/brief_schema.md). kategori/kalla sparas MED betyget eftersom
+  // brief_items rensas varje dag - utan dem skulle ett betyg bli
+  // meningslöst (bara en hash, ingen kvarvarande koppling till vad det
+  // faktiskt handlade om) så fort nästa brev laddats upp. Best effort:
+  // sajten ska fungera även om detta misslyckas (offline, Supabase nere).
   if (supabaseClient && (value === 'upp' || value === 'ner')) {
-    supabaseClient.from('ratings').insert({ item_id: id, betyg: value }).then(({ error }) => {
+    supabaseClient.from('ratings').insert({
+      item_id: id,
+      betyg: value,
+      kategori: context?.kategori || null,
+      kalla: context?.kalla || null
+    }).then(({ error }) => {
       if (error) console.warn('Kunde inte spara betyg till Supabase:', error.message);
     });
   }
@@ -845,9 +853,14 @@ function metaKallaLabel(item) {
   return item.kallor.length > 1 ? `${first} m.fl. (${item.kallor.length} källor)` : first;
 }
 
+function escAttr(text) {
+  return String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
 function renderItem(item) {
+  const primaryKalla = item.kallor[0].kalla;
   return `
-    <details class="item" data-id="${item.id}">
+    <details class="item" data-id="${item.id}" data-kategori="${escAttr(item.kategori || '')}" data-kalla="${escAttr(primaryKalla)}">
       <summary>
         ${thumbMarkup(item)}
         <div class="item-text">
@@ -877,6 +890,7 @@ function render() {
   CATEGORY_ORDER.forEach(cat => {
     const items = DATA.kategorier[cat] || [];
     if (items.length === 0) return;
+    items.forEach(item => { item.kategori = cat; });
 
     chipNav.innerHTML += `<a href="#cat-${cat}">${CATEGORY_LABELS[cat]}<span class="count">${items.length}</span></a>`;
 
@@ -900,7 +914,10 @@ function render() {
       const value = btn.getAttribute('data-rate');
       const current = loadRatings()[id];
       const next = current === value ? null : value;
-      saveRating(id, next);
+      saveRating(id, next, {
+        kategori: details.getAttribute('data-kategori'),
+        kalla: details.getAttribute('data-kalla')
+      });
       render();
     });
   });

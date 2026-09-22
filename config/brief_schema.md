@@ -59,11 +59,15 @@ create table ratings (
   id uuid primary key default gen_random_uuid(),
   item_id text not null,        -- matchar "id" ovan (hash av länken)
   betyg text not null check (betyg in ('upp', 'ner')),  -- enkelt, inte 1-5 (Fas 7: "Enkelt betyg per artikel")
+  kategori text,                -- sparat VID betygstillfället, se motivering nedan
+  kalla text,                   -- sparat VID betygstillfället, se motivering nedan
   skapad timestamptz default now()
 );
 ```
 
 Enkelt tumme upp/ner, enligt planens Fas 7-beskrivning ("Enkelt betyg per artikel"). En rad per betyg (inte en uppdaterad kolumn), så historik bevaras även om man ändrar sig.
+
+**`kategori`/`kalla`** (tillagda 2026-09-22, Fas 7-implementationen) - `brief_items` rensas och skrivs om varje dag (se `src/upload_brief.py`), så ett betyg som bara pekar på ett `item_id` blir meningslöst i efterhand: ingen `join` mot den ursprungliga nyheten är möjlig när den raden är borta. Sidan skickar därför med kategori och primärkälla direkt vid betygstillfället, denormaliserat, så `src/read_ratings_summary.py` kan aggregera ("källa X får ofta nedröstningar") utan att bero på att den ursprungliga nyheten fortfarande finns kvar.
 
 ## Feedback (Supabase-tabell, planerad - se PROJECT_PLAN.md avsnitt 7)
 
