@@ -24,11 +24,10 @@ RAW_DIR = Path("data/profile/candidates_raw")
 LOOKBACK_DAYS = 3
 
 
-def fetch_feed(url: str) -> list:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (AxelNews RSS-läsare)"})
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        xml_bytes = resp.read()
-    root = ET.fromstring(xml_bytes)
+ATOM_NS = "{http://www.w3.org/2005/Atom}"
+
+
+def _parse_rss2(root) -> list:
     items = []
     for item in root.findall("./channel/item"):
         title = item.findtext("title", "")
@@ -40,6 +39,35 @@ def fetch_feed(url: str) -> list:
             pub_date = None
         items.append({"title": title, "link": link, "pub_date": pub_date})
     return items
+
+
+def _parse_atom(root) -> list:
+    items = []
+    for entry in root.findall(f"{ATOM_NS}entry"):
+        title = entry.findtext(f"{ATOM_NS}title", "")
+        link_el = entry.find(f'{ATOM_NS}link[@rel="alternate"]')
+        if link_el is None:
+            link_el = entry.find(f"{ATOM_NS}link")
+        link = link_el.get("href", "") if link_el is not None else ""
+        pub_date_raw = entry.findtext(f"{ATOM_NS}published") or entry.findtext(f"{ATOM_NS}updated", "")
+        try:
+            pub_date = datetime.datetime.fromisoformat(pub_date_raw.replace("Z", "+00:00"))
+        except (TypeError, ValueError):
+            pub_date = None
+        items.append({"title": title, "link": link, "pub_date": pub_date})
+    return items
+
+
+def fetch_feed(url: str) -> list:
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (AxelNews RSS-läsare)"})
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        xml_bytes = resp.read()
+    root = ET.fromstring(xml_bytes)
+    # Vissa källor (SR Ekot, The Verge) ger Atom istället för RSS 2.0 -
+    # roten heter då "feed" (med Atom-namespace) istället för "rss".
+    if root.tag == f"{ATOM_NS}feed":
+        return _parse_atom(root)
+    return _parse_rss2(root)
 
 
 def load_existing(path: Path) -> list:

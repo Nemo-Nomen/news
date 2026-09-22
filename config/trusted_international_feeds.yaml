@@ -23,6 +23,20 @@
 #   åtgärd möjlig utan att skriva en sajt-specifik skrapare.
 # - Gavekal Research är en betald institutionell tjänst (prenumeranter
 #   only) - inget publikt RSS-flöde finns eller kan förväntas finnas.
+#
+# Källupptäckt via Omni 2026-09-22 (se PROJECT_PLAN.md avsnitt 9):
+# bläddrade igenom omni.se:s ekonomi- och tech-sidor och noterade vilka
+# primärkällor de själva citerar mest. De flesta (CNBC, Bloomberg,
+# Barron's, WSJ/FT) täcks redan via finance-news-MCP:n eller Google
+# Nyheter-sökningarna. Två nya lades till nedan eftersom de hade
+# fungerande flöden OCH inte redan täcktes:
+# - SR Ekot (Sveriges Radios nyhetsredaktion) - rakt faktabaserad
+#   radionyhetsbevakning snarare än opinion, lägre risk för den
+#   redaktionella vinkel-oron som gäller för politik-kategorin.
+# - The Verge - matchar AI-kategorins "kapabilitetsnyheter"-vinkel
+#   (se config/interests.yaml) bättre än de källor som redan fanns.
+# Båda ger Atom-flöden, inte RSS 2.0 - fetch_trusted_international.py
+# uppdaterad 2026-09-22 för att tolka båda formaten.
 
 ekonomi:
   - namn: Washington Post (Business)
@@ -35,3 +49,9 @@ politik:
     url: https://feeds.washingtonpost.com/rss/world
   - namn: Epoch Times (Europe)
     url: https://feed.theepochtimes.com/world/europe/feed
+  - namn: SR Ekot
+    url: https://api.sr.se/api/rss/program/83
+
+ai:
+  - namn: The Verge
+    url: https://www.theverge.com/rss/index.xml
