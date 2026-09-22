@@ -66,6 +66,15 @@ politik:
     url: https://feed.theepochtimes.com/world/europe/feed
   - namn: SR Ekot
     url: https://api.sr.se/api/rss/program/83
+  # Tucker Carlson (2026-09-22): tuckercarlson.com blockerar all automatisk
+  # åtkomst (Cloudflare "Just a moment..." 403 på /feed, /rss, /rss.xml,
+  # /sitemap.xml). Hittade det officiella poddflödet via iTunes Search API
+  # istället (samma metod som All-In Podcast): utgivare "Tucker Carlson
+  # Network", showen "The Tucker Carlson Show" - skiljer den från flera
+  # obesläktade/fan-gjorda träffar i samma sökning. Verifierat: giltig
+  # RSS 2.0, 445 poster, aktuella datum (senaste 2026-09-21).
+  - namn: The Tucker Carlson Show
+    url: https://feeds.megaphone.fm/RSV1597324942
 
 ai:
   - namn: The Verge

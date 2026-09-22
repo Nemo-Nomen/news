@@ -47,6 +47,10 @@ def _parse_rss2(root) -> list:
         description = _strip_html(item.findtext("description", ""))
         try:
             pub_date = parsedate_to_datetime(pub_date_raw)
+            if pub_date is not None and pub_date.tzinfo is None:
+                # "-0000" (t.ex. Megaphone-flöden) tolkas av email.utils som
+                # "okänd tidszon" och ger ett naivt datetime - anta UTC.
+                pub_date = pub_date.replace(tzinfo=datetime.timezone.utc)
         except (TypeError, ValueError):
             pub_date = None
         items.append({"title": title, "link": link, "pub_date": pub_date, "description": description})
