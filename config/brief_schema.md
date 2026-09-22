@@ -6,7 +6,7 @@
 {
   "id": "a3f9c1e2b7d4",
   "rubrik": "Riksbanken höjer inte i september",
-  "sammanfattning": "Inflationen kom in lägre än väntat under augusti, vilket fick marknaden att nästan helt prisa ut en höjning inför mötet. Riksbanken själv pekade på en svagare arbetsmarknad och dämpade löneökningar som ytterligare skäl att avvakta. Nästa penningpolitiska besked väntas i november, med öppning för en sänkning om inflationen fortsätter ner.",
+  "sammanfattning": "Inflationen kom in lägre än väntat, vilket fick marknaden att nästan helt prisa ut en höjning inför mötet.",
   "las_mer": "En kuraterad text (~30 sekunders läsning, ~100-130 ord) som väver ihop ALLA källor i `kallor` nedan - inte bara den första. Ska läsas som en sammanhållen artikel, inte en lista av separata källsammanfattningar: vad som hänt, eventuella olika vinklar mellan källorna, och varför det är läsvärt. Om bara en källa finns blir texten i praktiken enkällig - inget att sammanställa, det är förväntat, inte ett fel.",
   "varfor_viktigt": "En rad om varför just den här personen får den här nyheten - kopplat till profilen (t.ex. 'matchar ditt intresse för Riksbanken/makroekonomi').",
   "kallor": [
@@ -22,7 +22,7 @@
 }
 ```
 
-**`sammanfattning`** - ~3 meningar (tidigare en rad). Visas innan man klickar - ska ge en fullständig bild på egen hand, inte bara en rubrikförlängning.
+**`sammanfattning`** - 1 mening, max ~25 ord (ändrat 2026-09-22 från ~3 meningar - anpassat till Omnis nivå-ett-längd: en kort krok som gör att man vill klicka, inte en fullständig bild i sig själv - den fullständiga bilden ligger i `las_mer`).
 
 **Hård regel:** `las_mer` MÅSTE vara längre än `sammanfattning` och innehålla genuint nytt - fler detaljer, siffror, kontext eller konsekvenser - aldrig en kortare omskrivning eller upprepning av sammanfattningen. Poängen med att klicka är att få mer, inte mindre (bugg hittad och fixad 2026-09-22: flera `las_mer`-texter var kortare än den nya 3-menings-sammanfattningen efter att bara `sammanfattning` utökades).
 
