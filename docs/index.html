@@ -272,7 +272,7 @@
     display: flex; flex-wrap: wrap; gap: 6px 16px;
   }
   .footer-row {
-    display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
   }
   .source-link {
     font-family: "Public Sans", Arial, sans-serif;
@@ -280,6 +280,13 @@
     text-transform: uppercase; letter-spacing: 0.03em;
   }
   .source-link:hover { text-decoration: underline; }
+  .claude-deepen {
+    font-family: "Public Sans", Arial, sans-serif;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    color: var(--accent); background: none; border: none; padding: 0; cursor: pointer;
+    text-decoration: none;
+  }
+  .claude-deepen:hover { text-decoration: underline; }
 
   .rating {
     font-family: "Public Sans", Arial, sans-serif;
@@ -758,6 +765,19 @@ const CATEGORY_LABELS = {
 };
 const CATEGORY_ORDER = ["jobb", "ekonomi", "politik", "noje", "ai", "skvaller"];
 
+// Kategorianpassad följdfråga för "Fördjupa med Claude"-knappen - samma
+// grundmall (kontext + fråga) för alla, men frågan är den som skiljer
+// sig åt beroende på vad som faktiskt är intressant i respektive
+// kategori (se diskussion 2026-09-22).
+const CATEGORY_FOLLOWUP = {
+  jobb: "Vad betyder det här för H&M och konkurrenterna i det längre loppet?",
+  ekonomi: "Vad betyder det här för börsen och min privatekonomi?",
+  politik: "Vilka olika perspektiv finns på det här, och vad blir sannolika konsekvenser framåt?",
+  noje: "Finns det någon intressant bakgrund eller kontext till det här värd att känna till?",
+  ai: "Vad betyder det här praktiskt - för mig som vill hänga med i AI-utvecklingen?",
+  skvaller: "Vad är de bekräftade fakta här, utan spekulationen?"
+};
+
 function fmtDate(iso) {
   try {
     const d = new Date(iso);
@@ -821,6 +841,43 @@ function sourceLinksMarkup(item) {
   ).join('');
 }
 
+// Bygger kontext + fråga-prompten för "Fördjupa med Claude" (se
+// diskussion 2026-09-22) - kopieras till urklipp och skickas som
+// ?q=-parameter till claude.ai/new. Parametern är inte officiellt
+// garanterad att förifylla textfältet, därför är urklipp den säkra
+// reserven om den inte fungerar.
+function buildClaudePrompt(item) {
+  const kalla = item.kallor[0];
+  const followup = CATEGORY_FOLLOWUP[item.kategori] || 'Vad är viktigast att förstå här?';
+  return [
+    'Jag läser en nyhet i mitt personliga nyhetsbrev:',
+    '',
+    `Rubrik: ${item.rubrik}`,
+    `Sammanfattning: ${item.sammanfattning}`,
+    `Källa: ${kalla.kalla}, ${fmtDate(item.publicerad)}`,
+    `Länk: ${kalla.lank}`,
+    '',
+    `Kan du fördjupa det här för mig? ${followup}`
+  ].join('\n');
+}
+
+async function openClaudeDeepen(item, btn) {
+  const prompt = buildClaudePrompt(item);
+  let copied = false;
+  try {
+    await navigator.clipboard.writeText(prompt);
+    copied = true;
+  } catch (e) {
+    // Urklipp otillgängligt (t.ex. privat läge) - länken öppnas ändå
+  }
+  window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank', 'noopener');
+  if (btn) {
+    const original = btn.textContent;
+    btn.textContent = copied ? 'Kopierat + öppnat i Claude ↗' : 'Öppnat i Claude (kopiera manuellt) ↗';
+    setTimeout(() => { btn.textContent = original; }, 2500);
+  }
+}
+
 function bodyContent(item) {
   return `
     <div class="body-text">
@@ -834,6 +891,7 @@ function bodyContent(item) {
         <div class="sources-links">${sourceLinksMarkup(item)}</div>
       </div>
       <div class="footer-row">
+        <button type="button" class="claude-deepen" data-claude-deepen>Fördjupa med Claude &rarr;</button>
         ${ratingButtons(item, loadRatings())}
       </div>
     </div>
@@ -878,6 +936,8 @@ function renderItem(item) {
   `;
 }
 
+let itemsById = {};
+
 function render() {
   const dateLabel = document.getElementById('dateLabel');
   dateLabel.textContent = fmtDate(DATA.genererad);
@@ -886,11 +946,12 @@ function render() {
   const main = document.getElementById('main');
   chipNav.innerHTML = '';
   main.innerHTML = '';
+  itemsById = {};
 
   CATEGORY_ORDER.forEach(cat => {
     const items = DATA.kategorier[cat] || [];
     if (items.length === 0) return;
-    items.forEach(item => { item.kategori = cat; });
+    items.forEach(item => { item.kategori = cat; itemsById[item.id] = item; });
 
     chipNav.innerHTML += `<a href="#cat-${cat}">${CATEGORY_LABELS[cat]}<span class="count">${items.length}</span></a>`;
 
@@ -919,6 +980,15 @@ function render() {
         kalla: details.getAttribute('data-kalla')
       });
       render();
+    });
+  });
+
+  main.querySelectorAll('[data-claude-deepen]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = btn.closest('details').getAttribute('data-id');
+      const item = itemsById[id];
+      if (item) openClaudeDeepen(item, btn);
     });
   });
 }

@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "axel-news-local",
+      "url": "http://127.0.0.1:8743",
+      "port": 8743
+    }
+  ]
+}
