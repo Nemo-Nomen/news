@@ -3,6 +3,11 @@ logs/
 .venv/
 .DS_Store
 
+# Claude Code lokala verktygsstate - personliga behörigheter/lås,
+# inte projektkonfiguration att dela
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
 # Konfiguration med personuppgifter (följda ämnen/källor/orter m.m.) — aldrig i repot
 config/interests_draft.yaml
 config/interests.yaml

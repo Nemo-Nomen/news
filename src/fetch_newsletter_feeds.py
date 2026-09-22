@@ -8,6 +8,7 @@ Körs lokalt i Fas 5, ingen Claude/Gmail behövs för flöden som har RSS.
 
 import datetime
 import json
+import re
 import urllib.request
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
@@ -18,6 +19,14 @@ import yaml
 FEEDS_FILE = Path("config/newsletter_feeds.yaml")
 RAW_DIR = Path("data/profile/candidates_raw")
 LOOKBACK_DAYS = 7
+
+CONTENT_NS = "{http://purl.org/rss/1.0/modules/content/}"
+
+_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _strip_html(text: str) -> str:
+    return re.sub(r"\s+", " ", _TAG_RE.sub(" ", text or "")).strip()
 
 
 def fetch_feed(url: str) -> list:
@@ -30,11 +39,19 @@ def fetch_feed(url: str) -> list:
         title = item.findtext("title", "")
         link = item.findtext("link", "")
         pub_date_raw = item.findtext("pubDate", "")
+        # content:encoded (WordPress-flöden som Kortsikt/Fernando del Pino)
+        # innehåller ofta HELA inlägget - fångar det direkt här så
+        # kurering/steg 7 kan skriva sammanfattning/läs mer utan en extra
+        # WebFetch per nyhetsbrevspost (se PROJECT_PLAN.md
+        # "hastighetsanalys 2026-09-22" - detta var tidigare den dyraste
+        # research-punkten per körning trots att bara två avsändare finns).
+        full_text = item.findtext(f"{CONTENT_NS}encoded") or item.findtext("description", "")
+        description = _strip_html(full_text)
         try:
             pub_date = parsedate_to_datetime(pub_date_raw)
         except (TypeError, ValueError):
             pub_date = None
-        items.append({"title": title, "link": link, "pub_date": pub_date})
+        items.append({"title": title, "link": link, "pub_date": pub_date, "description": description})
     return items
 
 
@@ -59,6 +76,7 @@ def main() -> None:
                     "source": feed["namn"],
                     "pub_date": item["pub_date"].isoformat(),
                     "nyhetsbrev": True,
+                    "description": item.get("description", ""),
                 }
             )
         print(f"  {len(recent)} nya poster senaste {LOOKBACK_DAYS} dagarna")

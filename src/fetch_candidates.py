@@ -27,7 +27,7 @@ OUTPUT_DIR = Path("data/profile/candidates")
 
 POANG_TROSKEL = 0.03  # "hänt något"-tröskel, empiriskt startvärde - justeras
 FARSKHET_HALVERINGSTID_TIMMAR = 48
-MAX_KANDIDATER = 15
+MAX_KANDIDATER = 10  # sänkt från 15 (beslut 2026-09-22, se PROJECT_PLAN.md)
 MAX_PER_KALLA = 2  # källdiversifiering (Metod C) - tak per utgivare per körning
 
 STOPWORDS = {

@@ -12,6 +12,7 @@ Körs lokalt, gratis, ingen Claude behövs.
 
 import datetime
 import json
+import re
 import urllib.request
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
@@ -26,6 +27,16 @@ LOOKBACK_DAYS = 3
 
 ATOM_NS = "{http://www.w3.org/2005/Atom}"
 
+_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _strip_html(text: str) -> str:
+    """Källornas beskrivningsfält är ofta HTML (t.ex. SR Ekots <ul><li><p>...)
+    - platta ut till text så den går att läsa/citera direkt utan extra
+    WebFetch/WebSearch för att förstå vad artikeln handlar om (se
+    PROJECT_PLAN.md "hastighetsanalys 2026-09-22")."""
+    return re.sub(r"\s+", " ", _TAG_RE.sub(" ", text or "")).strip()
+
 
 def _parse_rss2(root) -> list:
     items = []
@@ -33,11 +44,12 @@ def _parse_rss2(root) -> list:
         title = item.findtext("title", "")
         link = item.findtext("link", "")
         pub_date_raw = item.findtext("pubDate", "")
+        description = _strip_html(item.findtext("description", ""))
         try:
             pub_date = parsedate_to_datetime(pub_date_raw)
         except (TypeError, ValueError):
             pub_date = None
-        items.append({"title": title, "link": link, "pub_date": pub_date})
+        items.append({"title": title, "link": link, "pub_date": pub_date, "description": description})
     return items
 
 
@@ -50,11 +62,12 @@ def _parse_atom(root) -> list:
             link_el = entry.find(f"{ATOM_NS}link")
         link = link_el.get("href", "") if link_el is not None else ""
         pub_date_raw = entry.findtext(f"{ATOM_NS}published") or entry.findtext(f"{ATOM_NS}updated", "")
+        description = _strip_html(entry.findtext(f"{ATOM_NS}summary") or "")
         try:
             pub_date = datetime.datetime.fromisoformat(pub_date_raw.replace("Z", "+00:00"))
         except (TypeError, ValueError):
             pub_date = None
-        items.append({"title": title, "link": link, "pub_date": pub_date})
+        items.append({"title": title, "link": link, "pub_date": pub_date, "description": description})
     return items
 
 
@@ -105,6 +118,7 @@ def main() -> None:
                         "link": item["link"],
                         "source": feed["namn"],
                         "pub_date": item["pub_date"].isoformat(),
+                        "description": item.get("description", ""),
                     }
                 )
                 new_count += 1

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s *)",
+      "mcp__Claude_Browser__find",
+      "mcp__finance-news__search_finance_news",
+      "mcp__ccd_session_mgmt__list_events",
+      "mcp__Claude_Browser__read_console_messages",
+      "mcp__Claude_Browser__read_network_requests",
+      "mcp__fin-data__yahoo_quote",
+      "mcp__finance-news__get_latest_finance_news",
+      "mcp__Claude_Browser__tabs_context",
+      "mcp__Claude_Browser__get_page_text",
+      "mcp__Claude_Browser__read_page",
+      "mcp__ccd_session_mgmt__get_session",
+      "mcp__scheduled-tasks__list_task_runs",
+      "mcp__fin-data__fx_latest_rates",
+      "mcp__ccd_session_mgmt__get_usage",
+      "mcp__scheduled-tasks__list_scheduled_tasks",
+      "mcp__fin-data__crypto_ticker"
+    ]
+  }
+}
