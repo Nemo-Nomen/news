@@ -20,6 +20,7 @@ import datetime
 import json
 import re
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HN_API = "https://hacker-news.firebaseio.com/v0"
@@ -52,11 +53,16 @@ def main() -> None:
     seen_links = {i["link"] for i in existing}
     new_count = 0
 
-    for story_id in top_ids:
+    def fetch_item(story_id):
         try:
-            item = fetch_json(f"{HN_API}/item/{story_id}.json")
+            return fetch_json(f"{HN_API}/item/{story_id}.json")
         except Exception:
-            continue
+            return None
+
+    with ThreadPoolExecutor(max_workers=20) as pool:
+        items = list(pool.map(fetch_item, top_ids))
+
+    for item in items:
         if not item or item.get("type") != "story":
             continue
         title = item.get("title", "")

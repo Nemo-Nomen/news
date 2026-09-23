@@ -245,6 +245,15 @@ Ursprungliga alternativ (A: Claude-publicerad Artefakt, B: lokal statisk sida, C
 - Efter att ha åtgärdat (eller medvetet valt bort) punkter i en session: `update feedback set status = 'hanterad', hanterad_at = now() where id in (...)` för de posterna, så nästa körning bara ser nytt.
 - "Kopiera allt"-knappen i UI:t behålls ändå som redundant fallback (kostar inget, funkar även om Supabase är nere).
 
+**Effektivisering av den dagliga körningen (beslut 2026-09-24):**
+
+- Alla mekaniska steg körs nu i två skript: `src/prepare_run.py` (kandidater, internationella källor, Hacker News, nyhetsbrev, sammanslagning för alla sex kategorier, betygssammanfattning) och `src/publish_run.py` (sammanställ, ladda upp, tidsstämpel). Ungefär 20 separata verktygsanrop blev 2, och varje nytt kommando var en risk för att körningen fastnade på en behörighetsfråga.
+- finance-news-träffar skrivs av Claude till en egen fil, `<kategori>_mcp.json`, som skrivs över varje körning. Claude läser och skriver inte längre om den växande `_internationellt.json` för hand.
+- Sammanslagningen körs alltid för alla kategorier. Tidigare kördes den bara för "minst ekonomi och politik", så Hacker News-signalen kunde saknas i AI-kategorin (i testet gick AI från 1 till 4 kandidater).
+- Hacker News och de internationella RSS-flödena hämtas parallellt: förberedelsesteget tar 24 s i stället för 2 min 8 s.
+- Bilder (og:image) är borttagna helt: låg träffsäkerhet och det långsammaste skriptet.
+- Kvar att göra: råfilerna `_internationellt.json` rensas fortfarande aldrig från gamla poster.
+
 ## 8. Risker
 
 | Risk | Åtgärd |

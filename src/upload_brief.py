@@ -76,7 +76,6 @@ def main() -> None:
                     "nyhetsbrev": item["nyhetsbrev"],
                     "stort_utomlands_ej_sverige": item["stort_utomlands_ej_sverige"],
                     "motargument": item["motargument"],
-                    "bild": item.get("bild"),
                     "brev_datum": brev_datum,
                 }
             )

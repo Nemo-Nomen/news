@@ -15,6 +15,7 @@ import json
 import re
 import urllib.request
 import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
@@ -97,6 +98,16 @@ def main() -> None:
     feeds_by_category = yaml.safe_load(FEEDS_FILE.read_text(encoding="utf-8")) or {}
     cutoff = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=LOOKBACK_DAYS)
 
+    def fetch_safe(url: str):
+        try:
+            return fetch_feed(url)
+        except Exception as exc:
+            return exc
+
+    urls = [feed["url"] for feeds in feeds_by_category.values() for feed in feeds]
+    with ThreadPoolExecutor(max_workers=10) as pool:
+        results = dict(zip(urls, pool.map(fetch_safe, urls)))
+
     for category, feeds in feeds_by_category.items():
         out_file = RAW_DIR / f"{category}_internationellt.json"
         existing = load_existing(out_file)
@@ -104,10 +115,9 @@ def main() -> None:
 
         for feed in feeds:
             print(f"[{category}] Hämtar: {feed['namn']} ({feed['url']})")
-            try:
-                items = fetch_feed(feed["url"])
-            except Exception as exc:
-                print(f"  Fel: {exc}")
+            items = results[feed["url"]]
+            if isinstance(items, Exception):
+                print(f"  Fel: {items}")
                 continue
             new_count = 0
             for item in items:

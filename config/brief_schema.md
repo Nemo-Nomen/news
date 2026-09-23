@@ -17,8 +17,7 @@
   "kategori": "politik",
   "nyhetsbrev": false,
   "stort_utomlands_ej_sverige": false,
-  "motargument": false,
-  "bild": "https://exempel.se/bild.jpg"
+  "motargument": false
 }
 ```
 
@@ -32,7 +31,7 @@
 
 **`nyhetsbrev` / `stort_utomlands_ej_sverige` / `motargument`** - booleska flaggor, redan beräknade av `fetch_candidates.py`/`merge_candidates.py`. Sidan visar en badge för dessa istället för att gissa.
 
-**`bild`** - valfri (kan vara `null`). Hämtad via og:image-metataggen på artikelsidan (`src/fetch_og_images.py`), bara för direktkälle-kandidater (nyhetsbrev, betrodda internationella källor som Washington Post) - Google Nyheter-sökta kandidater har omdirigeringslänkar utan riktig artikel-URL att skrapa, så de saknar alltid bild. Verklig träfffrekvens är låg (testat 2026-09-21: 1 av ~35 direktkälle-artiklar, mest för att flera källor som Washington Post blockerar direkt sidhämtning). Hotlinkad URL, ingen bild laddas ner/lagras av oss. Sidan visar en text-först-layout ("compact") när `bild` är `null`, en bild-först-layout ("featured") annars - matchar hur Washington Post själva bara bildsätter sina främsta nyheter.
+**Bilder borttagna helt (beslut 2026-09-24).** Fältet `bild` och `src/fetch_og_images.py` är borttagna: låg träffsäkerhet (3 av 30 länkar i en mätning) och det var det långsammaste skriptet i körningen (~2,6 s per länk). Kolumnen `bild` i Supabase-tabellen `brief_items` finns kvar men lämnas tom.
 
 ## Brevet i sin helhet
 

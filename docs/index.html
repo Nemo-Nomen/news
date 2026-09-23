@@ -198,21 +198,6 @@
   details.item summary::-webkit-details-marker { display: none; }
   details.item summary:hover { background: var(--surface-hover); }
 
-  .thumb-wrap {
-    flex: none; width: 76px; height: 76px;
-    background: var(--surface-hover);
-    border: 1px solid var(--rule-light);
-  }
-  .thumb-wrap img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-  .thumb-wrap.placeholder {
-    display: flex; align-items: center; justify-content: center;
-    font-size: 8.5px; line-height: 1.3; text-align: center; padding: 4px;
-    color: var(--text-muted);
-    font-family: "Public Sans", Arial, sans-serif;
-  }
-
   .item-text { flex: 1; min-width: 0; }
   .item-text .rubrik {
     font-size: 17px; font-weight: 700; line-height: 1.28; margin: 0 0 4px;
@@ -459,7 +444,6 @@
 
   @media (max-width: 420px) {
     header.masthead h1 { font-size: 27px; }
-    .thumb-wrap { width: 64px; height: 64px; }
     .item-text .rubrik { font-size: 16px; }
   }
 </style>
@@ -526,7 +510,6 @@
 
   <footer class="note">
     <span id="dataSourceNote">Förhandsvisning med exempeldata — layout och interaktion, inte kopplad till riktig data än.</span><br>
-    Bild visas bara för nyheter från direktkällor (nyhetsbrev, betrodda internationella källor) — Google Nyheter-sökta artiklar saknar bildlänk i sina flöden.<br>
     Börstickern hämtar riktiga kurser från ticker.json, uppdaterat var 4:e timme av ett GitHub Actions-jobb på GitHub:s servrar (inte min dator).<br>
     <button type="button" id="authLogout" class="link-btn">Logga ut</button>
   </footer>
@@ -563,8 +546,7 @@ let DATA = {
         "kategori": "jobb",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       },
       {
         "id": "4af3b591cc19",
@@ -579,8 +561,7 @@ let DATA = {
         "kategori": "jobb",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       }
     ],
     "ekonomi": [
@@ -597,8 +578,7 @@ let DATA = {
         "kategori": "ekonomi",
         "nyhetsbrev": true,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": "placeholder"
+        "motargument": false
       },
       {
         "id": "d031299a4ae4",
@@ -613,8 +593,7 @@ let DATA = {
         "kategori": "ekonomi",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       },
       {
         "id": "96796225ca1c",
@@ -629,8 +608,7 @@ let DATA = {
         "kategori": "ekonomi",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": true,
-        "bild": null
+        "motargument": true
       }
     ],
     "politik": [
@@ -648,8 +626,7 @@ let DATA = {
         "kategori": "politik",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": true,
-        "motargument": false,
-        "bild": "placeholder"
+        "motargument": false
       },
       {
         "id": "1d3ce2d8239d",
@@ -665,8 +642,7 @@ let DATA = {
         "kategori": "politik",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       }
     ],
     "noje": [
@@ -684,8 +660,7 @@ let DATA = {
         "kategori": "noje",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": "placeholder"
+        "motargument": false
       },
       {
         "id": "1f8a9a5e1b5c",
@@ -700,8 +675,7 @@ let DATA = {
         "kategori": "noje",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       }
     ],
     "ai": [
@@ -718,8 +692,7 @@ let DATA = {
         "kategori": "ai",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       },
       {
         "id": "d450573a20fd",
@@ -734,8 +707,7 @@ let DATA = {
         "kategori": "ai",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       }
     ],
     "skvaller": [
@@ -752,8 +724,7 @@ let DATA = {
         "kategori": "skvaller",
         "nyhetsbrev": false,
         "stort_utomlands_ej_sverige": false,
-        "motargument": false,
-        "bild": null
+        "motargument": false
       }
     ]
   }
@@ -898,14 +869,6 @@ function bodyContent(item) {
   `;
 }
 
-function thumbMarkup(item) {
-  if (!item.bild) return '';
-  if (item.bild === 'placeholder') {
-    return `<div class="thumb-wrap placeholder">Bild (ej laddad i förhandsvisning)</div>`;
-  }
-  return `<div class="thumb-wrap"><img src="${item.bild}" alt="" loading="lazy"></div>`;
-}
-
 function metaKallaLabel(item) {
   const first = item.kallor[0].kalla;
   return item.kallor.length > 1 ? `${first} m.fl. (${item.kallor.length} källor)` : first;
@@ -920,7 +883,6 @@ function renderItem(item) {
   return `
     <details class="item" data-id="${item.id}" data-kategori="${escAttr(item.kategori || '')}" data-kalla="${escAttr(primaryKalla)}">
       <summary>
-        ${thumbMarkup(item)}
         <div class="item-text">
           <p class="rubrik">${item.rubrik}</p>
           <p class="sammanfattning">${item.sammanfattning}</p>
@@ -1220,7 +1182,7 @@ async function loadBriefData() {
         las_mer: row.las_mer, varfor_viktigt: row.varfor_viktigt,
         kallor: row.kallor, publicerad: row.publicerad,
         nyhetsbrev: row.nyhetsbrev, stort_utomlands_ej_sverige: row.stort_utomlands_ej_sverige,
-        motargument: row.motargument, bild: row.bild
+        motargument: row.motargument
       });
       if (!senast || row.publicerad > senast) senast = row.publicerad;
     }

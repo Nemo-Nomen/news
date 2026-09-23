@@ -191,8 +191,8 @@ def load_source_exclusions() -> set:
     return {source.lower() for sources in groups.values() for source in sources}
 
 
-def main() -> None:
-    category = sys.argv[1] if len(sys.argv) > 1 else "ekonomi"
+def main(category: str = None) -> None:
+    category = category or (sys.argv[1] if len(sys.argv) > 1 else "ekonomi")
 
     profile = json.loads(PROFILE_FILE.read_text(encoding="utf-8"))
     queries = yaml.safe_load(QUERIES_FILE.read_text(encoding="utf-8")).get(category, [])

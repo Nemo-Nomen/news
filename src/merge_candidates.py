@@ -4,9 +4,9 @@ data/profile/candidates_raw/{category}_internationellt.json) kandidater
 innan trend/poängsättning, så en händelse som täcks av både svenska och
 internationella källor får rätt trend-signal.
 
-Den internationella filen skrivs för hand/av Claude just nu eftersom
-finance-news bara är tillgängligt via MCP, inte från ett fristående
-skript - se PROJECT_PLAN.md avsnitt 6 för arkitekturnotisen.
+finance-news är bara tillgängligt via MCP, inte från ett fristående
+skript - Claude skriver de träffarna till {category}_mcp.json, se
+PROJECT_PLAN.md avsnitt 6 för arkitekturnotisen.
 """
 
 import datetime
@@ -33,14 +33,19 @@ def load_raw(path: Path) -> list:
     return items
 
 
-def main() -> None:
-    category = sys.argv[1] if len(sys.argv) > 1 else "ekonomi"
+def main(category: str = None) -> None:
+    category = category or (sys.argv[1] if len(sys.argv) > 1 else "ekonomi")
 
     profile = json.loads(PROFILE_FILE.read_text(encoding="utf-8"))
     profile_word_set = profile_words(profile[category])
 
     sverige = load_raw(RAW_DIR / f"{category}_sverige.json")
-    internationellt = load_raw(RAW_DIR / f"{category}_internationellt.json")
+    # _mcp.json skrivs av Claude (finance-news-MCP) i en egen fil som
+    # skrivs över varje körning - Claude ska inte läsa och skriva om den
+    # växande _internationellt.json för hand.
+    internationellt = load_raw(RAW_DIR / f"{category}_internationellt.json") + load_raw(
+        RAW_DIR / f"{category}_mcp.json"
+    )
     combined = sverige + internationellt
 
     print(f"{len(sverige)} svenska + {len(internationellt)} internationella = {len(combined)} kandidater totalt.")
