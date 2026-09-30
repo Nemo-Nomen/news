@@ -1,16 +1,16 @@
 {
-  "updated": "2026-09-30T06:25:17+00:00",
+  "updated": "2026-09-30T10:21:30+00:00",
   "items": [
     {
       "symbol": "OMXS30",
-      "price": 3286.192,
-      "baseline": 3280.15,
+      "price": 3296.6108,
+      "baseline": 3286.1924,
       "decimals": 2
     },
     {
       "symbol": "H&M",
-      "price": 156.95,
-      "baseline": 161.05,
+      "price": 159.3,
+      "baseline": 156.95,
       "decimals": 2
     },
     {
@@ -27,14 +27,14 @@
     },
     {
       "symbol": "GULD",
-      "price": 4215.4,
+      "price": 4219.0,
       "baseline": 4179.7,
       "decimals": 2
     },
     {
       "symbol": "BTC",
-      "price": 83110,
-      "baseline": 83803.5447,
+      "price": 83695,
+      "baseline": 84084.7935,
       "decimals": 0
     }
   ]
