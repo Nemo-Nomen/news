@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-04T19:42:34+00:00",
+  "updated": "2026-10-05T06:29:51+00:00",
   "items": [
     {
       "symbol": "OMXS30",
@@ -27,14 +27,14 @@
     },
     {
       "symbol": "GULD",
-      "price": 4162.3,
+      "price": 4179.2,
       "baseline": 4162.3,
       "decimals": 2
     },
     {
       "symbol": "BTC",
-      "price": 85455,
-      "baseline": 84774.3845,
+      "price": 85917,
+      "baseline": 84879.9824,
       "decimals": 0
     }
   ]
