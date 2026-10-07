@@ -1,40 +1,40 @@
 {
-  "updated": "2026-10-07T10:21:53+00:00",
+  "updated": "2026-10-07T14:22:05+00:00",
   "items": [
     {
       "symbol": "OMXS30",
-      "price": 3256.9316,
+      "price": 3230.6182,
       "baseline": 3282.9373,
       "decimals": 2
     },
     {
       "symbol": "H&M",
-      "price": 161.3,
+      "price": 162.75,
       "baseline": 160.3,
       "decimals": 2
     },
     {
       "symbol": "USD/SEK",
-      "price": 9.9765,
+      "price": 10.0421,
       "baseline": 9.9765,
       "decimals": 2
     },
     {
       "symbol": "EUR/SEK",
-      "price": 11.2425,
+      "price": 11.224,
       "baseline": 11.2425,
       "decimals": 2
     },
     {
       "symbol": "GULD",
-      "price": 4143.1,
+      "price": 4126.0,
       "baseline": 4187.1,
       "decimals": 2
     },
     {
       "symbol": "BTC",
-      "price": 83884,
-      "baseline": 86032.9129,
+      "price": 83000,
+      "baseline": 86040.1299,
       "decimals": 0
     }
   ]
