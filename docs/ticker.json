@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-07T12:51:34+00:00",
+  "updated": "2026-11-07T18:39:20+00:00",
   "items": [
     {
       "symbol": "OMXS30",
@@ -33,8 +33,8 @@
     },
     {
       "symbol": "BTC",
-      "price": 75810,
-      "baseline": 75975.5868,
+      "price": 75759,
+      "baseline": 75835.6161,
       "decimals": 0
     }
   ]
