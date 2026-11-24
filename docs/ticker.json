@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-23T17:55:43+00:00",
+  "updated": "2026-11-24T03:55:40+00:00",
   "items": [
     {
       "symbol": "OMXS30",
@@ -16,25 +16,25 @@
     {
       "symbol": "USD/SEK",
       "price": 10.2729,
-      "baseline": 10.2025,
+      "baseline": 10.2729,
       "decimals": 2
     },
     {
       "symbol": "EUR/SEK",
       "price": 11.2375,
-      "baseline": 11.2125,
+      "baseline": 11.2375,
       "decimals": 2
     },
     {
       "symbol": "GULD",
-      "price": 3651.1,
-      "baseline": 3515.4,
+      "price": 3629.8,
+      "baseline": 3651.4,
       "decimals": 2
     },
     {
       "symbol": "BTC",
-      "price": 61685,
-      "baseline": 60799.9536,
+      "price": 60244,
+      "baseline": 61203.0291,
       "decimals": 0
     }
   ]
